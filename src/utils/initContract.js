@@ -15,6 +15,11 @@ async function initContract() {
 
   // Needed to access wallet
   const walletConnection = new nearAPI.WalletConnection(near);
+  window.walletConnection = walletConnection;
+
+  // Getting the Account ID. If still unauthorized, it's just empty string
+  window.accountId = window.walletConnection.getAccountId();
+  window.account = window.walletConnection.account();
 
   // Load in account data
   let currentUser;
@@ -40,7 +45,30 @@ async function initContract() {
     }
   );
 
-  return { contract, currentUser, nearConfig, walletConnection };
+  const contractFT = await new nearAPI.Contract(
+    window.walletConnection.account(),
+    nearConfig.ftTokenContractName,
+    {
+      // View methods are read only. They don't modify the state, but usually return some value.
+      viewMethods: [
+        "storage_balance_of",
+        "ft_metadata",
+        "ft_balance_of",
+        "ft_total_supply",
+      ],
+      // Change methods can modify the state. But you don't receive the returned value when called.
+      changeMethods: ["storate_deposit", "claim_testnet_token"],
+    }
+  );
+  window.contractFT = contractFT;
+
+  return {
+    contract,
+    contractFT,
+    currentUser,
+    nearConfig,
+    walletConnection,
+  };
 }
 
 export default initContract;

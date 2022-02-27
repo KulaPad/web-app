@@ -1,18 +1,15 @@
-import { Flex, Box, Button } from "@chakra-ui/react";
+import { Flex, SlideFade } from "@chakra-ui/react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Hero from "../components/Hero";
-import KText from "../components/KText";
+import SignInBtn from "../components/SignInBtn";
+import SlideUpWhenVisible from "../hooks/SlideUpWhenVisible";
 
 export default function Landing(props) {
   const { contract, walletConnection, nearConfig, currentUser } = props;
+
   const signIn = () => {
     walletConnection.requestSignIn(nearConfig.contractName, "NEAR ToDo List");
-
-    // get all by contract
-    // contract
-    //   .get({ offset, limit: PER_PAGE_LIMIT })
-    //   .then((todos) => setTodos(todos));
   };
 
   const signOut = () => {
@@ -29,18 +26,23 @@ export default function Landing(props) {
       {...props}
     >
       <Header />
-
-      <Hero
-        title="Landing Page"
-        subtitle="Used Create-React-App Chakra Template"
-        image="https://source.unsplash.com/collection/404339/800x600"
-        ctaText={
-          !!currentUser?.accountId
-            ? `${currentUser.accountId} (sign out)`
-            : "Sign In with Near"
-        }
-        ctaOnClick={!!currentUser?.accountId ? signOut : signIn}
-      />
+      <SlideFade
+        direction="top"
+        in={true}
+        transition={{ enter: { duration: 0.4, delay: 0.7 } }}
+      >
+        <Hero
+          title="Landing Page"
+          subtitle="Used Create-React-App Chakra Template"
+          image="https://source.unsplash.com/collection/404339/800x600"
+          ctaText={
+            !!currentUser?.accountId
+              ? `${currentUser.accountId} (sign out)`
+              : "Sign In with Near"
+          }
+          ctaOnClick={!!currentUser?.accountId ? signOut : signIn}
+        />
+      </SlideFade>
       <Footer />
     </Flex>
   );

@@ -1,4 +1,7 @@
 const CONTRACT_NAME = process.env.CONTRACT_NAME || 'dev-1643993185636-67848471782433';
+const FT_TOKEN_CONTRACT_NAME = process.env.FT_TOKEN_CONTRACT_NAME ||'token-kulapad.testnet'
+const STAKING_CONTRACT_NAME = process.env.STAKING_CONTRACT_NAME || 'staking-kulapad.testnet'
+const IDO_CONTRACT_NAME = process.env.IDO_CONTRACT_NAME || 'ido-kulapad.testnet'
 
 function getConfig(env) {
   switch(env) {
@@ -7,6 +10,9 @@ function getConfig(env) {
         networkId: 'mainnet',
         nodeUrl: 'https://rpc.mainnet.near.org',
         contractName: CONTRACT_NAME,
+        ftTokenContractName: FT_TOKEN_CONTRACT_NAME,
+        stakingContractName: STAKING_CONTRACT_NAME,
+        idoContractName: IDO_CONTRACT_NAME,
         walletUrl: 'https://wallet.near.org',
         helperUrl: 'https://helper.mainnet.near.org'
       };
@@ -19,6 +25,9 @@ function getConfig(env) {
         networkId: 'testnet',
         nodeUrl: 'https://rpc.testnet.near.org',
         contractName: CONTRACT_NAME,
+        ftTokenContractName: FT_TOKEN_CONTRACT_NAME,
+        stakingContractName: STAKING_CONTRACT_NAME,
+        idoContractName: IDO_CONTRACT_NAME,
         walletUrl: 'https://wallet.testnet.near.org',
         helperUrl: 'https://helper.testnet.near.org'
       };

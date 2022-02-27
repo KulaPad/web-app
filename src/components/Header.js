@@ -2,9 +2,11 @@ import { Link } from "react-router-dom";
 import { Box, Flex, Text, Button, Stack } from "@chakra-ui/react";
 import { ColorModeSwitcher } from "../ColorModeSwitcher";
 import Logo from "./Logo";
+import KText from "./KText";
+import SignInBtn from "./SignInBtn";
 
 const MenuItem = (props) => {
-  const { children, isLast, to = "/", ...rest } = props;
+  const { children, isLast, to, ...rest } = props;
   return (
     <Text
       mb={{ base: isLast ? 0 : 8, sm: 0 }}
@@ -12,7 +14,8 @@ const MenuItem = (props) => {
       display="block"
       {...rest}
     >
-      <Link to={to}>{children}</Link>
+      {to && <Link to={to}>{children}</Link>}
+      {!to && children}
     </Text>
   );
 };
@@ -34,6 +37,12 @@ const Header = (props) => {
         <Link to="/">
           <Logo height={44} />
         </Link>
+        <Box mx={2} borderLeft="1.5px solid #999" height="16px"></Box>
+        <Link to="/claim">
+          <KText type="text" color="#0072ce">
+            Claim TestNet Token
+          </KText>
+        </Link>
       </Flex>
 
       <Box flexBasis={{ base: "100%", md: "auto" }}>
@@ -43,21 +52,8 @@ const Header = (props) => {
           direction={["column", "row", "row", "row"]}
           pt={[4, 4, 0, 0]}
         >
-          <MenuItem to="/account">
-            <Button
-              size="sm"
-              rounded="md"
-              _hover={{
-                bg: [
-                  "primary.100",
-                  "primary.100",
-                  "primary.600",
-                  "primary.600",
-                ],
-              }}
-            >
-              Account
-            </Button>
+          <MenuItem>
+            <SignInBtn size="sm" rounded="md" />
           </MenuItem>
           <MenuItem>
             <ColorModeSwitcher />

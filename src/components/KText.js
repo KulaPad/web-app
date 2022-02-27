@@ -39,7 +39,7 @@ const KText = (props) => {
             lg: "14px",
             xl: "14px",
           },
-          color: "#A0AEC0",
+          // color: "#A0AEC0",
         };
     }
   };
