@@ -37,7 +37,7 @@ export default function Projects(props) {
   );
 }
 
-const Project = (props) => {
+export const Project = (props) => {
   const property = {
     imageUrl:
       "https://storage.googleapis.com/dao-pad-production.appspot.com/5eac16a58854bf3711afae6f41b0ea05_photo.png",
@@ -51,7 +51,7 @@ const Project = (props) => {
   };
 
   return (
-    <SimpleGrid columns={3} mt={4} mb={6} spacing={8}>
+    <SimpleGrid columns={{ base: 1, md: 3 }} mt={4} mb={6} spacing={8}>
       {[1, 2, 3].map((data) => (
         <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden">
           <Image src={property.imageUrl} alt={property.imageAlt} />

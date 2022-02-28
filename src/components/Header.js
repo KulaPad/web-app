@@ -11,7 +11,7 @@ const Header = (props) => {
   console.log("window.location.pathname::", location.pathname);
 
   return (
-    <Box borderBottom="1px solid #f0f0f1" w="100%">
+    <Box borderBottom="1px solid #f0f0f1" w="100%" bg="white" zIndex={10}>
       <Flex
         as="nav"
         align="center"
