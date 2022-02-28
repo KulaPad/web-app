@@ -4,6 +4,8 @@ import { HashRouter, Routes, Route } from "react-router-dom";
 import Landing from "./routes/Landing";
 import Account from "./routes/Account";
 import Claim from "./routes/Claim";
+import Projects from "./routes/Projects";
+import Staking from "./routes/Staking";
 
 function App(props) {
   return (
@@ -13,6 +15,8 @@ function App(props) {
           <Route path="/" element={<Landing {...props} />} />
           <Route path="/account" element={<Account {...props} />} />
           <Route path="/claim" element={<Claim {...props} />} />
+          <Route path="/projects" element={<Projects {...props} />} />
+          <Route path="/staking" element={<Staking {...props} />} />
         </Routes>
       </HashRouter>
     </ChakraProvider>

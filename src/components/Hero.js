@@ -22,7 +22,7 @@ export default function Hero({
     <Flex
       align="center"
       direction={{ base: "column-reverse", md: "row" }}
-      minH="70vh"
+      minH="calc(100vh - 80px - 88px - 80px)"
       px={8}
       mb={16}
       gap={12}

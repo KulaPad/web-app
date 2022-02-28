@@ -1,10 +1,9 @@
-<svg width="582" height="582" viewBox="0 0 582 582" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="582" height="582" rx="291" fill="url(#paint0_linear)"/>
-<path d="M157.521 303.421L355.881 106.426C359.587 102.746 365.55 107.225 363.049 111.809L289.22 247.123C287.573 250.141 289.758 253.821 293.196 253.821H420.782C424.892 253.821 426.877 258.857 423.872 261.661L200.293 470.326C196.284 474.067 190.317 468.796 193.536 464.356L299.373 318.351C301.543 315.357 299.404 311.164 295.706 311.164H160.713C156.67 311.164 154.653 306.27 157.521 303.421Z" fill="white"/>
-<defs>
-<linearGradient id="paint0_linear" x1="291" y1="0" x2="291" y2="582" gradientUnits="userSpaceOnUse">
-<stop stop-color="#7BCBD4"/>
-<stop offset="1" stop-color="#29C6B7"/>
-</linearGradient>
-</defs>
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" style="shape-rendering:geometricPrecision;text-rendering:geometricPrecision;image-rendering:optimizeQuality;fill-rule:evenodd;clip-rule:evenodd">
+    <path style="opacity:1" fill="#fede2a" d="M156 84v8a401 401 0 0 0 1 40 71 71 0 0 0 9-11 71 71 0 0 0 8-12 391 391 0 0 0 22-31 7 7 0 0 1 4-3 342 342 0 0 1 37 0 4 4 0 0 1 3 3 22 22 0 0 1-3 5 36 36 0 0 0-6 8 252 252 0 0 0-26 33 4140 4140 0 0 0 45 96 4 4 0 0 1-2 2 840 840 0 0 1-41 1 9 9 0 0 1-7-3 76899 76899 0 0 1-14-33l-5-12a112 112 0 0 1-5-11l-2-1a165 165 0 0 0-17 19 382 382 0 0 0-2 38 4 4 0 0 1-1 2 164 164 0 0 1-25 1h-9l-9-2V77l2-2a420 420 0 0 1 41 0 11 11 0 0 1 2 9Z"/>
+    <path style="opacity:1" fill="#fddd2a" d="M308 84v89c1 8 4 14 12 18a11 11 0 0 0 7 2c12 1 20-4 24-15a2721 2721 0 0 0 2-101l2-2a289 289 0 0 1 34 0l1 2-1 104c-3 18-13 31-29 38a120 120 0 0 1-54 4 72 72 0 0 1-21-7 57 57 0 0 1-22-43V77l2-2h42a20 20 0 0 1 1 9Z"/>
+    <path style="opacity:1" fill="#fcdc2a" d="M158 256v108l9 1h58l2 10-1 22-1 1-96 1h-9c-4 0-7-1-9-3V249l3-3h42l2 10Z"/>
+    <path style="opacity:1" fill="#fddd2a" d="M344 256a5628 5628 0 0 1 48 138l-1 4-34 1h-6l-6-1a59 59 0 0 1-3-10 71 71 0 0 1-3-9 56 56 0 0 0-4-10 552 552 0 0 0-47 0 339 339 0 0 0-11 28 9 9 0 0 1-2 1 113 113 0 0 1-15 1h-15a7 7 0 0 1-7-2c0-5 1-9 3-13a10865 10865 0 0 1 48-135l3-3h45c4 2 6 5 7 10Z"/>
+    <path style="opacity:1" fill="#fff" d="M318 310a129 129 0 0 0-9 24h15-27a308 308 0 0 1 13-39c0-2 1-2 2 0a134 134 0 0 0 6 15Z"/>
+    <path style="opacity:1" fill="#fff" d="M318 310a285 285 0 0 0 6 18 9 9 0 0 0-3 6h-12a129 129 0 0 1 9-24Z"/>
+    <path style="opacity:1" fill="#fff" d="M324 328v6h-3a9 9 0 0 1 3-6Z"/>
 </svg>
