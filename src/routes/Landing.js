@@ -1,23 +1,19 @@
 import {
+  Box,
   Button,
+  Flex,
   Heading,
+  Icon,
+  Image,
+  SimpleGrid,
   Stack,
   Text,
-  Container,
-  SimpleGrid,
-  Image,
-  Flex,
-  StackDivider,
-  Icon,
-  useColorModeValue,
   useBreakpointValue,
-  Box,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
-
 import { FcAssistant, FcDonate, FcInTransit } from "react-icons/fc";
-import KText from "../components/KText";
+import { Link } from "react-router-dom";
 import HomeLayout from "../components/HomeLayout";
+import KText from "../components/KText";
 import StakingForm from "../components/StakingForm";
 import { Project } from "./Projects";
 
@@ -36,9 +32,9 @@ export default function Landing(props) {
         align={"left"}
         spacing={{ base: 2, md: 4 }}
         pt={{ base: 40, md: 40 }}
-        pb={{ base: 20, md: 20 }}
         maxW={{ xl: "1200px" }}
         margin="0 auto"
+        height="calc(100vh - 60px)"
       >
         <SimpleGrid columns={{ base: 1, md: 2 }}>
           <Stack spacing={{ base: 2, md: 4 }}>
@@ -97,27 +93,27 @@ export default function Landing(props) {
         </SimpleGrid>
       </Stack>
 
-      <KText mt={20} mb={8} type="semi-head" textAlign="center">
+      <KText mb={8} type="semi-head" textAlign="center">
         Features
       </KText>
 
       <SimpleThreeColumns />
 
-      <KText mt={20} type="semi-head" textAlign="center">
+      <KText mt={40} type="semi-head" textAlign="center">
         Featured Projects
       </KText>
-      <KText ml={0.5} mb={8} type="normal" textAlign="center">
+      <KText ml={0.5} mb={12} type="normal" textAlign="center">
         Upcoming and active top tier IDOs & crypto launchpad offerings.
       </KText>
       <Project />
 
-      <KText mt={20} mb={12} type="semi-head" textAlign="center">
+      <KText mt={40} mb={12} type="semi-head" textAlign="center">
         Staking KULA Token
       </KText>
 
       <StakingForm />
 
-      <Box mb={20} />
+      <Box mb={40} />
     </HomeLayout>
   );
 }
