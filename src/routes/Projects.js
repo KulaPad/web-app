@@ -1,11 +1,9 @@
-import { Box, Image, Flex, Badge, Text, SimpleGrid } from "@chakra-ui/react";
+import { Box, Image, Badge, SimpleGrid } from "@chakra-ui/react";
 
 import HomeLayout from "../components/HomeLayout";
 import KText from "../components/KText";
 
 export default function Projects(props) {
-  const { currentUser } = props;
-
   return (
     <HomeLayout>
       <KText mt={4} type="semi-head" textAlign="left">
@@ -41,7 +39,8 @@ export default function Projects(props) {
 
 const Project = (props) => {
   const property = {
-    imageUrl: "https://storage.googleapis.com/dao-pad-production.appspot.com/5eac16a58854bf3711afae6f41b0ea05_photo.png",
+    imageUrl:
+      "https://storage.googleapis.com/dao-pad-production.appspot.com/5eac16a58854bf3711afae6f41b0ea05_photo.png",
     imageAlt: "Rear view of modern home with pool",
     beds: 3,
     baths: 2,

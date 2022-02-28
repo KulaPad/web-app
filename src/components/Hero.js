@@ -1,13 +1,5 @@
 import { Link } from "react-router-dom";
-import {
-  Box,
-  Button,
-  Flex,
-  Image,
-  Heading,
-  Stack,
-  Skeleton,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, Image, Heading, Stack } from "@chakra-ui/react";
 
 export default function Hero({
   title,

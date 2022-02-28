@@ -3,17 +3,6 @@ import HomeLayout from "../components/HomeLayout";
 import { Link } from "react-router-dom";
 
 export default function Landing(props) {
-  const { contract, walletConnection, nearConfig, currentUser } = props;
-
-  const signIn = () => {
-    walletConnection.requestSignIn(nearConfig.contractName, "NEAR ToDo List");
-  };
-
-  const signOut = () => {
-    walletConnection.signOut();
-    window.location.replace(window.location.origin + window.location.pathname);
-  };
-
   return (
     <HomeLayout>
       <Stack
