@@ -40,7 +40,9 @@ const Header = (props) => {
                 h="24px"
                 w="24px"
                 color={
-                  location.pathname === "/projects" ? "#0072ce" : "#72727a"
+                  location.pathname.startsWith("/projects")
+                    ? "#0072ce"
+                    : "#72727a"
                 }
               />
               <KText
@@ -48,7 +50,9 @@ const Header = (props) => {
                 type="small-title"
                 fontWeight="500"
                 color={
-                  location.pathname === "/projects" ? "#0072ce" : "#72727a"
+                  location.pathname.startsWith("/projects")
+                    ? "#0072ce"
+                    : "#72727a"
                 }
               >
                 Projects
@@ -62,13 +66,21 @@ const Header = (props) => {
                 as={BiWallet}
                 h="24px"
                 w="24px"
-                color={location.pathname === "/staking" ? "#0072ce" : "#72727a"}
+                color={
+                  location.pathname.startsWith("/staking")
+                    ? "#0072ce"
+                    : "#72727a"
+                }
               />
               <KText
                 ml={1}
                 type="small-title"
                 fontWeight="500"
-                color={location.pathname === "/staking" ? "#0072ce" : "#72727a"}
+                color={
+                  location.pathname.startsWith("/staking")
+                    ? "#0072ce"
+                    : "#72727a"
+                }
               >
                 Staking
               </KText>

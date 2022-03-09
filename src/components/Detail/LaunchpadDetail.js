@@ -80,7 +80,8 @@ const LaunchpadDetail = ({ project }) => {
         </SimpleGrid>
 
         <SimpleGrid
-          columns={{ base: 1, md: 2 }}
+          templateColumns={{ base: "unset", md: "4fr 3fr" }}
+          columns={{ base: 1, md: 3 }}
           mt={8}
           spacing="24px"
           bg="#fff"
@@ -106,21 +107,21 @@ const LaunchpadDetail = ({ project }) => {
               boxShadow="xs"
               objectFit={"cover"}
             />
-            <Typography mt={3} color="#170d69" type="semi-title">
-              {project?.title}
-              <Badge
-                borderRadius="12px"
-                px={2.5}
-                py={1}
-                mb="5px"
-                ml="-4px"
-                colorScheme={getColorByStatus(project.status) || "teal"}
-              >
-                {sentenceCase(project.status)}
-              </Badge>
+            <Badge
+              borderRadius="12px"
+              px={2.5}
+              py={1}
+              mt="3"
+              ml="-4px"
+              colorScheme={getColorByStatus(project.status) || "teal"}
+            >
+              {sentenceCase(project.status)}
+            </Badge>
+            <Typography mt={2} color="#170d69" type="semi-title">
+              {project?.name}
             </Typography>
 
-            <Typography mt={1} type="small-title">
+            <Typography mt={0} type="small-title">
               {project?.sub_title}
             </Typography>
 

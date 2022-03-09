@@ -57,30 +57,32 @@ export default function Projects(props) {
       {isLoading && <Loading />}
       {!isLoading && (
         <Box>
-          <KText mt={4} type="semi-head" textAlign="left">
+          <KText color="gray.800" mt={8} type="semi-head" textAlign="left">
             Comming Projects
           </KText>
-          <KText ml={0.5} type="normal" textAlign="left">
+          <KText color="gray.800" ml={0.5} mb={5} type="normal" textAlign="left">
             Upcoming and active top tier IDOs & crypto launchpad offerings.
           </KText>
           <Project projects={upcomingProjects} />
 
-          <KText mt={4} type="semi-head" textAlign="left">
+          <KText color="gray.800" mt={8} type="semi-head" textAlign="left">
             Running Projects
           </KText>
-          <KText ml={0.5} type="normal" textAlign="left">
+          <KText color="gray.800" ml={0.5} mb={5} type="normal" textAlign="left">
             Discover ongoing crypto launchpad offerings & IDOs.
           </KText>
           <Project projects={runningProjects} />
 
-          <KText mt={4} type="semi-head" textAlign="left">
+          <KText color="gray.800" mt={8} type="semi-head" textAlign="left">
             Finished Projects
           </KText>
-          <KText ml={0.5} type="normal" textAlign="left">
+          <KText color="gray.800" ml={0.5} mb={5} type="normal" textAlign="left">
             All past IDOs/SHO offerings that were hosted on DAO Maker crypto
             launchpad.
           </KText>
           <Project projects={finishedProjects} />
+
+          <Box h={10} />
         </Box>
       )}
     </HomeLayout>
