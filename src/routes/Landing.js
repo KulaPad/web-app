@@ -12,12 +12,34 @@ import {
 } from "@chakra-ui/react";
 import { FcAssistant, FcDonate, FcInTransit } from "react-icons/fc";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+
 import HomeLayout from "../components/HomeLayout";
 import KText from "../components/KText";
 import StakingForm from "../components/StakingForm";
+import Loading from "../components/Loading";
 import { Project } from "./Projects";
 
 export default function Landing(props) {
+  const [projects, setProjects] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // useEffect get projects from window.contractIdo
+  useEffect(() => {
+    if (!!window?.contractIdo) getProjects();
+  }, []);
+
+  const getProjects = async () => {
+    await window?.contractIdo?.get_projects().then((_projects) => {
+      setProjects(_projects);
+    });
+    setIsLoading(false);
+  };
+
+  const upcomingProjects = projects.filter((project) => {
+    return project?.status === "Preparation";
+  });
+
   return (
     <HomeLayout>
       <Blur
@@ -105,7 +127,9 @@ export default function Landing(props) {
       <KText ml={0.5} mb={12} type="normal" textAlign="center">
         Upcoming and active top tier IDOs & crypto launchpad offerings.
       </KText>
-      <Project />
+
+      {isLoading && <Loading />}
+      {!isLoading && <Project projects={upcomingProjects} />}
 
       <KText mt={40} mb={12} type="semi-head" textAlign="center">
         Staking KULA Token

@@ -1,7 +1,7 @@
 const CONTRACT_NAME = process.env.CONTRACT_NAME || 'dev-1643993185636-67848471782433';
 const FT_TOKEN_CONTRACT_NAME = process.env.FT_TOKEN_CONTRACT_NAME ||'token-kulapad.testnet'
 const STAKING_CONTRACT_NAME = process.env.STAKING_CONTRACT_NAME || 'staking-kulapad.testnet'
-const IDO_CONTRACT_NAME = process.env.IDO_CONTRACT_NAME || 'ido-kulapad.testnet'
+const IDO_CONTRACT_NAME = process.env.IDO_CONTRACT_NAME || 'v1-ido-kulapad.testnet'
 
 function getConfig(env) {
   switch(env) {

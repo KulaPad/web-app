@@ -62,9 +62,25 @@ async function initContract() {
   );
   window.contractFT = contractFT;
 
+  const contractIdo = await new nearAPI.Contract(
+    window.walletConnection.account(),
+    nearConfig.idoContractName,
+    {
+      // View methods are read only. They don't modify the state, but usually return some value.
+      viewMethods: [
+        "get_projects",
+        "get_project",
+      ],
+      // Change methods can modify the state. But you don't receive the returned value when called.
+      changeMethods: [],
+    }
+  );
+  window.contractIdo = contractIdo;
+
   return {
     contract,
     contractFT,
+    contractIdo,
     currentUser,
     nearConfig,
     walletConnection,
