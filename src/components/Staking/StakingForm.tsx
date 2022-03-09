@@ -76,7 +76,7 @@ export default function StakingForm(props: Props) {
     contractStaking
       // @ts-ignore
       .unstake({
-
+        amount: frmUnStake_amount
       })
       .then((res) => {
         console.log('{unstake} res: ', res);
@@ -84,7 +84,7 @@ export default function StakingForm(props: Props) {
       .catch((e: any) => {
         console.error('{unstake} e: ', e);
       });
-  }, [])
+  }, [frmUnStake_amount])
 
   const claim = useCallback(() => {
     contractStaking
