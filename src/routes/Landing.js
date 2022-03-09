@@ -16,7 +16,7 @@ import { useEffect, useState } from "react";
 
 import HomeLayout from "../components/HomeLayout";
 import KText from "../components/KText";
-import StakingForm from "../components/StakingForm";
+import StakingForm from "../components/Staking/StakingForm";
 import Loading from "../components/Loading";
 import { Project } from "./Projects";
 

@@ -57,7 +57,11 @@ async function initContract() {
         "ft_total_supply",
       ],
       // Change methods can modify the state. But you don't receive the returned value when called.
-      changeMethods: ["storate_deposit", "claim_testnet_token", "ft_transfer_call"],
+      changeMethods: [
+        "storate_deposit",
+        "claim_testnet_token",
+        "ft_transfer_call",
+      ],
     }
   );
   window.contractFT = contractFT;
