@@ -14,22 +14,18 @@ import {
   InputRightAddon,
   InputLeftAddon,
 } from "@chakra-ui/react";
-
-
-/*
 import { Contract } from "near-api-js/lib/contract";
 
 type Props = {
   contract: Contract    // dev account
   contractFT: Contract  // KULA token contract
-  contractIdo: string     // IDO contract
-  contractStaking: string // Staking contract
-  currentUser: string
-  nearConfig: string
-  walletConnection: string
+  contractIdo: Contract     // IDO contract
+  contractStaking: Contract // Staking contract
+  currentUser: any
+  nearConfig: any
+  walletConnection: any
 }
-*/
-export default function StakingForm(props) {
+export default function StakingForm(props: Props) {
   // const {
   //   currentUser,
   //   contractStaking,

@@ -14,7 +14,12 @@ import {
   Wrap,
   WrapItem
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { observer } from "mobx-react-lite"
+import {Contract} from "near-api-js/lib/contract";
+import StakingStatsStore from "./StakingStatsStore.ts";
+import {AccountJson, PoolInfo} from "../../utils/KulaContract.ts";
+import {currency} from "../../utils/Number.ts";
 
 
 const avatars = [
@@ -40,28 +45,83 @@ const avatars = [
   },
 ];
 
-export default function StakingStats(props) {
-  const [] = useState()
 
-  const getAccountInfo = (a) => {
+type Props = {
+  contract: Contract    // dev account
+  contractFT: Contract  // KULA token contract
+  contractIdo: Contract     // IDO contract
+  contractStaking: Contract // Staking contract
+  currentUser: any
+  nearConfig: any
+  walletConnection: any
+}
+export default observer(function StakingStats(props: Props) {
+  const {
+    contractStaking,
+    currentUser,
+  } = props;
+
+  const {
+    lock_balance,
+    stake_balance,
+    unstake_balance,
+    reward,
+
+    total_stake_balance,
+    total_reward,
+    total_stakers,
+  } = StakingStatsStore;
+
+
+  const accountId = currentUser?.accountId;
+  const getAccountInfo = () => {
+    if (!accountId) {
+      return;
+    }
+
     contractStaking
+      // @ts-ignore
       .get_account_info({
-        account_id: currentUser?.accountId,
+        account_id: accountId,
       })
-      .then((accountJson) => {
+      .then((accountJson: AccountJson) => {
         console.log('{get_account_info} accountJson: ', accountJson);
+        StakingStatsStore.setState(accountJson)
+      })
+      .catch((e: any) => {
+        console.error('{get_account_info} e: ', e);
+
+        // Fake data to test in case of contract error
+        // TODO: Remove this if contract bug is resolved
+        const accountJson = {
+          account_id: accountId,
+          lock_balance: 1234,
+          unlock_timestamp: new Date(),
+          stake_balance: 879,
+          unstake_balance: 234,
+          reward: 126,
+          can_withdraw: true,
+          start_unstake_timestamp: new Date(),
+          unstake_available_epoch: 12345678,
+          current_epoch: 12345678,
+        }
+
+        StakingStatsStore.setState(accountJson)
       });
   };
   const get_pool_info = () => {
     contractStaking
+      // @ts-ignore
       .get_pool_info()
-      .then((poolInfo) => {
-        console.log('{get_pool_info} poolInfo: ', poolInfo);
+      .then((poolInfo: PoolInfo) => {
+        // console.log('{get_pool_info} poolInfo: ', poolInfo);
+        StakingStatsStore.setState(poolInfo)
       });
   };
 
   useEffect(() => {
     get_pool_info()
+    getAccountInfo()
   }, [])
 
   return (
@@ -96,11 +156,11 @@ export default function StakingStats(props) {
 
         <HStack mt={10}>
           <Stat>
-            <StatLabel>Balance</StatLabel>
+            <StatLabel>Locked</StatLabel>
             <StatNumber
               bgGradient="linear(to-r, red.400,pink.400)"
               bgClip="text"
-            >0.00 KULA</StatNumber>
+            >{currency(lock_balance)} KULA</StatNumber>
             <StatHelpText>Feb 12 - Feb 28</StatHelpText>
           </Stat>
           <Stat>
@@ -108,7 +168,7 @@ export default function StakingStats(props) {
             <StatNumber
               bgGradient="linear(to-r, green.600,cyan.600)"
               bgClip="text"
-            >0.00 KULA</StatNumber>
+            >{currency(stake_balance)} KULA</StatNumber>
             <StatHelpText>Feb 12 - Feb 28</StatHelpText>
           </Stat>
           <Stat>
@@ -116,7 +176,7 @@ export default function StakingStats(props) {
             <StatNumber
               bgGradient="linear(to-r, orange.400,red.400)"
               bgClip="text"
-            >0.00 KULA</StatNumber>
+            >{currency(unstake_balance)} KULA</StatNumber>
             <StatHelpText>Feb 12 - Feb 28</StatHelpText>
           </Stat>
         </HStack>
@@ -140,32 +200,32 @@ export default function StakingStats(props) {
             <StatNumber
               bgGradient="linear(to-r, red.400,pink.400)"
               bgClip="text"
-            >1,234 KULA</StatNumber>
+            >{currency(reward, 2)} KULA</StatNumber>
           </Stat>
         </HStack>
 
 
         <HStack mt={10}>
           <Stat>
-            <StatLabel>total_stake_balance</StatLabel>
+            <StatLabel>Total Stake Balance</StatLabel>
             <StatNumber
               bgGradient="linear(to-r, red.400,pink.400)"
               bgClip="text"
-            >0.00 KULA</StatNumber>
+            >{currency(total_stake_balance, 0)} KULA</StatNumber>
           </Stat>
           <Stat>
-            <StatLabel>total_reward</StatLabel>
+            <StatLabel>Total Reward</StatLabel>
             <StatNumber
               bgGradient="linear(to-r, green.600,cyan.600)"
               bgClip="text"
-            >0.00 KULA</StatNumber>
+            >{currency(total_reward, 0)} KULA</StatNumber>
           </Stat>
           <Stat>
-            <StatLabel>total_stakers</StatLabel>
+            <StatLabel>Total Stakers</StatLabel>
             <StatNumber
               bgGradient="linear(to-r, orange.400,red.400)"
               bgClip="text"
-            >0.00 KULA</StatNumber>
+            >{total_stakers} <br/> persons</StatNumber>
           </Stat>
         </HStack>
 
@@ -229,4 +289,4 @@ export default function StakingStats(props) {
       </Stack>
     </Stack>
   )
-}
+})
