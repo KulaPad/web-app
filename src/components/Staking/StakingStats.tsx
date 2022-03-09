@@ -18,7 +18,7 @@ import { useEffect } from "react";
 import { observer } from "mobx-react-lite"
 import {Contract} from "near-api-js/lib/contract";
 import StakingStatsStore from "./StakingStatsStore.ts";
-import {AccountJson, PoolInfo} from "../../utils/KulaContract.ts";
+import {AccountJson, PoolInfo, TierNames} from "../../utils/KulaContract.ts";
 import {currency} from "../../utils/Number.ts";
 
 
@@ -66,12 +66,14 @@ export default observer(function StakingStats(props: Props) {
     stake_balance,
     unstake_balance,
     reward,
+    tier,
 
     total_stake_balance,
     total_reward,
     total_stakers,
   } = StakingStatsStore;
 
+  const tierName = TierNames[tier]
 
   const accountId = currentUser?.accountId;
   const getAccountInfo = () => {
@@ -96,7 +98,7 @@ export default observer(function StakingStats(props: Props) {
         const accountJson = {
           account_id: accountId,
           lock_balance: 1234,
-          unlock_timestamp: new Date(),
+          unlock_timestamp: Date.now(),
           stake_balance: 879,
           unstake_balance: 234,
           reward: 126,
@@ -148,7 +150,7 @@ export default observer(function StakingStats(props: Props) {
             fontWeight={700}
             bgGradient="linear(to-r, purple.400,red.400)"
             bgClip="text"
-          >Tier 4</Text>
+          >{tierName}</Text>
         </Wrap>
         <Text color={"gray.500"} fontSize={{ base: "sm", sm: "md" }} mt={4}>
           Your estimated ticket amount is <b>1000</b>
