@@ -290,6 +290,29 @@ export default function StakingForm() {
               </Stat>
             </HStack>
 
+            {/* APR */}
+            <HStack mt={10} justifyContent={"flex-start"}>
+              <Stat>
+                <StatLabel>Staking APR</StatLabel>
+                <StatNumber
+                  bgGradient="linear(to-r, red.400,pink.400)"
+                  bgClip="text"
+                >18%</StatNumber>
+              </Stat>
+              <Stat>
+                <StatNumber
+                  color="pink.400"
+                >→</StatNumber>
+              </Stat>
+              <Stat>
+                <StatLabel>Total Reward Earned</StatLabel>
+                <StatNumber
+                  bgGradient="linear(to-r, red.400,pink.400)"
+                  bgClip="text"
+                >1,234 KULA</StatNumber>
+              </Stat>
+            </HStack>
+
           </Box>
 
           <Stack direction={"row"} spacing={4} align={"center"}>
