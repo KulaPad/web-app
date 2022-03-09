@@ -1,10 +1,13 @@
 import {
+  Box,
+  Container, SimpleGrid,
   Text
 } from "@chakra-ui/react";
 
 import HomeLayout from "../components/HomeLayout";
 import KText from "../components/KText";
-import StakingForm from "../components/Staking/StakingForm";
+import StakingForm from "../components/Staking/StakingForm.tsx";
+import StakingStats from "../components/Staking/StakingStats.tsx";
 
 
 export default function Staking(props) {
@@ -12,7 +15,18 @@ export default function Staking(props) {
     {/*<KText mt={20} mb={12} type="semi-head" textAlign="center">*/}
     {/*  Staking KULA Token*/}
     {/*</KText>*/}
-    <StakingForm {...props} />
+
+    <Box position={"relative"} mt={20}>
+      <Container
+        as={SimpleGrid}
+        maxW={"7xl"}
+        columns={{ base: 1, md: 2 }}
+        spacing={{ base: 10, lg: 32 }}
+      >
+        <StakingForm {...props} />
+        <StakingStats {...props} />
+      </Container>
+    </Box>
 
 
     <KText mt={40} type="semi-head" textAlign="center">

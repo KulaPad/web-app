@@ -1,6 +1,6 @@
 import {
   Box,
-  Button,
+  Button, Container,
   Flex,
   Heading,
   Icon,
@@ -16,9 +16,10 @@ import { useEffect, useState } from "react";
 
 import HomeLayout from "../components/HomeLayout";
 import KText from "../components/KText";
-import StakingForm from "../components/Staking/StakingForm";
 import Loading from "../components/Loading";
 import { Project } from "./Projects";
+import StakingForm from "../components/Staking/StakingForm.tsx";
+import StakingStats from "../components/Staking/StakingStats.tsx";
 
 export default function Landing(props) {
   const [projects, setProjects] = useState([]);
@@ -135,7 +136,17 @@ export default function Landing(props) {
         Staking KULA Token
       </KText>
 
-      <StakingForm />
+      <Box position={"relative"} mt={20}>
+        <Container
+          as={SimpleGrid}
+          maxW={"7xl"}
+          columns={{ base: 1, md: 2 }}
+          spacing={{ base: 10, lg: 32 }}
+        >
+          <StakingForm {...props} />
+          <StakingStats {...props} />
+        </Container>
+      </Box>
 
       <Box mb={40} />
     </HomeLayout>
