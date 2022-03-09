@@ -57,7 +57,7 @@ async function initContract() {
         "ft_total_supply",
       ],
       // Change methods can modify the state. But you don't receive the returned value when called.
-      changeMethods: ["storate_deposit", "claim_testnet_token"],
+      changeMethods: ["storate_deposit", "claim_testnet_token", "ft_transfer_call"],
     }
   );
   window.contractFT = contractFT;
@@ -77,6 +77,29 @@ async function initContract() {
   );
   window.contractIdo = contractIdo;
 
+  const contractStaking = await new nearAPI.Contract(
+    window.walletConnection.account(),
+    nearConfig.stakingContractName,
+    {
+      // View methods are read only. They don't modify the state, but usually return some value.
+      viewMethods: [
+        "get_account_info",
+        "get_account_reward",
+        "get_pool_info",
+        "storage_balance_of",
+      ],
+      // Change methods can modify the state. But you don't receive the returned value when called.
+      changeMethods: [
+        "unstake",
+        "lock",
+        "unlock",
+        "withdraw",
+        "harvest"
+      ],
+    }
+  );
+  window.contractStaking = contractStaking;
+
   return {
     contract,
     contractFT,
@@ -84,6 +107,7 @@ async function initContract() {
     currentUser,
     nearConfig,
     walletConnection,
+    contractStaking,
   };
 }
 

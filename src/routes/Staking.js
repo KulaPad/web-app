@@ -34,6 +34,15 @@ export default function Staking(props) {
   ]
   const [tabIndex, setTabIndex] = useState(0)
 
+  const getAccountInfo = () => {
+    window.contractFT
+      .get_account_info({
+        account_id: currentUser?.accountId,
+      })
+      .then((accountJson) => {
+        console.log(accountJson);
+      });
+  };
 
   return <HomeLayout>
     {/*<KText mt={20} mb={12} type="semi-head" textAlign="center">*/}
