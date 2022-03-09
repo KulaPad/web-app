@@ -6,7 +6,7 @@ export interface IStakingStatsStore {
   total_stake_balance: number
   total_reward: number
   total_stakers: number
-  unlock_timestamp: number
+  unlock_timestamp: number  // unix timestamp in millisecs ??
 
   lock_balance: number
   stake_balance: number
