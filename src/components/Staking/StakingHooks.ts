@@ -178,6 +178,12 @@ export function useStakingForm_Stake(props: StakingFormProps, StakingStatsStore:
     const kulaU128 = formatKulaAmount(stakeAmountFloat);
 
     set_frmStake_submitting(true)
+    /**
+     MY_ACCOUNT="'$MY_ACCOUNT'"
+     near call staking-kulapad.testnet storage_deposit '{"account_id": "'$MY_ACCOUNT'"}' --accountId $MY_ACCOUNT --depositYocto 1750000000000000000000
+     near call token-kulapad.testnet ft_transfer_call '{"receiver_id": "staking-kulapad.testnet", "amount": "1000000000", "msg": "Stake KULA"}' --accountId $MY_ACCOUNT --depositYocto 1 --gas 50000000000000
+     near call staking-kulapad.testnet get_account_info '{"account_id": "'$MY_ACCOUNT'"}' --accountId $MY_ACCOUNT
+     */
     // @ts-ignore
     const result = await window.account.signAndSendTransaction({
       receiverId: contractFT.contractId,
