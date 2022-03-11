@@ -21,6 +21,7 @@ import StakingStatsStore from "./StakingStatsStore.ts";
 import {currency} from "../../utils/Number.ts";
 import {getNextTier, TierMinBalance} from "../../utils/KulaStakingHelper.ts";
 import * as moment from "moment";
+import {useStakingForm, useStakingForm_Claim, useStakingForm_Stake, useStakingForm_UnStake} from "./StakingHooks.ts";
 
 type Props = {
   contract: Contract    // dev account
@@ -32,83 +33,37 @@ type Props = {
   walletConnection: any
 }
 export default function StakingForm(props: Props) {
-  const {
-    contractStaking,
-  } = props;
+  const [tabIndex, setTabIndex] = useState(0);
 
   const {
     stake_balance,
-    tier,
     unstake_balance,
     unlock_timestamp,
   } = StakingStatsStore;
 
-  const [tabIndex, setTabIndex] = useState(0);
-  const [frmStake_amount, set_frmStake_amount] = useState('');
-  const [frmStake_lock_for, set_frmStake_lock_for] = useState('');
-  const [frmUnStake_amount, set_frmUnStake_amount] = useState('');
-  const [frmClaim_amount, set_frmClaim_amount] = useState('');
+  const {
+    loadStakeInfo,
+    stake,
+    next_tier_name,
+    next_stake_balance_left,
+    frmStake_amount, set_frmStake_amount,
+    frmStake_lock_for, set_frmStake_lock_for,
+  } = useStakingForm_Stake(props, StakingStatsStore)
 
+  const {
+    loadUnStakeInfo,
+    unstake,
+    frmUnStake_amount, set_frmUnStake_amount,
+    stake_lock_released,
+    available_to_unstake_balance,
+  } = useStakingForm_UnStake(props, StakingStatsStore)
 
-  const next_tier = getNextTier(tier);
-  const next_tier_name = TierNames[next_tier];
-  const next_stake_balance_left = TierMinBalance[next_tier] - stake_balance;
-  const stake_lock_released = unlock_timestamp >= Date.now();
-  const available_to_unstake_balance = stake_lock_released ? stake_balance : 0;
+  const {
+    loadClaimInfo,
+    claim,
+    frmClaim_amount, set_frmClaim_amount,
+  } = useStakingForm_Claim(props, StakingStatsStore)
 
-  // TODO: Validate the form input
-
-  const stake = useCallback(() => {
-    contractStaking
-      // @ts-ignore
-      .stake({
-
-      })
-      .then((res) => {
-        console.log('{stake} res: ', res);
-      })
-      .catch((e: any) => {
-        console.error('{stake} e: ', e);
-      });
-  }, [])
-
-  const unstake = useCallback(() => {
-    contractStaking
-      // @ts-ignore
-      .unstake({
-        amount: frmUnStake_amount
-      })
-      .then((res) => {
-        console.log('{unstake} res: ', res);
-      })
-      .catch((e: any) => {
-        console.error('{unstake} e: ', e);
-      });
-  }, [frmUnStake_amount])
-
-  const claim = useCallback(() => {
-    contractStaking
-      // @ts-ignore
-      .harvest({
-
-      })
-      .then((res) => {
-        console.log('{claim} res: ', res);
-      })
-      .catch((e: any) => {
-        console.error('{claim} e: ', e);
-      });
-  }, [])
-
-  const loadStakeInfo = () => {
-
-  }
-  const loadUnStakeInfo = () => {
-
-  }
-  const loadClaimInfo = () => {
-
-  }
 
   useEffect(() => {
     switch (tabIndex) {

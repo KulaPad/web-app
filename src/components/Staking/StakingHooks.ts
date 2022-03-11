@@ -1,8 +1,9 @@
-import {useEffect} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {Contract} from "near-api-js/lib/contract";
 
-import {StakingStatsStore as StakingStatsStoreClass} from "./StakingStatsStore";
-import {AccountJson, KulaDecimal, parseU128, PoolInfo} from "../../utils/KulaContract.ts";
+import StakingStatsStore, {StakingStatsStore as StakingStatsStoreClass} from "./StakingStatsStore";
+import {AccountJson, KulaDecimal, parseU128, PoolInfo, TierNames} from "../../utils/KulaContract.ts";
+import {getNextTier, TierMinBalance} from "../../utils/KulaStakingHelper.ts";
 
 
 export function useStakingStats(
@@ -80,4 +81,145 @@ export function useStakingStats(
   }, [])
 
   return []
+}
+
+
+type StakingFormProps = {
+  contract: Contract    // dev account
+  contractFT: Contract  // KULA token contract
+  contractIdo: Contract     // IDO contract
+  contractStaking: Contract // Staking contract
+  currentUser: any
+  nearConfig: any
+  walletConnection: any
+}
+export function useStakingForm_Stake(props: StakingFormProps, StakingStatsStore: StakingStatsStoreClass) {
+  const {
+    contractStaking,
+    contractFT,
+  } = props;
+
+  const {
+    stake_balance,
+    tier,
+  } = StakingStatsStore;
+
+
+  const [frmStake_amount, set_frmStake_amount] = useState('');
+  const [frmStake_lock_for, set_frmStake_lock_for] = useState('');
+
+
+  const next_tier = getNextTier(tier);
+  const next_tier_name = TierNames[next_tier];
+  const next_stake_balance_left = TierMinBalance[next_tier] - stake_balance;
+
+  // TODO: Validate the form input
+
+
+  const loadStakeInfo = () => {
+
+  }
+
+
+  const stake = useCallback(() => {
+    contractStaking
+      // @ts-ignore
+      .stake({
+
+      })
+      .then((res) => {
+        console.log('{stake} res: ', res);
+      })
+      .catch((e: any) => {
+        console.error('{stake} e: ', e);
+      });
+  }, [])
+
+  return {
+    loadStakeInfo,
+    stake,
+    next_tier_name,
+    next_stake_balance_left,
+    frmStake_amount, set_frmStake_amount,
+    frmStake_lock_for, set_frmStake_lock_for,
+  }
+}
+
+export function useStakingForm_UnStake(props: StakingFormProps, StakingStatsStore: StakingStatsStoreClass) {
+  const {
+    contractStaking,
+    contractFT,
+  } = props;
+
+  const {
+    stake_balance,
+    unlock_timestamp,
+  } = StakingStatsStore;
+
+  const [frmUnStake_amount, set_frmUnStake_amount] = useState('');
+
+  const stake_lock_released = unlock_timestamp >= Date.now();
+  const available_to_unstake_balance = stake_lock_released ? stake_balance : 0;
+
+
+  const loadUnStakeInfo = () => {
+
+  }
+
+  const unstake = useCallback(() => {
+    contractStaking
+      // @ts-ignore
+      .unstake({
+        amount: frmUnStake_amount
+      })
+      .then((res) => {
+        console.log('{unstake} res: ', res);
+      })
+      .catch((e: any) => {
+        console.error('{unstake} e: ', e);
+      });
+  }, [frmUnStake_amount])
+
+
+  return {
+    loadUnStakeInfo,
+    unstake,
+    frmUnStake_amount, set_frmUnStake_amount,
+    stake_lock_released,
+    available_to_unstake_balance,
+  }
+}
+
+export function useStakingForm_Claim(props: StakingFormProps, StakingStatsStore: StakingStatsStoreClass) {
+  const {
+    contractStaking,
+    contractFT,
+  } = props;
+
+  const [frmClaim_amount, set_frmClaim_amount] = useState('');
+
+  const loadClaimInfo = () => {
+
+  }
+
+
+  const claim = useCallback(() => {
+    contractStaking
+      // @ts-ignore
+      .harvest({
+
+      })
+      .then((res) => {
+        console.log('{claim} res: ', res);
+      })
+      .catch((e: any) => {
+        console.error('{claim} e: ', e);
+      });
+  }, [])
+
+  return {
+    loadClaimInfo,
+    claim,
+    frmClaim_amount, set_frmClaim_amount,
+  }
 }
