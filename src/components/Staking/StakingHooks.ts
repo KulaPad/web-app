@@ -1,10 +1,14 @@
 import {useCallback, useEffect, useState} from "react";
 import {Contract} from "near-api-js/lib/contract";
+import {transactions, utils} from "near-api-js";
+import {useToast} from "@chakra-ui/react";
 
 import StakingStatsStore, {StakingStatsStore as StakingStatsStoreClass} from "./StakingStatsStore";
-import {AccountJson, KulaDecimal, parseU128, PoolInfo, TierNames} from "../../utils/KulaContract.ts";
+import {AccountJson, formatKulaAmount, KulaDecimal, parseKulaAmount, PoolInfo, TierNames} from "../../utils/KulaContract.ts";
 import {getNextTier, TierMinBalance} from "../../utils/KulaStakingHelper.ts";
-
+import {AppEmitter} from "../../services/AppEmitter.ts";
+import {currency} from "../../utils/Number.ts";
+import { useHistoryUtil, useQuery } from "../../services/router.ts";
 
 export function useStakingStats(
   contractStaking: Contract,
@@ -26,10 +30,10 @@ export function useStakingStats(
       .then((accountJson: AccountJson) => {
         console.log('{get_account_info} accountJson: ', accountJson);
         StakingStatsStore.setState({
-          lock_balance: parseU128(accountJson.lock_balance),
-          stake_balance: parseU128(accountJson.stake_balance),
-          unstake_balance: parseU128(accountJson.unstake_balance),
-          reward: parseU128(accountJson.reward),
+          lock_balance: parseKulaAmount(accountJson.lock_balance),
+          stake_balance: parseKulaAmount(accountJson.stake_balance),
+          unstake_balance: parseKulaAmount(accountJson.unstake_balance),
+          reward: parseKulaAmount(accountJson.reward),
           unlock_timestamp: accountJson.unlock_timestamp,
         })
       })
@@ -53,10 +57,10 @@ export function useStakingStats(
         }
 
         StakingStatsStore.setState({
-          lock_balance: parseU128(accountJson.lock_balance),
-          stake_balance: parseU128(accountJson.stake_balance),
-          unstake_balance: parseU128(accountJson.unstake_balance),
-          reward: parseU128(accountJson.reward),
+          lock_balance: parseKulaAmount(accountJson.lock_balance),
+          stake_balance: parseKulaAmount(accountJson.stake_balance),
+          unstake_balance: parseKulaAmount(accountJson.unstake_balance),
+          reward: parseKulaAmount(accountJson.reward),
           unlock_timestamp: accountJson.unlock_timestamp,
         })
       });
@@ -68,9 +72,9 @@ export function useStakingStats(
       .then((poolInfo: PoolInfo) => {
         // console.log('{get_pool_info} poolInfo: ', poolInfo);
         StakingStatsStore.setState({
-          total_stake_balance: parseU128(poolInfo.total_stake_balance),
-          total_reward: parseU128(poolInfo.total_reward),
-          total_stakers: parseU128(poolInfo.total_stakers),
+          total_stake_balance: parseKulaAmount(poolInfo.total_stake_balance),
+          total_reward: parseKulaAmount(poolInfo.total_reward),
+          total_stakers: parseKulaAmount(poolInfo.total_stakers),
         })
       });
   };
@@ -78,6 +82,16 @@ export function useStakingStats(
   useEffect(() => {
     get_pool_info()
     getAccountInfo()
+  }, [])
+
+  useEffect(() => {
+    const subscription = AppEmitter.addListener('refetchAccountInfo', () => {
+      getAccountInfo();
+    });
+
+    return () => {
+      subscription.remove();
+    }
   }, [])
 
   return []
@@ -97,7 +111,12 @@ export function useStakingForm_Stake(props: StakingFormProps, StakingStatsStore:
   const {
     contractStaking,
     contractFT,
+    currentUser,
   } = props;
+
+  const query = useQuery()
+  const toast = useToast()
+  const {setQuery, removeQuery} = useHistoryUtil()
 
   const {
     stake_balance,
@@ -107,6 +126,7 @@ export function useStakingForm_Stake(props: StakingFormProps, StakingStatsStore:
 
   const [frmStake_amount, set_frmStake_amount] = useState('');
   const [frmStake_lock_for, set_frmStake_lock_for] = useState('');
+  const [frmStake_submitting, set_frmStake_submitting] = useState(false);
 
 
   const next_tier = getNextTier(tier);
@@ -116,23 +136,122 @@ export function useStakingForm_Stake(props: StakingFormProps, StakingStatsStore:
   // TODO: Validate the form input
 
 
+  // Tell StakingStats to refetch the staking info in account info
   const loadStakeInfo = () => {
-
+    AppEmitter.emit('refetchAccountInfo');
   }
 
 
-  const stake = useCallback(() => {
-    contractStaking
-      // @ts-ignore
-      .stake({
+  const stake = useCallback(async () => {
+    setQuery('feature', 'stake')
+    setQuery('amount', frmStake_amount)
+    setQuery('lock', frmStake_lock_for)
 
+    // validate
+    const stakeAmountFloat = parseFloat(frmStake_amount);
+    if (isNaN(stakeAmountFloat) || stakeAmountFloat <= 0) {
+      toast({
+        title: `Amount must be > 0`,
+        position: 'top',
+        isClosable: true,
+        status: 'error',
+        duration: 1500,
       })
-      .then((res) => {
-        console.log('{stake} res: ', res);
+      return;
+    }
+
+    const lockForFloat = parseInt(frmStake_lock_for);
+    if (isNaN(lockForFloat) || lockForFloat <= 0) {
+      console.log('{lockForFloat} lockForFloat: ', lockForFloat);
+      toast({
+        title: `Lock For must be > 0`,
+        position: 'top',
+        isClosable: true,
+        status: 'error',
+        duration: 1500,
       })
-      .catch((e: any) => {
-        console.error('{stake} e: ', e);
-      });
+      return;
+    }
+
+
+    // do stake
+    const kulaU128 = formatKulaAmount(stakeAmountFloat);
+
+    set_frmStake_submitting(true)
+    // @ts-ignore
+    const result = await window.account.signAndSendTransaction({
+      receiverId: contractFT.contractId,
+      actions: [
+        transactions.functionCall(
+          "storage_deposit",
+          { account_id: currentUser?.accountId },
+          10000000000000,
+          utils.format.parseNearAmount("0.01")
+        ),
+        transactions.functionCall(
+          "ft_transfer_call",
+          {
+            "receiver_id": "staking-kulapad.testnet",
+            "amount": kulaU128,
+            "msg": `Stake ${currency(stakeAmountFloat, 2)} KULA for ${lockForFloat} days`
+          },
+          250000000000000,
+          '1'
+        ),
+      ],
+    });
+    console.log("{stake} Result:: ", result);
+    set_frmStake_submitting(false)
+
+    // Bad NEAR wallet UX
+    // So we need to handle success message like a SSR site
+  }, [
+    frmStake_amount,
+    frmStake_lock_for,
+    set_frmStake_submitting
+  ])
+
+
+  useEffect(() => {
+    /**
+     * Clean NEAR message
+     * Fuck the bad wallet UX
+     */
+    const feature = query.get("feature")
+    if (feature !== 'stake') {
+      return;
+    }
+
+
+    const errorMessage = query.get("errorMessage")
+    if (errorMessage) {
+      toast({
+        title: decodeURIComponent(decodeURIComponent(errorMessage)),
+        position: 'top',
+        isClosable: true,
+        status: 'error',
+        duration: 3000,
+      })
+
+      // reset query
+      removeQuery(['feature', 'amount', 'lock', 'errorMessage', 'errorCode'])
+    }
+
+    const transactionHashes = query.get("transactionHashes")
+    if (transactionHashes) {
+      const amount = query.get("amount")
+      const lock = query.get("lock")
+      toast({
+        title: `Stake ${currency(amount)} KULA for ${lock} days successfully`,
+        position: 'top',
+        isClosable: true,
+        status: 'success',
+        duration: 3000,
+      })
+
+      // reset query
+      removeQuery(['feature', 'amount', 'lock', 'transactionHashes'])
+    }
   }, [])
 
   return {
@@ -142,6 +261,7 @@ export function useStakingForm_Stake(props: StakingFormProps, StakingStatsStore:
     next_stake_balance_left,
     frmStake_amount, set_frmStake_amount,
     frmStake_lock_for, set_frmStake_lock_for,
+    frmStake_submitting,
   }
 }
 

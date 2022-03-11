@@ -14,6 +14,7 @@
     "buffer": "^6.0.3",
     "chakra-ui-steps": "^1.6.2",
     "change-case": "^4.1.2",
+    "fbemitter": "^3.0.0",
     "framer-motion": "^6",
     "mobx": "^6.4.2",
     "mobx-react-lite": "^3.3.0",

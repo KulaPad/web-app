@@ -1,7 +1,7 @@
 import {
   Box,
   Container, SimpleGrid,
-  Text
+  Text, useToast
 } from "@chakra-ui/react";
 
 import HomeLayout from "../components/HomeLayout";

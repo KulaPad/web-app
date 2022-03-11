@@ -39,10 +39,17 @@ export const TierNames = {
   [Tier.Tier4]: 'Tier 4',
 }
 
+/**
+ * NOTE: Next: Should learn from node_modules/near-api-js/lib/utils/format.d.ts
+ */
 export function formatU128(balance: U128, decimal = 0): string {
   return currency(parseFloat(balance.substring(0, balance.length - KulaDecimal + decimal)) / Math.pow(10, decimal), decimal)
 }
 
-export function parseU128(balance: U128, decimal = KulaDecimal): number {
-  return parseFloat(balance.substring(0, balance.length - decimal))
+export function parseKulaAmount(balance: U128): number {
+  return parseFloat(balance.substring(0, balance.length - KulaDecimal))
+}
+
+export function formatKulaAmount(balanceInHuman: number): string {
+  return Math.floor(balanceInHuman * Math.pow(10, KulaDecimal)).toString()
 }

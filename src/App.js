@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { StepsStyleConfig as Steps } from "chakra-ui-steps";
-import { HashRouter, Routes, Route, useLocation } from "react-router-dom";
+import { HashRouter, BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 
 import Landing from "./routes/Landing";
 import Account from "./routes/Account";
@@ -28,7 +28,7 @@ const theme = extendTheme({
 function App(props) {
   return (
     <ChakraProvider theme={theme}>
-      <HashRouter>
+      <BrowserRouter>
         <ScrollToTop>
           <Routes>
             <Route path="/" element={<Landing {...props} />} />
@@ -42,7 +42,7 @@ function App(props) {
             <Route path="/staking" element={<Staking {...props} />} />
           </Routes>
         </ScrollToTop>
-      </HashRouter>
+      </BrowserRouter>
     </ChakraProvider>
   );
 }

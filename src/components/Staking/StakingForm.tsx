@@ -48,6 +48,7 @@ export default function StakingForm(props: Props) {
     next_stake_balance_left,
     frmStake_amount, set_frmStake_amount,
     frmStake_lock_for, set_frmStake_lock_for,
+    frmStake_submitting,
   } = useStakingForm_Stake(props, StakingStatsStore)
 
   const {
@@ -177,6 +178,7 @@ export default function StakingForm(props: Props) {
                     boxShadow: "xl",
                   }}
                   onClick={stake}
+                  isLoading={frmStake_submitting}
                 >
                   STAKE
                 </Button>
