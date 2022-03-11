@@ -1,10 +1,12 @@
 import {AccountId, EpochHeight, Timestamp, U128} from "./Near";
+import {currency} from "./Number.ts";
 
+export const KulaDecimal = 8;
 
 export type PoolInfo = {
-  total_stake_balance: number
-  total_reward: number
-  total_stakers: number
+  total_stake_balance: U128
+  total_reward: U128
+  total_stakers: U128
   is_paused: boolean
 }
 
@@ -35,4 +37,12 @@ export const TierNames = {
   [Tier.Tier2]: 'Tier 2',
   [Tier.Tier3]: 'Tier 3',
   [Tier.Tier4]: 'Tier 4',
+}
+
+export function formatU128(balance: U128, decimal = 0): string {
+  return currency(parseFloat(balance.substring(0, balance.length - KulaDecimal + decimal)) / Math.pow(10, decimal), decimal)
+}
+
+export function parseU128(balance: U128, decimal = KulaDecimal): number {
+  return parseFloat(balance.substring(0, balance.length - decimal))
 }

@@ -2,19 +2,19 @@ import {makeAutoObservable} from "mobx"
 import {Tier} from "../../utils/KulaContract";
 import {calcRemainingLockDays, calcTier} from "../../utils/KulaStakingHelper.ts";
 
-export interface IStakingStatsStore {
-  total_stake_balance: number
-  total_reward: number
-  total_stakers: number
-  unlock_timestamp: number  // unix timestamp in millisecs ??
+export type IStakingStatsStore = {
+  total_stake_balance?: number
+  total_reward?: number
+  total_stakers?: number
 
-  lock_balance: number
-  stake_balance: number
-  unstake_balance: number
-  reward: number
+  unlock_timestamp?: number  // unix timestamp in millisecs ??
+  lock_balance?: number
+  stake_balance?: number
+  unstake_balance?: number
+  reward?: number
 }
 
-class StakingStatsStore implements IStakingStatsStore {
+export class StakingStatsStore implements IStakingStatsStore {
   lock_balance = 0
   stake_balance = 0
   unstake_balance = 0

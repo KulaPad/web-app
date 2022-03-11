@@ -1,5 +1,11 @@
 import * as nearAPI from "near-api-js";
 import getConfig from "../configs/config.js";
+import { isClientDevMode } from "../utils/Env.ts";
+
+
+if (isClientDevMode) {
+  window.tmp__NearAPI = nearAPI;
+}
 
 // Initializing contract
 async function initContract() {

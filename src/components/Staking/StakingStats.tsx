@@ -20,6 +20,7 @@ import {Contract} from "near-api-js/lib/contract";
 import StakingStatsStore from "./StakingStatsStore.ts";
 import {AccountJson, PoolInfo, TierNames} from "../../utils/KulaContract.ts";
 import {currency} from "../../utils/Number.ts";
+import {useStakingStats} from "./StakingHooks.ts";
 
 
 const avatars = [
@@ -61,6 +62,8 @@ export default observer(function StakingStats(props: Props) {
     currentUser,
   } = props;
 
+  const [] = useStakingStats(contractStaking, currentUser, StakingStatsStore)
+
   const {
     lock_balance,
     stake_balance,
@@ -74,57 +77,6 @@ export default observer(function StakingStats(props: Props) {
   } = StakingStatsStore;
 
   const tierName = TierNames[tier]
-
-  const accountId = currentUser?.accountId;
-  const getAccountInfo = () => {
-    if (!accountId) {
-      return;
-    }
-
-    contractStaking
-      // @ts-ignore
-      .get_account_info({
-        account_id: accountId,
-      })
-      .then((accountJson: AccountJson) => {
-        console.log('{get_account_info} accountJson: ', accountJson);
-        StakingStatsStore.setState(accountJson)
-      })
-      .catch((e: any) => {
-        console.error('{get_account_info} e: ', e);
-
-        // Fake data to test in case of contract error
-        // TODO: Remove this if contract bug is resolved
-        const accountJson = {
-          account_id: accountId,
-          lock_balance: 1234,
-          unlock_timestamp: Date.now(),
-          stake_balance: 879,
-          unstake_balance: 234,
-          reward: 126,
-          can_withdraw: true,
-          start_unstake_timestamp: new Date(),
-          unstake_available_epoch: 12345678,
-          current_epoch: 12345678,
-        }
-
-        StakingStatsStore.setState(accountJson)
-      });
-  };
-  const get_pool_info = () => {
-    contractStaking
-      // @ts-ignore
-      .get_pool_info()
-      .then((poolInfo: PoolInfo) => {
-        // console.log('{get_pool_info} poolInfo: ', poolInfo);
-        StakingStatsStore.setState(poolInfo)
-      });
-  };
-
-  useEffect(() => {
-    get_pool_info()
-    getAccountInfo()
-  }, [])
 
   return (
     <Stack spacing={{ base: 10, md: 20 }}>
