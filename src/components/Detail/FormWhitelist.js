@@ -138,7 +138,10 @@ const FormWhitelist = ({ project }) => {
         Your tier: {accountInfo?.whitelist_info?.tier || ""}
       </Typography>
       <Typography mt={1} type="text">
-        Your tickets: {accountInfo?.whitelist_info?.no_of_staking_tickets || ""}
+        Your tickets: {accountInfo?.whitelist_info?.no_of_staking_tickets}
+      </Typography>
+      <Typography mt={1} type="text">
+        Your allocations: {accountInfo?.whitelist_info?.no_of_allocations}
       </Typography>
 
       <Button

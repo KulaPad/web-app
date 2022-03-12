@@ -9,10 +9,25 @@ import {
   Progress,
 } from "@chakra-ui/react";
 import moment from "moment";
-import React from "react";
+import React, { useState } from "react";
+import { CountUp } from "use-count-up";
+import party, { Color } from "party-js";
+
 import Typography from "../KText";
 
 const FormSales = ({ project }) => {
+  const [tokenBuy, setTokenBuy] = useState(0);
+
+  const onClickBuyToken = async (e) => {
+    console.log("e.target::", e.target)
+    if (e.target)
+      party.sparkles(e.target, {
+        count: [20, 20],
+        size: [1, 1.5],
+        color: Color.fromHex("#f56565"),
+      });
+  };
+
   return (
     <Box as={"form"} w="100%">
       <Typography type="text" mt={1}>
@@ -37,7 +52,13 @@ const FormSales = ({ project }) => {
       </Typography>
       <Flex mt={2}>
         <InputGroup flex={1}>
-          <Input placeholder="100" bg={"gray.100"} border={0} />
+          <Input
+            placeholder="100"
+            bg={"gray.100"}
+            border={0}
+            type="number"
+            onInput={(e) => setTokenBuy(+e.target.value)}
+          />
           <InputRightAddon
             children={
               <Flex justify="center" align="center">
@@ -67,14 +88,22 @@ const FormSales = ({ project }) => {
             boxShadow: "xl",
           }}
           minW="100px"
+          onClick={(e) => onClickBuyToken(e)}
         >
           Buy
         </Button>
       </Flex>
       <Typography mt={2} type="text" color="gray.600">
-        *Estimate:{" "}
+        *Estimate:
         <Box fontWeight="bold" as="span" color="hotpink">
-          1 {project?.token_symbol}
+          {" "}
+          <CountUp
+            isCounting={true}
+            key={tokenBuy * project?.token_sale_rate}
+            end={tokenBuy * project?.token_sale_rate}
+            duration={0.8}
+          />{" "}
+          {project?.token_symbol}
         </Box>{" "}
       </Typography>
     </Box>

@@ -191,7 +191,7 @@ const LaunchpadDetail = ({ project }) => {
                   label={label}
                   key={label}
                   description={desc}
-                  isCompletedStep={index === activeStep}
+                  isCompletedStep={index < activeStep}
                 ></Step>
               ))}
             </Steps>
