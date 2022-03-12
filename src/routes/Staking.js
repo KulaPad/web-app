@@ -10,15 +10,8 @@ import { transactions, utils } from "near-api-js";
 import {currency} from "../utils/Number.ts";
 import { useHistoryUtil, useQuery } from "../services/router.ts";
 import { useNEARWalletResponse } from "../utils/Near.ts";
+import { getStakedStatus, setStakedActivated } from "../components/Staking/StakingHooks.ts";
 
-
-function setStakedActivated(activated) {
-  localStorage.setItem('StakedActivated', activated ? '1' : '0')
-}
-
-function getStakedStatus() {
-  return !!parseInt(localStorage.getItem('StakedActivated'))
-}
 
 export default function Staking(props) {
   const {

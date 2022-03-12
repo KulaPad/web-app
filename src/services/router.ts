@@ -11,7 +11,6 @@ export function useQuery() {
 // v6
 export function useHistoryUtil() {
   const [searchParams, setSearchParams] = useSearchParams();
-  console.log('{useHistoryUtil} searchParams: ', searchParams);
 
   const setQuery = (k, v) => {
     searchParams.set(k, encodeURIComponent(v));

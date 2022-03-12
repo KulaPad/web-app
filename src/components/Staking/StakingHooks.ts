@@ -10,6 +10,15 @@ import {AppEmitter} from "../../services/AppEmitter.ts";
 import {currency} from "../../utils/Number.ts";
 import { useHistoryUtil, useQuery } from "../../services/router.ts";
 
+
+export function setStakedActivated(activated) {
+  localStorage.setItem('StakedActivated', activated ? '1' : '0')
+}
+
+export function getStakedStatus() {
+  return !!parseInt(localStorage.getItem('StakedActivated'))
+}
+
 export function useStakingStats(
   contractStaking: Contract,
   currentUser: any,
@@ -148,6 +157,18 @@ export function useStakingForm_Stake(props: StakingFormProps, StakingStatsStore:
 
 
   const stake = useCallback(async () => {
+    if (!getStakedStatus()) {
+      toast({
+        title: `You need to "Unlock & activate Staking" feature first`,
+        position: 'top',
+        isClosable: true,
+        status: 'error',
+        duration: 3000,
+      })
+      return;
+    }
+
+
     setQuery('feature', 'stake')
     setQuery('amount', frmStake_amount)
     setQuery('lock', frmStake_lock_for)
