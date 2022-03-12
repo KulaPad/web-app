@@ -2,7 +2,6 @@ import * as nearAPI from "near-api-js";
 import getConfig from "../configs/config.js";
 import { isClientDevMode } from "../utils/Env.ts";
 
-
 if (isClientDevMode) {
   window.tmp__NearAPI = nearAPI;
 }
@@ -77,12 +76,9 @@ async function initContract() {
     nearConfig.idoContractName,
     {
       // View methods are read only. They don't modify the state, but usually return some value.
-      viewMethods: [
-        "get_projects",
-        "get_project",
-      ],
+      viewMethods: ["get_projects", "get_project", "get_owner_id"],
       // Change methods can modify the state. But you don't receive the returned value when called.
-      changeMethods: [],
+      changeMethods: ["register_whitelist", "is_whitelist"],
     }
   );
   window.contractIdo = contractIdo;
@@ -99,13 +95,7 @@ async function initContract() {
         "storage_balance_of",
       ],
       // Change methods can modify the state. But you don't receive the returned value when called.
-      changeMethods: [
-        "unstake",
-        "lock",
-        "unlock",
-        "withdraw",
-        "harvest"
-      ],
+      changeMethods: ["unstake", "lock", "unlock", "withdraw", "harvest"],
     }
   );
   window.contractStaking = contractStaking;

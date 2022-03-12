@@ -8,6 +8,8 @@ const KText = (props) => {
     switch (typeOfStyle) {
       case "text":
         return { fontWeight: "normal", fontSize: ["14px"] };
+      case "caption":
+        return { fontWeight: "semibold", fontSize: ["12px"], color: "gray.400" };
       case "small-title":
         return {
           fontWeight: "700",

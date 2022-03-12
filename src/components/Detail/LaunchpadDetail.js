@@ -2,22 +2,25 @@ import { DownloadIcon } from "@chakra-ui/icons";
 import {
   Badge,
   Box,
+  Button,
   Center,
   Flex,
   HStack,
   Icon,
   Image,
   SimpleGrid,
-  Button,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
-import { sentenceCase } from "change-case";
 import { Step, Steps, useSteps } from "chakra-ui-steps";
-
-import Typography from "../KText";
-import { getColorByStatus } from "../../routes/Projects";
+import { sentenceCase } from "change-case";
 import moment from "moment";
-import React from "react";
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
+import { getColorByStatus } from "../../routes/Projects";
+import Typography from "../KText";
+import FormDistribution from "./FormDistribution";
+import FormPreparation from "./FormPreparation";
+import FormSales from "./FormSales";
+import FormWhitelist from "./FormWhitelist";
 
 const steps = [
   {
@@ -36,9 +39,26 @@ const steps = [
 ];
 
 const LaunchpadDetail = ({ project }) => {
-  const { nextStep, prevStep, reset, activeStep } = useSteps({
+  const { nextStep, prevStep, reset, activeStep, setStep } = useSteps({
     initialStep: 0,
   });
+
+  useEffect(() => {
+    if (!project?.status) return;
+
+    if (project.status === "Preparation") {
+      setStep(0);
+    }
+    if (project.status === "Whitelist") {
+      setStep(1);
+    }
+    if (project.status === "Sales") {
+      setStep(2);
+    }
+    if (project.status === "Distribution") {
+      setStep(3);
+    }
+  }, [project.status, setStep]);
 
   return (
     <Flex direction="column" maxWidth="1248px" mx="auto" my="24px">
@@ -106,6 +126,7 @@ const LaunchpadDetail = ({ project }) => {
               backgroundColor="gray.200"
               boxShadow="xs"
               objectFit={"cover"}
+              ml={"-2px"}
             />
             <Badge
               borderRadius="12px"
@@ -129,20 +150,15 @@ const LaunchpadDetail = ({ project }) => {
               {project?.description}
             </Typography>
 
-            {/* {!account && <MButton mt={6} label={'Connect wallet'}></MButton>}
-            <br />
-            {account && truncateAddress(account)} */}
-
-            {project?.type === 1 && (
-              <Button colorScheme="blue" mt={6}>
-                Buy MTR token
-              </Button>
+            {project.status === "Preparation" && (
+              <FormPreparation project={project} />
             )}
-
-            {project?.type === 2 && (
-              <Button colorScheme="blue" mt={6}>
-                Join whitelist
-              </Button>
+            {project.status === "Whitelist" && (
+              <FormWhitelist project={project} />
+            )}
+            {project.status === "Sales" && <FormSales project={project} />}
+            {project.status === "Distribution" && (
+              <FormDistribution project={project} />
             )}
 
             {project?.type === 4 && (
@@ -175,7 +191,7 @@ const LaunchpadDetail = ({ project }) => {
                   label={label}
                   key={label}
                   description={desc}
-                  isCompletedStep={index === 0}
+                  isCompletedStep={index === activeStep}
                 ></Step>
               ))}
             </Steps>
@@ -213,38 +229,6 @@ const LaunchpadDetail = ({ project }) => {
             </Flex>
           </Flex>
         )}
-        {/* <Flex
-          p={4}
-          mt={8}
-          bg="#fff"
-          borderRadius="20px"
-          justifyContent="start"
-          alignItems="center"
-        >
-          <Box p={4}>
-            <Typography color="#170d69" type="semi-title">
-              31703
-              <Typography color="#fff" ml={1.5} type="text" as="span">
-                Followers
-              </Typography>
-            </Typography>
-          </Box>
-          {[1, 2, 3, 4, 5, 6].map((img) => (
-            <Box mx={'6px'}>
-              <Image
-                loading="lazy"
-                borderRadius="20px"
-                src={
-                  'https://solanium-prd-backend-space.ams3.digitaloceanspaces.com/media/deltafi-token-icon.png'
-                }
-                alt={`image`}
-                h="48px"
-                w="48px"
-                objectFit={'cover'}
-              />
-            </Box>
-          ))}
-        </Flex> */}
       </Box>
       <Box
         mt={12}
