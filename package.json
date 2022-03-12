@@ -21,6 +21,7 @@
     "moment": "^2.29.1",
     "near-api-js": "^0.44.2",
     "numeral": "^2.0.6",
+    "party-js": "^2.1.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-icons": "^4.3.1",

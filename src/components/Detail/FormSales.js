@@ -14,8 +14,8 @@ import Typography from "../KText";
 
 const FormSales = ({ project }) => {
   return (
-    <Box as={"form"} mt={2} w="100%">
-      <Typography type="text">
+    <Box as={"form"} w="100%">
+      <Typography type="text" mt={1}>
         Sales close:{" "}
         {project.sale_end_date &&
           moment(+project.sale_end_date / 1000000)

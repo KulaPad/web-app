@@ -1,6 +1,7 @@
 import {
   Box,
-  Button, Container,
+  Button,
+  Container,
   Flex,
   Heading,
   Icon,
@@ -10,7 +11,11 @@ import {
   Text,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { FcAssistant, FcDonate, FcInTransit } from "react-icons/fc";
+import {
+  FcBullish,
+  FcDonate,
+  FcConferenceCall,
+} from "react-icons/fc";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 
@@ -67,7 +72,7 @@ export default function Landing(props) {
               lineHeight={"110%"}
             >
               Fundraising platform on{" "}
-              <Text as={"span"} color={"blue.400"}>
+              <Text as={"span"} color={"#f56565"}>
                 NEAR
               </Text>
             </Heading>
@@ -83,9 +88,9 @@ export default function Landing(props) {
                   // rounded={"full"}
                   w="180px"
                   size="lg"
-                  colorScheme={"blue"}
-                  bg={"blue.400"}
-                  _hover={{ bg: "blue.500" }}
+                  colorScheme={"pink"}
+                  bg={"#f56565"}
+                  _hover={{ bg: "#f56565" }}
                 >
                   Explore projects
                 </Button>
@@ -179,24 +184,24 @@ function SimpleThreeColumns() {
     <Box>
       <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
         <Feature
-          icon={<Icon as={FcAssistant} w={10} h={10} />}
-          title={"Lifetime Support"}
-          text={
-            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore..."
-          }
-        />
-        <Feature
           icon={<Icon as={FcDonate} w={10} h={10} />}
-          title={"Unlimited Donations"}
+          title={"IDO Platform"}
           text={
-            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore..."
+            "Platform on Near with many feature: Staking Ticket, Social Ticket, Referral Ticket. Help and invest in potential projects for Near."
           }
         />
         <Feature
-          icon={<Icon as={FcInTransit} w={10} h={10} />}
-          title={"Instant Delivery"}
+          icon={<Icon as={FcConferenceCall} w={10} h={10} />}
+          title={"KOLA Fund"}
           text={
-            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore..."
+            "An investment fund managed by Kula Foundation that uses 18% of KULA tokens to invest in supporting startup projects, profits will be used to buyback KULA tokens."
+          }
+        />
+        <Feature
+          icon={<Icon as={FcBullish} w={10} h={10} />}
+          title={"DAO & AMM Investing"}
+          text={
+            "Join and vote which project to launch and help the Near community grow stronger. Allow project to open the token-pool directly help and supporting new project startup Liquidity."
           }
         />
       </SimpleGrid>

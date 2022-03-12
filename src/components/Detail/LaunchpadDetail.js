@@ -122,7 +122,7 @@ const LaunchpadDetail = ({ project }) => {
               src={project?.logo_url}
               alt={`image`}
               h="64px"
-              w="64px"
+              w="128px"
               backgroundColor="gray.200"
               boxShadow="xs"
               objectFit={"cover"}

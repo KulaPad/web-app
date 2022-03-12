@@ -7,7 +7,7 @@ import Typography from "../KText";
 const FormPreparation = ({ project }) => {
   return (
     <Box>
-      <Typography mt={2} type="text">
+      <Typography mt={1} type="text">
         Whitelist open:{" "}
         {project.whitelist_start_date &&
           moment(+project.whitelist_start_date / 1000000)

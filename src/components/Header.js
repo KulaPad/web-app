@@ -1,4 +1,4 @@
-import { Box, Flex, Icon } from "@chakra-ui/react";
+import { Box, Flex, Icon, Image } from "@chakra-ui/react";
 import { BiWallet } from "react-icons/bi";
 import { FiZap } from "react-icons/fi";
 import { RiCopperCoinLine } from "react-icons/ri";
@@ -28,9 +28,7 @@ const Header = (props) => {
       >
         <Flex align="center">
           <Link to="/">
-            <KText ml={1} type="small-title" fontWeight="500">
-              🚀 KulaPad
-            </KText>
+            <Image h={6} src={`/mstatic/banner.png`} />
           </Link>
           <Box mx={3} borderLeft="1px solid #e5e5e6" height="16px"></Box>
           <Link to="/projects">
@@ -41,7 +39,7 @@ const Header = (props) => {
                 w="24px"
                 color={
                   location.pathname.startsWith("/projects")
-                    ? "#0072ce"
+                    ? "#f56565"
                     : "#72727a"
                 }
               />
@@ -51,7 +49,7 @@ const Header = (props) => {
                 fontWeight="500"
                 color={
                   location.pathname.startsWith("/projects")
-                    ? "#0072ce"
+                    ? "#f56565"
                     : "#72727a"
                 }
               >
@@ -68,7 +66,7 @@ const Header = (props) => {
                 w="24px"
                 color={
                   location.pathname.startsWith("/staking")
-                    ? "#0072ce"
+                    ? "#f56565"
                     : "#72727a"
                 }
               />
@@ -78,7 +76,7 @@ const Header = (props) => {
                 fontWeight="500"
                 color={
                   location.pathname.startsWith("/staking")
-                    ? "#0072ce"
+                    ? "#f56565"
                     : "#72727a"
                 }
               >
@@ -99,15 +97,15 @@ const Header = (props) => {
               <Flex align="center" justify="center">
                 <Icon
                   as={FiZap}
-                  color={location.pathname === "/claim" ? "#0072ce" : "#72727a"}
+                  color={location.pathname === "/claim" ? "#f56565" : "#72727a"}
                 />
                 <KText
                   ml={1}
                   type="text"
                   fontWeight="500"
-                  color={location.pathname === "/claim" ? "#0072ce" : "#72727a"}
+                  color={location.pathname === "/claim" ? "#f56565" : "#72727a"}
                 >
-                  Claim (TestNet Token)
+                  Airdrop
                 </KText>
               </Flex>
             </Link>
