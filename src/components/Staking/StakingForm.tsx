@@ -16,12 +16,15 @@ import {
 } from "@chakra-ui/react";
 import { Contract } from "near-api-js/lib/contract";
 import {ReactElement, useCallback, useEffect, useState} from "react";
+import {observer} from "mobx-react-lite";
+import * as moment from "moment";
+
 import {AccountJson, TierNames} from "../../utils/KulaContract.ts";
 import StakingStatsStore from "./StakingStatsStore.ts";
 import {currency} from "../../utils/Number.ts";
 import {getNextTier, TierMinBalance} from "../../utils/KulaStakingHelper.ts";
-import * as moment from "moment";
 import {useStakingForm, useStakingForm_Claim, useStakingForm_Stake, useStakingForm_UnStake} from "./StakingHooks.ts";
+
 
 type Props = {
   contract: Contract    // dev account
@@ -32,7 +35,7 @@ type Props = {
   nearConfig: any
   walletConnection: any
 }
-export default function StakingForm(props: Props) {
+export default observer(function StakingForm(props: Props) {
   const [tabIndex, setTabIndex] = useState(0);
 
   const {
@@ -49,6 +52,7 @@ export default function StakingForm(props: Props) {
     frmStake_amount, set_frmStake_amount,
     frmStake_lock_for, set_frmStake_lock_for,
     frmStake_submitting,
+    estimated_new_ticket_received,
   } = useStakingForm_Stake(props, StakingStatsStore)
 
   const {
@@ -165,6 +169,9 @@ export default function StakingForm(props: Props) {
                       Stake more <b>{currency(next_stake_balance_left, 2)} KULA</b> to reach the next
                       <b> {next_tier_name}</b>
                     </Text>
+                    <Text color={"gray.500"} fontSize={{ base: "sm", sm: "md" }} mt={4}>
+                      Estimated ticket received: <b>{estimated_new_ticket_received.Vip} VIP</b> + <b>{estimated_new_ticket_received.Normal} Normal</b>
+                    </Text>
                   </Box>
                 </Stack>
                 <Button
@@ -210,11 +217,9 @@ export default function StakingForm(props: Props) {
                       Available to unstake: <b>{currency(available_to_unstake_balance, 2)} KULA</b>
                     </Text>
                     <Text color={"gray.500"} fontSize={{ base: "sm", sm: "md" }}>
-                      {!stake_lock_released && (
-                        <span>
-                      Can unstake after: <b>{moment(unlock_timestamp).format('MMM D, YYYY HH:mm:ss')}</b>
-                    </span>
-                      )}
+                      <span>
+                        Can unstake after: <b style={{color: stake_lock_released ? 'green' : 'red'}}>{moment(unlock_timestamp / 1e6).format('MMM D, YYYY HH:mm:ss')}</b>
+                      </span>
                     </Text>
                   </Box>
                 </Stack>
@@ -278,4 +283,4 @@ export default function StakingForm(props: Props) {
       </Stack>
     </Box>
   );
-}
+})
