@@ -154,7 +154,7 @@ export default observer(function StakingStats(props: Props) {
             <StatNumber
               bgGradient="linear(to-r, red.400,pink.400)"
               bgClip="text"
-            >{currency(reward, 2)} KULA</StatNumber>
+            >{currency(reward, 4)} KULA</StatNumber>
           </Stat>
         </HStack>
 

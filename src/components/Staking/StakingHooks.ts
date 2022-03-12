@@ -5,7 +5,7 @@ import {useToast} from "@chakra-ui/react";
 
 import StakingStatsStore, {StakingStatsStore as StakingStatsStoreClass} from "./StakingStatsStore";
 import {AccountJson, formatKulaAmount, KulaDecimal, parseKulaAmount, PoolInfo, TierNames} from "../../utils/KulaContract.ts";
-import {getNextTier, TierMinBalance} from "../../utils/KulaStakingHelper.ts";
+import {estimate_ticket_amount, getNextTier, TierMinBalance} from "../../utils/KulaStakingHelper.ts";
 import {AppEmitter} from "../../services/AppEmitter.ts";
 import {currency} from "../../utils/Number.ts";
 import { useHistoryUtil, useQuery } from "../../services/router.ts";
@@ -83,7 +83,7 @@ export function useStakingStats(
         StakingStatsStore.setState({
           total_stake_balance: parseKulaAmount(poolInfo.total_stake_balance),
           total_reward: parseKulaAmount(poolInfo.total_reward),
-          total_stakers: parseKulaAmount(poolInfo.total_stakers),
+          total_stakers: poolInfo.total_stakers,
         })
       });
   };
@@ -150,6 +150,9 @@ export function useStakingForm_Stake(props: StakingFormProps, StakingStatsStore:
   // TODO: Validate the form input
 
 
+  // unlock_timestamp in nanosecs
+  const estimated_new_ticket_received = estimate_ticket_amount(parseFloat(frmStake_amount), parseFloat(frmStake_lock_for));
+
   // Tell StakingStats to refetch the staking info in account info
   const loadStakeInfo = () => {
     AppEmitter.emit('refetchAccountInfo');
@@ -202,7 +205,7 @@ export function useStakingForm_Stake(props: StakingFormProps, StakingStatsStore:
 
     // do stake
     const kulaU128 = formatKulaAmount(stakeAmountFloat);
-
+    const lock_in_nanosecs = lockForFloat * 1e9;
     set_frmStake_submitting(true)
     /**
      MY_ACCOUNT="'$MY_ACCOUNT'"
@@ -218,14 +221,15 @@ export function useStakingForm_Stake(props: StakingFormProps, StakingStatsStore:
           "storage_deposit",
           { account_id: currentUser?.accountId },
           10000000000000,
-          utils.format.parseNearAmount("0.01")
+          utils.format.parseNearAmount("0.005")
         ),
         transactions.functionCall(
           "ft_transfer_call",
           {
             "receiver_id": "staking-kulapad.testnet",
             "amount": kulaU128,
-            "msg": `Stake ${currency(stakeAmountFloat, 2)} KULA for ${lockForFloat} days`
+            // "msg": `Stake ${currency(stakeAmountFloat, 2)} KULA for ${lockForFloat} days`
+            "msg": `lock:${lock_in_nanosecs}`
           },
           250000000000000,
           '1'
@@ -294,6 +298,7 @@ export function useStakingForm_Stake(props: StakingFormProps, StakingStatsStore:
     frmStake_amount, set_frmStake_amount,
     frmStake_lock_for, set_frmStake_lock_for,
     frmStake_submitting,
+    estimated_new_ticket_received,
   }
 }
 

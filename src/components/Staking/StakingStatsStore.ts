@@ -1,6 +1,7 @@
 import {makeAutoObservable} from "mobx"
 import {Tier} from "../../utils/KulaContract";
 import {calcRemainingLockDays, calcTier} from "../../utils/KulaStakingHelper.ts";
+import {isClientDevMode} from "../../utils/Env.ts";
 
 export type IStakingStatsStore = {
   total_stake_balance?: number
@@ -51,4 +52,10 @@ export class StakingStatsStore implements IStakingStatsStore {
   }
 }
 
-export default new StakingStatsStore();
+const s = new StakingStatsStore();
+export default s;
+
+if (isClientDevMode) {
+  // @ts-ignore
+  window.tmp__StakingStatsStore = s
+}
