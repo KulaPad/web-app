@@ -23,7 +23,7 @@ export function useHistoryUtil() {
     // console.log('{useHistoryUtil.removeQuery} k, searchParams: ', k, {...searchParams});
     if (Array.isArray(k)) {
       for (let i in k) {
-        searchParams.delete(i);
+        searchParams.delete(k[i]);
       }
     } else {
       searchParams.delete(k);
