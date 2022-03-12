@@ -340,7 +340,7 @@ export function useStakingForm_UnStake(props: StakingFormProps, StakingStatsStor
         transactions.functionCall(
           "unstake",
           {
-            "amount": formatKulaAmount(frmUnStake_amount),
+            "amount": formatKulaAmount(parseFloat(frmUnStake_amount)),
           },
           250000000000000,
           '1'
@@ -389,24 +389,58 @@ export function useStakingForm_Claim(props: StakingFormProps, StakingStatsStore:
 
   const [frmClaim_amount, set_frmClaim_amount] = useState('');
 
+  const query = useQuery()
+  const toast = useToast()
+  const {setQuery, removeQuery} = useHistoryUtil()
+
+
   const loadClaimInfo = () => {
 
   }
 
 
-  const claim = useCallback(() => {
-    contractStaking
-      // @ts-ignore
-      .harvest({
+  const claim = useCallback(async () => {
+    setQuery('feature', 'claim')
+    setQuery('feature_data', JSON.stringify({
+      amount: frmClaim_amount,
+    }))
 
-      })
-      .then((res) => {
-        console.log('{claim} res: ', res);
-      })
-      .catch((e: any) => {
-        console.error('{claim} e: ', e);
-      });
-  }, [])
+    // @ts-ignore
+    const result = await window.account.signAndSendTransaction({
+      receiverId: contractStaking.contractId,
+      actions: [
+        transactions.functionCall(
+          "harvest",
+          {
+            "amount": formatKulaAmount(parseFloat(frmClaim_amount)),
+          },
+          250000000000000,
+          '1'
+        ),
+      ],
+    });
+    console.log('{claim} result: ', result);
+  }, [frmClaim_amount])
+
+  const onError = (msg, feature_data) => {
+    toast({
+      title: `Claim failed: ${msg}`,
+      position: 'top',
+      isClosable: true,
+      status: 'error',
+      duration: 10000,
+    })
+  }
+  const onSuccess = (tx_hash, feature_data) => {
+    toast({
+      title: `Claim success with tx_hash: ${tx_hash}`,
+      position: 'top',
+      isClosable: true,
+      status: 'success',
+      duration: 10000,
+    })
+  }
+  const {} = useNEARWalletResponse('claim', onError, onSuccess)
 
   return {
     loadClaimInfo,
