@@ -9,6 +9,7 @@ import {estimate_ticket_amount, getNextTier, TierMinBalance} from "../../utils/K
 import {AppEmitter} from "../../services/AppEmitter.ts";
 import {currency} from "../../utils/Number.ts";
 import { useHistoryUtil, useQuery } from "../../services/router.ts";
+import {useNEARWalletResponse} from "../../utils/Near.ts";
 
 
 export function setStakedActivated(activated) {
@@ -55,12 +56,12 @@ export function useStakingStats(
         const accountJson: AccountJson = {
           account_id: accountId,
           lock_balance: '0' + decimal,
-          unlock_timestamp: Date.now(),
+          unlock_timestamp: Date.now() * 1e6, // js date already in ms
           stake_balance: '0' + decimal,
           unstake_balance: '0' + decimal,
           reward: '0' + decimal,
           can_withdraw: false,
-          start_unstake_timestamp: new Date(),
+          start_unstake_timestamp: Date.now() * 1e6,
           unstake_available_epoch: 12345678,
           current_epoch: 12345678,
         }
@@ -305,13 +306,16 @@ export function useStakingForm_Stake(props: StakingFormProps, StakingStatsStore:
 export function useStakingForm_UnStake(props: StakingFormProps, StakingStatsStore: StakingStatsStoreClass) {
   const {
     contractStaking,
-    contractFT,
   } = props;
 
   const {
     stake_balance,
     unlock_timestamp,
   } = StakingStatsStore;
+
+  const query = useQuery()
+  const toast = useToast()
+  const {setQuery, removeQuery} = useHistoryUtil()
 
   const [frmUnStake_amount, set_frmUnStake_amount] = useState('');
 
@@ -323,19 +327,49 @@ export function useStakingForm_UnStake(props: StakingFormProps, StakingStatsStor
 
   }
 
-  const unstake = useCallback(() => {
-    contractStaking
-      // @ts-ignore
-      .unstake({
-        amount: frmUnStake_amount
-      })
-      .then((res) => {
-        console.log('{unstake} res: ', res);
-      })
-      .catch((e: any) => {
-        console.error('{unstake} e: ', e);
-      });
+  const unstake = useCallback(async () => {
+    setQuery('feature', 'unstake')
+    setQuery('feature_data', JSON.stringify({
+      amount: frmUnStake_amount,
+    }))
+
+    // @ts-ignore
+    const result = await window.account.signAndSendTransaction({
+      receiverId: contractStaking.contractId,
+      actions: [
+        transactions.functionCall(
+          "unstake",
+          {
+            "amount": formatKulaAmount(frmUnStake_amount),
+          },
+          250000000000000,
+          '1'
+        ),
+      ],
+    });
+    console.log('{unstake} result: ', result);
   }, [frmUnStake_amount])
+
+
+  const onError = (msg, feature_data) => {
+    toast({
+      title: `UnStake failed: ${msg}`,
+      position: 'top',
+      isClosable: true,
+      status: 'error',
+      duration: 10000,
+    })
+  }
+  const onSuccess = (tx_hash, feature_data) => {
+    toast({
+      title: `UnStake success with tx_hash: ${tx_hash}`,
+      position: 'top',
+      isClosable: true,
+      status: 'success',
+      duration: 10000,
+    })
+  }
+  const {} = useNEARWalletResponse('unstake', onError, onSuccess)
 
 
   return {

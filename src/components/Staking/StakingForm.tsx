@@ -217,11 +217,9 @@ export default observer(function StakingForm(props: Props) {
                       Available to unstake: <b>{currency(available_to_unstake_balance, 2)} KULA</b>
                     </Text>
                     <Text color={"gray.500"} fontSize={{ base: "sm", sm: "md" }}>
-                      {!stake_lock_released && (
-                        <span>
-                      Can unstake after: <b>{moment(unlock_timestamp).format('MMM D, YYYY HH:mm:ss')}</b>
-                    </span>
-                      )}
+                      <span>
+                        Can unstake after: <b style={{color: stake_lock_released ? 'green' : 'red'}}>{moment(unlock_timestamp / 1e6).format('MMM D, YYYY HH:mm:ss')}</b>
+                      </span>
                     </Text>
                   </Box>
                 </Stack>

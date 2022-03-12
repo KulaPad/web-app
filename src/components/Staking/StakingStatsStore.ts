@@ -20,7 +20,7 @@ export class StakingStatsStore implements IStakingStatsStore {
   stake_balance = 0
   unstake_balance = 0
   reward = 0
-  unlock_timestamp = 0
+  unlock_timestamp = 0 // nanosecs, the time that release the lock
 
   // system stats
   total_stake_balance = 0
