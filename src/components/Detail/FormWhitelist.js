@@ -2,14 +2,29 @@ import { Box, Button, useToast } from "@chakra-ui/react";
 import moment from "moment";
 import party, { Color } from "party-js";
 import React, { useState, useRef, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import { transactions, utils } from "near-api-js";
 import Typography from "../KText";
 
 const FormWhitelist = ({ project }) => {
   const toast = useToast();
-  const [accountInfo, setAccountInfo] = useState(false);
+  const [searchParams] = useSearchParams();
+
+  const [transactionHashes, setTransactionHashes] = useState();
+  const [accountInfo, setAccountInfo] = useState();
   const [loading, setLoading] = useState(false);
   const [whitelisted, setWhitelisted] = useState(false);
   const buttonEl = useRef(null);
+
+  useEffect(() => {
+    const currentParams = Object.fromEntries([...searchParams]);
+    if (currentParams?.transactionHashes)
+      setTransactionHashes(currentParams?.transactionHashes);
+  }, [searchParams]);
+
+  useEffect(() => {
+    // TODO: call func contractIdo.update tier info
+  }, [transactionHashes]);
 
   const checkIsWhitelisted = async () => {
     if (!window?.accountId) return;
@@ -18,8 +33,9 @@ const FormWhitelist = ({ project }) => {
       project_id: +project?.id,
       account_id: window.accountId,
     });
+
     setWhitelisted(res);
-    if (buttonEl?.current)
+    if (res && buttonEl?.current)
       party.sparkles(buttonEl?.current, {
         count: [20, 20],
         size: [1, 1.5],
@@ -34,7 +50,8 @@ const FormWhitelist = ({ project }) => {
 
   const getAccountInfo = async () => {
     if (!window?.accountId) return;
-    const res = await window?.contractStaking?.get_account_info({
+    const res = await window?.contractIdo?.get_project_account_info({
+      project_id: +project?.id,
       account_id: window.accountId,
     });
     console.log("setAccountInfo::", res);
@@ -60,8 +77,26 @@ const FormWhitelist = ({ project }) => {
 
     setLoading(true);
     try {
-      const res = await window?.contractIdo?.register_whitelist({
-        project_id: +project?.id,
+      // TODO: wait contract imlp cross contract call and remove call mutil actions
+      // const res = await window?.contractIdo?.register_whitelist({
+      //   project_id: +project?.id,
+      // });
+      const res = await window.account.signAndSendTransaction({
+        receiverId: window.contractIdo.contractId,
+        actions: [
+          transactions.functionCall(
+            "register_whitelist",
+            { project_id: +project?.id },
+            10000000000000,
+            ""
+          ),
+          transactions.functionCall(
+            "update_staking_tickets",
+            { project_id: +project?.id },
+            250000000000000,
+            ""
+          ),
+        ],
       });
       console.log("res::", res);
       party.sparkles(e.target, {
@@ -79,6 +114,7 @@ const FormWhitelist = ({ project }) => {
       setLoading(false);
     } catch (e) {
       console.error(e);
+      setLoading(false);
       toast({
         title: e?.message || "Unknown error occurred. please try again later!",
         position: "top",
@@ -99,7 +135,10 @@ const FormWhitelist = ({ project }) => {
             .format("hh:mma DD/MM/YYYY")}
       </Typography>
       <Typography mt={1} type="text">
-        Your tickets: 10
+        Your tier: {accountInfo?.whitelist_info?.tier || ""}
+      </Typography>
+      <Typography mt={1} type="text">
+        Your tickets: {accountInfo?.whitelist_info?.no_of_staking_tickets || ""}
       </Typography>
 
       <Button
@@ -119,7 +158,7 @@ const FormWhitelist = ({ project }) => {
       >
         {!whitelisted && "Join Whitelist (1 ticket)"}
         {whitelisted &&
-          "Join whitelist successfully. Please wait for the result!"}
+          "Joined whitelist successfully. Please wait for the result!"}
       </Button>
     </Box>
   );
