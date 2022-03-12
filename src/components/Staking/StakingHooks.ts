@@ -151,7 +151,7 @@ export function useStakingForm_Stake(props: StakingFormProps, StakingStatsStore:
 
 
   // unlock_timestamp in nanosecs
-  const estimated_new_ticket_received = estimate_ticket_amount(parseFloat(frmStake_amount), parseFloat(frmStake_lock_for));
+  const estimated_new_ticket_received = estimate_ticket_amount(stake_balance + parseFloat(frmStake_amount), parseFloat(frmStake_lock_for));
 
   // Tell StakingStats to refetch the staking info in account info
   const loadStakeInfo = () => {

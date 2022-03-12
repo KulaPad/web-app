@@ -20,16 +20,16 @@ export function calcRemainingLockDays(unlock_timestamp_ms: number): number {
 }
 
 export function calcTier(stake_balance: number): Tier {
-  if (stake_balance < 200) {
-    return Tier.undefined
-  } else if (stake_balance < 1000) {
-    return Tier.Tier1
-  } else if (stake_balance < 5000) {
-    return Tier.Tier2
-  } else if (stake_balance < 10000) {
-    return Tier.Tier3
-  } else {
+  if (stake_balance > 10000) {
     return Tier.Tier4
+  } else if (stake_balance > 5000) {
+    return Tier.Tier3
+  } else if (stake_balance > 1000) {
+    return Tier.Tier2
+  } else if (stake_balance > 200) {
+    return Tier.Tier1
+  } else {
+    return Tier.undefined
   }
 }
 
