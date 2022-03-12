@@ -117,6 +117,11 @@ export function useStakingForm_Stake(props: StakingFormProps, StakingStatsStore:
   const query = useQuery()
   const toast = useToast()
   const {setQuery, removeQuery} = useHistoryUtil()
+  // const {setQuery, removeQuery} = {
+  //   setQuery: () => {},
+  //   removeQuery: () => {},
+  // }
+
 
   const {
     stake_balance,
