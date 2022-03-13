@@ -1,4 +1,4 @@
-import {makeAutoObservable} from "mobx"
+import {autorun, makeAutoObservable} from "mobx"
 import {Tier} from "../../utils/KulaContract.ts";
 import {calcTier, estimate_ticket_amount} from "../../utils/KulaStakingHelper.ts";
 import {isClientDevMode} from "../../utils/Env.ts";
@@ -95,6 +95,11 @@ export class StakingStatsStore implements IStakingStatsStore {
 
 const s = new StakingStatsStore();
 export default s;
+
+// recalculated computed data
+autorun(() => {
+  s.refreshUserTicketStats()
+})
 
 if (isClientDevMode) {
   // @ts-ignore
