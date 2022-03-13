@@ -163,22 +163,22 @@ const FormWhitelist = ({ project }) => {
 
       <DataLine
         title={"Whitelist close"}
-        value={accountInfo?.whitelist_info?.tier || ""}
-      />
-
-      <DataLine
-        title={"Your tier"}
         value={
-          project.whitelist_start_date &&
-          moment(+project.whitelist_start_date / 1000000)
+          project.whitelist_end_date &&
+          moment(+project.whitelist_end_date / 1000000)
             .utc()
             .format("hh:mma DD/MM/YYYY")
         }
       />
 
       <DataLine
-        title={"Staking tickets"}
+        title={"Your tier"}
         value={accountInfo?.whitelist_info?.tier || ""}
+      />
+
+      <DataLine
+        title={"Staking tickets"}
+        value={accountInfo?.whitelist_info?.no_of_staking_tickets}
       />
 
       <DataLine
