@@ -1,34 +1,32 @@
 import { Box, Button } from "@chakra-ui/react";
 import moment from "moment";
 import React from "react";
+import { DataLine } from "./LaunchpadDetail";
 import Typography from "../KText";
 
 const FormDistribution = ({ project }) => {
   return (
-    <Box as={"form"}>
-      <Typography mt={1} type="text">
-        Distribution date:{" "}
-        {project.sale_end_date &&
+    <Box w="full" as={"form"}>
+      <Box mt={3} borderBottom="3px solid #6655c3cc" />
+
+      <DataLine
+        title={"Distribution date"}
+        value={
+          project.sale_end_date &&
           moment(+project.sale_end_date / 1000000)
             .utc()
-            .format("hh:mma DD/MM/YYYY")}
-      </Typography>
-      <Typography mt={1} type="text">
-        Type: {project?.sale_type}
-      </Typography>
+            .format("hh:mma DD/MM/YYYY")
+        }
+      />
 
-      <Typography mt={1} type="text">
-        Your token:{" "}
-        <Box fontWeight="bold" as="span" color="hotpink">
-          1000 {project?.token_symbol}{" "}
-        </Box>
-      </Typography>
+      <DataLine title={"Type"} value={project?.sale_type} />
+      <DataLine title={"Your token"} value={"1000 " + project?.token_symbol} />
 
       <Button
         fontFamily={"heading"}
-        mt={2}
+        mt={3}
+        minW="100px"
         size="sm"
-        // isDisabled={true}
         bgGradient="linear(to-r, red.400,pink.400)"
         color={"white"}
         _hover={{

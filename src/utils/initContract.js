@@ -85,7 +85,7 @@ async function initContract() {
         "get_staking_tier_info",
       ],
       // Change methods can modify the state. But you don't receive the returned value when called.
-      changeMethods: ["register_whitelist", "is_whitelist"],
+      changeMethods: ["register_whitelist", "is_whitelist", "buy_token"],
     }
   );
   window.contractIdo = contractIdo;
