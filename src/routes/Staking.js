@@ -4,14 +4,12 @@ import { Box, Container, SimpleGrid, Text, Image, AlertIcon, AlertTitle, AlertDe
 
 import HomeLayout from "../components/HomeLayout";
 import KText from "../components/KText";
-import StakingForm from "../components/Staking/StakingForm.tsx";
-import StakingStats from "../components/Staking/StakingStats.tsx";
-import SystemStakingStats from "../components/Staking/SystemStakingStats.tsx";
 import { transactions, utils } from "near-api-js";
 import {currency} from "../utils/Number.ts";
 import { useHistoryUtil, useQuery } from "../services/router.ts";
 import { useNEARWalletResponse } from "../utils/Near.ts";
 import { getStakedStatus, setStakedActivated } from "../components/Staking/StakingHooks.ts";
+import StakingBox from "../components/Staking/index.tsx";
 
 
 export default function Staking(props) {
@@ -101,25 +99,7 @@ export default function Staking(props) {
         </Box>
       </Alert>}
 
-      <Box position={"relative"} mt={20}>
-        <Container
-          as={SimpleGrid}
-          maxW={"7xl"}
-          columns={{ base: 1, md: 2 }}
-          spacing={{ base: 10, lg: 32 }}
-        >
-          <StakingForm {...props} />
-          <StakingStats {...props} />
-        </Container>
-        <Container
-          mt={20}
-          maxW={"7xl"}
-          columns={{ base: 1, md: 2 }}
-          spacing={{ base: 10, lg: 32 }}
-        >
-          <SystemStakingStats {...props} />
-        </Container>
-      </Box>
+      <StakingBox {...props} />
 
       <KText mt={20} type="semi-head" textAlign="center">
         Tier

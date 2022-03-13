@@ -80,7 +80,7 @@ const StakingTicketConfig = {
  * @param lock_for_days amount of locking days
  */
 export function estimate_ticket_amount(stake_amount: number, lock_for_days: number): Record<Ticket, number> {
-  const DEBUG = true;
+  const DEBUG = false;
   DEBUG && console.log('{estimate_ticket_amount} lock_for_days: ', lock_for_days)
 
   const tier = calcTier(stake_amount)

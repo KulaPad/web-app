@@ -23,8 +23,7 @@ import HomeLayout from "../components/HomeLayout";
 import KText from "../components/KText";
 import Loading from "../components/Loading";
 import { Project } from "./Projects";
-import StakingForm from "../components/Staking/StakingForm.tsx";
-import StakingStats from "../components/Staking/StakingStats.tsx";
+import StakingBox from "../components/Staking/index.tsx";
 
 export default function Landing(props) {
   const [projects, setProjects] = useState([]);
@@ -141,17 +140,7 @@ export default function Landing(props) {
         Staking KULA Token
       </KText>
 
-      <Box position={"relative"} mt={20}>
-        <Container
-          as={SimpleGrid}
-          maxW={"7xl"}
-          columns={{ base: 1, md: 2 }}
-          spacing={{ base: 10, lg: 32 }}
-        >
-          <StakingForm {...props} />
-          <StakingStats {...props} />
-        </Container>
-      </Box>
+      <StakingBox {...props} />
 
       <Box mb={40} />
     </HomeLayout>
