@@ -4,7 +4,7 @@ import { FiZap } from "react-icons/fi";
 import { RiCopperCoinLine } from "react-icons/ri";
 import { Link, useLocation } from "react-router-dom";
 import KText from "./KText";
-import SignInBtn from "./SignInBtn";
+import SignInBtn from "./Auth/SignInBtn";
 
 const Header = (props) => {
   const location = useLocation();

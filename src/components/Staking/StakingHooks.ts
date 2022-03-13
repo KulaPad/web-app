@@ -5,10 +5,20 @@ import {useToast} from "@chakra-ui/react";
 
 import StakingStatsStore, {StakingStatsStore as StakingStatsStoreClass} from "./StakingStatsStore";
 import {AccountJson, formatKulaAmount, KulaDecimal, parseKulaAmount, PoolInfo, TierNames} from "../../utils/KulaContract.ts";
-import {getNextTier, TierMinBalance} from "../../utils/KulaStakingHelper.ts";
+import {estimate_ticket_amount, getNextTier, TierMinBalance} from "../../utils/KulaStakingHelper.ts";
 import {AppEmitter} from "../../services/AppEmitter.ts";
 import {currency} from "../../utils/Number.ts";
 import { useHistoryUtil, useQuery } from "../../services/router.ts";
+import {useNEARWalletResponse} from "../../utils/Near.ts";
+
+
+export function setStakedActivated(activated) {
+  localStorage.setItem('StakedActivated', activated ? '1' : '0')
+}
+
+export function getStakedStatus() {
+  return !!parseInt(localStorage.getItem('StakedActivated'))
+}
 
 export function useStakingStats(
   contractStaking: Contract,
@@ -46,12 +56,12 @@ export function useStakingStats(
         const accountJson: AccountJson = {
           account_id: accountId,
           lock_balance: '0' + decimal,
-          unlock_timestamp: Date.now(),
+          unlock_timestamp: Date.now() * 1e6, // js date already in ms
           stake_balance: '0' + decimal,
           unstake_balance: '0' + decimal,
           reward: '0' + decimal,
           can_withdraw: false,
-          start_unstake_timestamp: new Date(),
+          start_unstake_timestamp: Date.now() * 1e6,
           unstake_available_epoch: 12345678,
           current_epoch: 12345678,
         }
@@ -74,7 +84,7 @@ export function useStakingStats(
         StakingStatsStore.setState({
           total_stake_balance: parseKulaAmount(poolInfo.total_stake_balance),
           total_reward: parseKulaAmount(poolInfo.total_reward),
-          total_stakers: parseKulaAmount(poolInfo.total_stakers),
+          total_stakers: poolInfo.total_stakers,
         })
       });
   };
@@ -117,6 +127,11 @@ export function useStakingForm_Stake(props: StakingFormProps, StakingStatsStore:
   const query = useQuery()
   const toast = useToast()
   const {setQuery, removeQuery} = useHistoryUtil()
+  // const {setQuery, removeQuery} = {
+  //   setQuery: () => {},
+  //   removeQuery: () => {},
+  // }
+
 
   const {
     stake_balance,
@@ -136,6 +151,8 @@ export function useStakingForm_Stake(props: StakingFormProps, StakingStatsStore:
   // TODO: Validate the form input
 
 
+  const estimated_new_ticket_received = estimate_ticket_amount(stake_balance + parseFloat(frmStake_amount), parseFloat(frmStake_lock_for));
+
   // Tell StakingStats to refetch the staking info in account info
   const loadStakeInfo = () => {
     AppEmitter.emit('refetchAccountInfo');
@@ -143,6 +160,29 @@ export function useStakingForm_Stake(props: StakingFormProps, StakingStatsStore:
 
 
   const stake = useCallback(async () => {
+    if (!currentUser) {
+      toast({
+        title: `You need to connect wallet first`,
+        position: 'top',
+        isClosable: true,
+        status: 'error',
+        duration: 1500,
+      })
+      return;
+    }
+
+    if (!getStakedStatus()) {
+      toast({
+        title: `You need to "Unlock & activate Staking" feature first`,
+        position: 'top',
+        isClosable: true,
+        status: 'error',
+        duration: 3000,
+      })
+      return;
+    }
+
+
     setQuery('feature', 'stake')
     setQuery('amount', frmStake_amount)
     setQuery('lock', frmStake_lock_for)
@@ -176,7 +216,7 @@ export function useStakingForm_Stake(props: StakingFormProps, StakingStatsStore:
 
     // do stake
     const kulaU128 = formatKulaAmount(stakeAmountFloat);
-
+    const lock_in_nanosecs = lockForFloat * 86400 * 1e9;
     set_frmStake_submitting(true)
     /**
      MY_ACCOUNT="'$MY_ACCOUNT'"
@@ -188,18 +228,19 @@ export function useStakingForm_Stake(props: StakingFormProps, StakingStatsStore:
     const result = await window.account.signAndSendTransaction({
       receiverId: contractFT.contractId,
       actions: [
-        transactions.functionCall(
-          "storage_deposit",
-          { account_id: currentUser?.accountId },
-          10000000000000,
-          utils.format.parseNearAmount("0.01")
-        ),
+        // transactions.functionCall(
+        //   "storage_deposit",
+        //   { account_id: currentUser?.accountId },
+        //   10000000000000,
+        //   utils.format.parseNearAmount("0.005")
+        // ),
         transactions.functionCall(
           "ft_transfer_call",
           {
             "receiver_id": "staking-kulapad.testnet",
             "amount": kulaU128,
-            "msg": `Stake ${currency(stakeAmountFloat, 2)} KULA for ${lockForFloat} days`
+            // "msg": `Stake ${currency(stakeAmountFloat, 2)} KULA for ${lockForFloat} days`
+            "msg": `lock:${lock_in_nanosecs}`
           },
           250000000000000,
           '1'
@@ -268,43 +309,90 @@ export function useStakingForm_Stake(props: StakingFormProps, StakingStatsStore:
     frmStake_amount, set_frmStake_amount,
     frmStake_lock_for, set_frmStake_lock_for,
     frmStake_submitting,
+    estimated_new_ticket_received,
   }
 }
 
 export function useStakingForm_UnStake(props: StakingFormProps, StakingStatsStore: StakingStatsStoreClass) {
   const {
     contractStaking,
-    contractFT,
+    currentUser,
   } = props;
 
   const {
     stake_balance,
+    lock_balance,
     unlock_timestamp,
   } = StakingStatsStore;
+
+  const query = useQuery()
+  const toast = useToast()
+  const {setQuery, removeQuery} = useHistoryUtil()
 
   const [frmUnStake_amount, set_frmUnStake_amount] = useState('');
 
   const stake_lock_released = unlock_timestamp >= Date.now();
-  const available_to_unstake_balance = stake_lock_released ? stake_balance : 0;
+  const available_to_unstake_balance = stake_balance - lock_balance;
 
 
   const loadUnStakeInfo = () => {
 
   }
 
-  const unstake = useCallback(() => {
-    contractStaking
-      // @ts-ignore
-      .unstake({
-        amount: frmUnStake_amount
+  const unstake = useCallback(async () => {
+    if (!currentUser) {
+      toast({
+        title: `You need to connect wallet first`,
+        position: 'top',
+        isClosable: true,
+        status: 'error',
+        duration: 1500,
       })
-      .then((res) => {
-        console.log('{unstake} res: ', res);
-      })
-      .catch((e: any) => {
-        console.error('{unstake} e: ', e);
-      });
+      return;
+    }
+
+    setQuery('feature', 'unstake')
+    setQuery('feature_data', JSON.stringify({
+      amount: frmUnStake_amount,
+    }))
+
+    // @ts-ignore
+    const result = await window.account.signAndSendTransaction({
+      receiverId: contractStaking.contractId,
+      actions: [
+        transactions.functionCall(
+          "unstake",
+          {
+            "amount": formatKulaAmount(parseFloat(frmUnStake_amount)),
+          },
+          250000000000000,
+          '1'
+        ),
+      ],
+    });
+    console.log('{unstake} result: ', result);
   }, [frmUnStake_amount])
+
+
+  const onError = (msg, feature_data) => {
+    toast({
+      title: `UnStake failed: ${msg}`,
+      position: 'top',
+      isClosable: true,
+      status: 'error',
+      duration: 10000,
+    })
+  }
+  const onSuccess = (tx_hash, feature_data) => {
+    toast({
+      title: `UnStake success with tx_hash: ${tx_hash}`,
+      position: 'top',
+      isClosable: true,
+      status: 'success',
+      duration: 10000,
+    })
+  }
+  const {} = useNEARWalletResponse('unstake', onError, onSuccess)
 
 
   return {
@@ -316,36 +404,170 @@ export function useStakingForm_UnStake(props: StakingFormProps, StakingStatsStor
   }
 }
 
+export function useStakingForm_Withdraw(props: StakingFormProps, StakingStatsStore: StakingStatsStoreClass) {
+  const {
+    contractStaking,
+    contractFT,
+    currentUser,
+  } = props;
+
+  const [frmWithdraw_amount, set_frmWithdraw_amount] = useState('');
+
+  const query = useQuery()
+  const toast = useToast()
+  const {setQuery, removeQuery} = useHistoryUtil()
+
+  const {
+    unstake_balance,
+  } = StakingStatsStore;
+
+
+  const withdraw = useCallback(async () => {
+    if (!currentUser) {
+      toast({
+        title: `You need to connect wallet first`,
+        position: 'top',
+        isClosable: true,
+        status: 'error',
+        duration: 1500,
+      })
+      return;
+    }
+
+    const amount = unstake_balance;
+
+    if (amount <= 0) {
+      toast({
+        title: `Amount must be >= 0`,
+        position: 'top',
+        isClosable: true,
+        status: 'error',
+        duration: 10000,
+      })
+      return;
+    }
+
+    setQuery('feature', 'stake_withdraw')
+    setQuery('feature_data', JSON.stringify({
+      amount,
+    }))
+
+    // @ts-ignore
+    const result = await window.account.signAndSendTransaction({
+      receiverId: contractStaking.contractId,
+      actions: [
+        transactions.functionCall(
+          "withdraw",
+          {
+            amount: formatKulaAmount(amount),
+          },
+          250000000000000,
+          '1'
+        ),
+      ],
+    });
+    console.log('{withdraw} result: ', result);
+  }, [unstake_balance])
+
+  const onError = (msg, feature_data) => {
+    toast({
+      title: `Withdraw failed: ${msg}`,
+      position: 'top',
+      isClosable: true,
+      status: 'error',
+      duration: 10000,
+    })
+  }
+  const onSuccess = (tx_hash, feature_data) => {
+    toast({
+      title: `Withdraw success with tx_hash: ${tx_hash}`,
+      position: 'top',
+      isClosable: true,
+      status: 'success',
+      duration: 10000,
+    })
+  }
+  const {} = useNEARWalletResponse('stake_withdraw', onError, onSuccess)
+
+  return {
+    withdraw,
+    frmWithdraw_amount, set_frmWithdraw_amount,
+  }
+}
+
 export function useStakingForm_Claim(props: StakingFormProps, StakingStatsStore: StakingStatsStoreClass) {
   const {
     contractStaking,
     contractFT,
+    currentUser,
   } = props;
 
-  const [frmClaim_amount, set_frmClaim_amount] = useState('');
+  const query = useQuery()
+  const toast = useToast()
+  const {setQuery, removeQuery} = useHistoryUtil()
+
 
   const loadClaimInfo = () => {
 
   }
 
 
-  const claim = useCallback(() => {
-    contractStaking
-      // @ts-ignore
-      .harvest({
+  const claim = useCallback(async () => {
+    if (!currentUser) {
+      toast({
+        title: `You need to connect wallet first`,
+        position: 'top',
+        isClosable: true,
+        status: 'error',
+        duration: 1500,
+      })
+      return;
+    }
 
-      })
-      .then((res) => {
-        console.log('{claim} res: ', res);
-      })
-      .catch((e: any) => {
-        console.error('{claim} e: ', e);
-      });
+    setQuery('feature', 'claim')
+    setQuery('feature_data', JSON.stringify({
+      // amount: frmClaim_amount,
+    }))
+
+    // @ts-ignore
+    const result = await window.account.signAndSendTransaction({
+      receiverId: contractStaking.contractId,
+      actions: [
+        transactions.functionCall(
+          "harvest",
+          {
+            // "amount": formatKulaAmount(parseFloat(frmClaim_amount)),
+          },
+          250000000000000,
+          '1'
+        ),
+      ],
+    });
+    console.log('{claim} result: ', result);
   }, [])
+
+  const onError = (msg, feature_data) => {
+    toast({
+      title: `Claim failed: ${msg}`,
+      position: 'top',
+      isClosable: true,
+      status: 'error',
+      duration: 10000,
+    })
+  }
+  const onSuccess = (tx_hash, feature_data) => {
+    toast({
+      title: `Claim success with tx_hash: ${tx_hash}`,
+      position: 'top',
+      isClosable: true,
+      status: 'success',
+      duration: 10000,
+    })
+  }
+  const {} = useNEARWalletResponse('claim', onError, onSuccess)
 
   return {
     loadClaimInfo,
     claim,
-    frmClaim_amount, set_frmClaim_amount,
   }
 }

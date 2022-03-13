@@ -523,7 +523,7 @@ export const DataLine = ({ title, value }) => {
 };
 
 // new component
-const LaunchInfo = ({ title, image, semiTitle, semiTitleContent }) => {
+export const LaunchInfo = ({ title, image, semiTitle, semiTitleContent }) => {
   return (
     <Box flex={1} p={4} bg="#fff" borderRadius="20px">
       <Typography color="#6655c3cc" type="semi-title">
