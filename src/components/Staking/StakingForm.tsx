@@ -256,8 +256,9 @@ export default observer(function StakingForm(props: Props) {
                       _placeholder={{
                         color: "gray.500",
                       }}
-                      value={frmWithdraw_amount}
-                      onInput={(e) => set_frmWithdraw_amount(e.target.value)}
+                      // value={frmWithdraw_amount}
+                      disabled
+                      value={currency(unstake_balance, 2)}
                     />
                     <InputRightAddon children='KULA' />
                   </InputGroup>
@@ -275,8 +276,9 @@ export default observer(function StakingForm(props: Props) {
                     boxShadow: "xl",
                   }}
                   onClick={withdraw}
+                  disabled={unstake_balance <= 0}
                 >
-                  Withdraw KULA
+                  Withdraw {currency(unstake_balance, 2)} KULA
                 </Button>
               </Box>
 

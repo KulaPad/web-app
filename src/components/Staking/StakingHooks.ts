@@ -394,11 +394,28 @@ export function useStakingForm_Withdraw(props: StakingFormProps, StakingStatsSto
   const toast = useToast()
   const {setQuery, removeQuery} = useHistoryUtil()
 
+  const {
+    unstake_balance,
+  } = StakingStatsStore;
+
 
   const withdraw = useCallback(async () => {
+    const amount = unstake_balance;
+
+    if (amount <= 0) {
+      toast({
+        title: `Amount must be >= 0`,
+        position: 'top',
+        isClosable: true,
+        status: 'error',
+        duration: 10000,
+      })
+      return;
+    }
+
     setQuery('feature', 'stake_withdraw')
     setQuery('feature_data', JSON.stringify({
-      amount: frmWithdraw_amount,
+      amount,
     }))
 
     // @ts-ignore
@@ -408,7 +425,7 @@ export function useStakingForm_Withdraw(props: StakingFormProps, StakingStatsSto
         transactions.functionCall(
           "withdraw",
           {
-            "amount": formatKulaAmount(parseFloat(frmWithdraw_amount)),
+            amount: formatKulaAmount(amount),
           },
           250000000000000,
           '1'
@@ -416,7 +433,7 @@ export function useStakingForm_Withdraw(props: StakingFormProps, StakingStatsSto
       ],
     });
     console.log('{withdraw} result: ', result);
-  }, [frmWithdraw_amount])
+  }, [unstake_balance])
 
   const onError = (msg, feature_data) => {
     toast({
