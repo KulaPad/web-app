@@ -32,7 +32,7 @@ export enum Tier {
 }
 
 export const TierNames = {
-  'undefined': 'N/A',
+  'undefined': 'Tier 0',
   [Tier.Tier1]: 'Tier 1',
   [Tier.Tier2]: 'Tier 2',
   [Tier.Tier3]: 'Tier 3',

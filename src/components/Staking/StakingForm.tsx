@@ -15,15 +15,14 @@ import {
   InputLeftAddon,
 } from "@chakra-ui/react";
 import { Contract } from "near-api-js/lib/contract";
-import {ReactElement, useCallback, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {observer} from "mobx-react-lite";
 import * as moment from "moment";
 
-import {AccountJson, TierNames} from "../../utils/KulaContract.ts";
 import StakingStatsStore from "./StakingStatsStore.ts";
+import KulaFtStore from "../Auth/KulaFtStore.ts";
 import {currency} from "../../utils/Number.ts";
-import {getNextTier, TierMinBalance} from "../../utils/KulaStakingHelper.ts";
-import {useStakingForm, useStakingForm_Claim, useStakingForm_Stake, useStakingForm_UnStake} from "./StakingHooks.ts";
+import {useStakingForm_Stake, useStakingForm_UnStake, useStakingForm_Withdraw} from "./StakingHooks.ts";
 
 
 type Props = {
@@ -64,10 +63,11 @@ export default observer(function StakingForm(props: Props) {
   } = useStakingForm_UnStake(props, StakingStatsStore)
 
   const {
-    loadClaimInfo,
-    claim,
-    frmClaim_amount, set_frmClaim_amount,
-  } = useStakingForm_Claim(props, StakingStatsStore)
+    withdraw,
+    frmWithdraw_amount, set_frmWithdraw_amount,
+  } = useStakingForm_Withdraw(props, StakingStatsStore)
+
+  const {balance: kula_balance} = KulaFtStore;
 
 
   useEffect(() => {
@@ -79,7 +79,6 @@ export default observer(function StakingForm(props: Props) {
         loadUnStakeInfo();
         break;
       case 2:
-        loadClaimInfo();
         break;
       default:
         throw new Error("Invalid tab index: " + tabIndex);
@@ -91,6 +90,7 @@ export default observer(function StakingForm(props: Props) {
       <Stack
         bg={"gray.50"}
         rounded={"xl"}
+        h={578}
         p={{ base: 4, sm: 6, md: 8 }}
         spacing={{ base: 8 }}
         maxW={{ lg: "lg" }}
@@ -111,7 +111,7 @@ export default observer(function StakingForm(props: Props) {
             </Text>
           </Heading>
           <Text color={"gray.500"} fontSize={{ base: "sm", sm: "md" }}>
-            Stake 200 KULA for joining any project on KulaPad!
+            Stake & lock 200 KULA for joining any project on KulaPad!
           </Text>
         </Stack>
 
@@ -124,7 +124,7 @@ export default observer(function StakingForm(props: Props) {
           <TabList mb='1em'>
             <Tab>Stake</Tab>
             <Tab>Unstake</Tab>
-            <Tab>Claim</Tab>
+            <Tab>Withdraw</Tab>
           </TabList>
 
           <TabPanels>
@@ -137,9 +137,9 @@ export default observer(function StakingForm(props: Props) {
                       placeholder="1,000"
                       bg={"gray.100"}
                       border={0}
-                      color={"gray.500"}
+                      color={"black.500"}
                       _placeholder={{
-                        color: "gray.500",
+                        color: "gray.400",
                       }}
                       value={frmStake_amount}
                       onInput={(e) => set_frmStake_amount(e.target.value)}
@@ -152,7 +152,7 @@ export default observer(function StakingForm(props: Props) {
                       placeholder="365"
                       bg={"gray.100"}
                       border={0}
-                      color={"gray.500"}
+                      color={"black.500"}
                       _placeholder={{
                         color: "gray.500",
                       }}
@@ -163,6 +163,9 @@ export default observer(function StakingForm(props: Props) {
                   </InputGroup>
                   <Box>
                     <Text color={"gray.500"} fontSize={{ base: "sm", sm: "md" }}>
+                      Current balance: <b>{currency(kula_balance, 2)} KULA</b>
+                    </Text>
+                    <Text color={"gray.500"} fontSize={{ base: "sm", sm: "md" }}>
                       Staked: <b>{currency(stake_balance, 2)} KULA</b>
                     </Text>
                     <Text color={"gray.500"} fontSize={{ base: "sm", sm: "md" }}>
@@ -170,7 +173,7 @@ export default observer(function StakingForm(props: Props) {
                       <b> {next_tier_name}</b>
                     </Text>
                     <Text color={"gray.500"} fontSize={{ base: "sm", sm: "md" }} mt={4}>
-                      Estimated ticket received: <b>{estimated_new_ticket_received.Vip} VIP</b> + <b>{estimated_new_ticket_received.Normal} Normal</b>
+                      Estimated ticket received: <b>{estimated_new_ticket_received.Vip} Allocation</b> + <b>{estimated_new_ticket_received.Normal} Staking</b>
                     </Text>
                   </Box>
                 </Stack>
@@ -203,7 +206,7 @@ export default observer(function StakingForm(props: Props) {
                       placeholder="1,000"
                       bg={"gray.100"}
                       border={0}
-                      color={"gray.500"}
+                      color={"black.500"}
                       _placeholder={{
                         color: "gray.500",
                       }}
@@ -218,7 +221,7 @@ export default observer(function StakingForm(props: Props) {
                     </Text>
                     <Text color={"gray.500"} fontSize={{ base: "sm", sm: "md" }}>
                       <span>
-                        Can unstake after: <b style={{color: stake_lock_released ? 'green' : 'red'}}>{moment(unlock_timestamp / 1e6).format('MMM D, YYYY HH:mm:ss')}</b>
+                        Next unstake schedule: <b style={{color: stake_lock_released ? 'green' : 'red'}}>{moment(unlock_timestamp / 1e6).format('MMM D, YYYY HH:mm:ss')}</b>
                       </span>
                     </Text>
                   </Box>
@@ -240,7 +243,7 @@ export default observer(function StakingForm(props: Props) {
 
             </TabPanel>
 
-            <TabPanel className="Claim">
+            <TabPanel className="Withdraw">
               <Box as={"form"} mt={10}>
                 <Stack spacing={2} mt={4}>
                   <InputGroup>
@@ -249,17 +252,17 @@ export default observer(function StakingForm(props: Props) {
                       placeholder="1,000"
                       bg={"gray.100"}
                       border={0}
-                      color={"gray.500"}
+                      color={"black.500"}
                       _placeholder={{
                         color: "gray.500",
                       }}
-                      value={frmClaim_amount}
-                      onInput={(e) => set_frmClaim_amount(e.target.value)}
+                      value={frmWithdraw_amount}
+                      onInput={(e) => set_frmWithdraw_amount(e.target.value)}
                     />
                     <InputRightAddon children='KULA' />
                   </InputGroup>
                   <Text color={"gray.500"} fontSize={{ base: "sm", sm: "md" }}>
-                    Available to claim: <b>{currency(unstake_balance, 2)} KULA</b>
+                    Available to withdraw: <b>{currency(unstake_balance, 2)} KULA</b>
                   </Text>
                 </Stack>
                 <Button
@@ -271,9 +274,9 @@ export default observer(function StakingForm(props: Props) {
                   _hover={{
                     boxShadow: "xl",
                   }}
-                  onClick={claim}
+                  onClick={withdraw}
                 >
-                  Claim KULA
+                  Withdraw KULA
                 </Button>
               </Box>
 

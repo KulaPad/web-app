@@ -206,7 +206,7 @@ export function useStakingForm_Stake(props: StakingFormProps, StakingStatsStore:
 
     // do stake
     const kulaU128 = formatKulaAmount(stakeAmountFloat);
-    const lock_in_nanosecs = lockForFloat * 1e9;
+    const lock_in_nanosecs = lockForFloat * 86400 * 1e9;
     set_frmStake_submitting(true)
     /**
      MY_ACCOUNT="'$MY_ACCOUNT'"
@@ -218,12 +218,12 @@ export function useStakingForm_Stake(props: StakingFormProps, StakingStatsStore:
     const result = await window.account.signAndSendTransaction({
       receiverId: contractFT.contractId,
       actions: [
-        transactions.functionCall(
-          "storage_deposit",
-          { account_id: currentUser?.accountId },
-          10000000000000,
-          utils.format.parseNearAmount("0.005")
-        ),
+        // transactions.functionCall(
+        //   "storage_deposit",
+        //   { account_id: currentUser?.accountId },
+        //   10000000000000,
+        //   utils.format.parseNearAmount("0.005")
+        // ),
         transactions.functionCall(
           "ft_transfer_call",
           {
@@ -310,6 +310,7 @@ export function useStakingForm_UnStake(props: StakingFormProps, StakingStatsStor
 
   const {
     stake_balance,
+    lock_balance,
     unlock_timestamp,
   } = StakingStatsStore;
 
@@ -320,7 +321,7 @@ export function useStakingForm_UnStake(props: StakingFormProps, StakingStatsStor
   const [frmUnStake_amount, set_frmUnStake_amount] = useState('');
 
   const stake_lock_released = unlock_timestamp >= Date.now();
-  const available_to_unstake_balance = stake_lock_released ? stake_balance : 0;
+  const available_to_unstake_balance = stake_balance - lock_balance;
 
 
   const loadUnStakeInfo = () => {
@@ -381,13 +382,73 @@ export function useStakingForm_UnStake(props: StakingFormProps, StakingStatsStor
   }
 }
 
-export function useStakingForm_Claim(props: StakingFormProps, StakingStatsStore: StakingStatsStoreClass) {
+export function useStakingForm_Withdraw(props: StakingFormProps, StakingStatsStore: StakingStatsStoreClass) {
   const {
     contractStaking,
     contractFT,
   } = props;
 
-  const [frmClaim_amount, set_frmClaim_amount] = useState('');
+  const [frmWithdraw_amount, set_frmWithdraw_amount] = useState('');
+
+  const query = useQuery()
+  const toast = useToast()
+  const {setQuery, removeQuery} = useHistoryUtil()
+
+
+  const withdraw = useCallback(async () => {
+    setQuery('feature', 'stake_withdraw')
+    setQuery('feature_data', JSON.stringify({
+      amount: frmWithdraw_amount,
+    }))
+
+    // @ts-ignore
+    const result = await window.account.signAndSendTransaction({
+      receiverId: contractStaking.contractId,
+      actions: [
+        transactions.functionCall(
+          "withdraw",
+          {
+            "amount": formatKulaAmount(parseFloat(frmWithdraw_amount)),
+          },
+          250000000000000,
+          '1'
+        ),
+      ],
+    });
+    console.log('{withdraw} result: ', result);
+  }, [frmWithdraw_amount])
+
+  const onError = (msg, feature_data) => {
+    toast({
+      title: `Withdraw failed: ${msg}`,
+      position: 'top',
+      isClosable: true,
+      status: 'error',
+      duration: 10000,
+    })
+  }
+  const onSuccess = (tx_hash, feature_data) => {
+    toast({
+      title: `Withdraw success with tx_hash: ${tx_hash}`,
+      position: 'top',
+      isClosable: true,
+      status: 'success',
+      duration: 10000,
+    })
+  }
+  const {} = useNEARWalletResponse('stake_withdraw', onError, onSuccess)
+
+  return {
+    withdraw,
+    frmWithdraw_amount, set_frmWithdraw_amount,
+  }
+}
+
+export function useStakingForm_Claim(props: StakingFormProps, StakingStatsStore: StakingStatsStoreClass) {
+  const {
+    contractStaking,
+    contractFT,
+  } = props;
 
   const query = useQuery()
   const toast = useToast()
@@ -402,7 +463,7 @@ export function useStakingForm_Claim(props: StakingFormProps, StakingStatsStore:
   const claim = useCallback(async () => {
     setQuery('feature', 'claim')
     setQuery('feature_data', JSON.stringify({
-      amount: frmClaim_amount,
+      // amount: frmClaim_amount,
     }))
 
     // @ts-ignore
@@ -412,7 +473,7 @@ export function useStakingForm_Claim(props: StakingFormProps, StakingStatsStore:
         transactions.functionCall(
           "harvest",
           {
-            "amount": formatKulaAmount(parseFloat(frmClaim_amount)),
+            // "amount": formatKulaAmount(parseFloat(frmClaim_amount)),
           },
           250000000000000,
           '1'
@@ -420,7 +481,7 @@ export function useStakingForm_Claim(props: StakingFormProps, StakingStatsStore:
       ],
     });
     console.log('{claim} result: ', result);
-  }, [frmClaim_amount])
+  }, [])
 
   const onError = (msg, feature_data) => {
     toast({
@@ -445,6 +506,5 @@ export function useStakingForm_Claim(props: StakingFormProps, StakingStatsStore:
   return {
     loadClaimInfo,
     claim,
-    frmClaim_amount, set_frmClaim_amount,
   }
 }

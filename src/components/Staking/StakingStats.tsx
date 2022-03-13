@@ -1,7 +1,7 @@
 import {
   Avatar,
   AvatarGroup,
-  Box, Flex,
+  Box, Button, Flex,
   Heading,
   HStack,
   Stack,
@@ -14,13 +14,15 @@ import {
   Wrap,
   WrapItem
 } from "@chakra-ui/react";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { observer } from "mobx-react-lite"
 import {Contract} from "near-api-js/lib/contract";
+import * as moment from "moment";
+
 import StakingStatsStore from "./StakingStatsStore.ts";
 import {AccountJson, PoolInfo, TierNames} from "../../utils/KulaContract.ts";
 import {currency} from "../../utils/Number.ts";
-import {useStakingStats} from "./StakingHooks.ts";
+import {useStakingForm_Claim, useStakingStats} from "./StakingHooks.ts";
 
 
 const avatars = [
@@ -65,15 +67,16 @@ export default observer(function StakingStats(props: Props) {
   const [] = useStakingStats(contractStaking, currentUser, StakingStatsStore)
 
   const {
+    claim,
+  } = useStakingForm_Claim(props, StakingStatsStore)
+
+  const {
     lock_balance,
+    unlock_timestamp,
     stake_balance,
     unstake_balance,
     reward,
     tier,
-
-    total_stake_balance,
-    total_reward,
-    total_stakers,
   } = StakingStatsStore;
 
   const tierName = TierNames[tier]
@@ -115,7 +118,7 @@ export default observer(function StakingStats(props: Props) {
               bgGradient="linear(to-r, red.400,pink.400)"
               bgClip="text"
             >{currency(lock_balance)} KULA</StatNumber>
-            <StatHelpText>Feb 12 - Feb 28</StatHelpText>
+            <StatHelpText>Until {moment(unlock_timestamp / 1e6).format('MMM D')}</StatHelpText>
           </Stat>
           <Stat>
             <StatLabel>Staked</StatLabel>
@@ -123,7 +126,7 @@ export default observer(function StakingStats(props: Props) {
               bgGradient="linear(to-r, green.600,cyan.600)"
               bgClip="text"
             >{currency(stake_balance)} KULA</StatNumber>
-            <StatHelpText>Feb 12 - Feb 28</StatHelpText>
+            <StatHelpText><b style={{opacity: 0}}>.</b></StatHelpText>
           </Stat>
           <Stat>
             <StatLabel>Unstaked</StatLabel>
@@ -131,7 +134,7 @@ export default observer(function StakingStats(props: Props) {
               bgGradient="linear(to-r, orange.400,red.400)"
               bgClip="text"
             >{currency(unstake_balance)} KULA</StatNumber>
-            <StatHelpText>Feb 12 - Feb 28</StatHelpText>
+            <StatHelpText><b style={{opacity: 0}}>.</b></StatHelpText>
           </Stat>
         </HStack>
 
@@ -142,7 +145,8 @@ export default observer(function StakingStats(props: Props) {
             <StatNumber
               bgGradient="linear(to-r, red.400,pink.400)"
               bgClip="text"
-            >18%</StatNumber>
+            >10%</StatNumber>
+            <StatHelpText><b style={{opacity: 0}}>.</b></StatHelpText>
           </Stat>
           <Stat>
             <StatNumber
@@ -150,36 +154,19 @@ export default observer(function StakingStats(props: Props) {
             >→</StatNumber>
           </Stat>
           <Stat>
-            <StatLabel>Total Reward Earned</StatLabel>
+            <StatLabel>Your Reward</StatLabel>
             <StatNumber
               bgGradient="linear(to-r, red.400,pink.400)"
               bgClip="text"
             >{currency(reward, 4)} KULA</StatNumber>
-          </Stat>
-        </HStack>
-
-
-        <HStack mt={10}>
-          <Stat>
-            <StatLabel>Total Stake Balance</StatLabel>
-            <StatNumber
-              bgGradient="linear(to-r, red.400,pink.400)"
-              bgClip="text"
-            >{currency(total_stake_balance, 0)} KULA</StatNumber>
-          </Stat>
-          <Stat>
-            <StatLabel>Total Reward</StatLabel>
-            <StatNumber
-              bgGradient="linear(to-r, green.600,cyan.600)"
-              bgClip="text"
-            >{currency(total_reward, 0)} KULA</StatNumber>
-          </Stat>
-          <Stat>
-            <StatLabel>Total Stakers</StatLabel>
-            <StatNumber
-              bgGradient="linear(to-r, orange.400,red.400)"
-              bgClip="text"
-            >{total_stakers} <br/> persons</StatNumber>
+            <StatHelpText>
+              <Button
+                size="sm" colorScheme="pink" borderRadius="8px" py="4" px="4" lineHeight="1"
+                onClick={claim}
+              >
+                Claim reward
+              </Button>
+            </StatHelpText>
           </Stat>
         </HStack>
 

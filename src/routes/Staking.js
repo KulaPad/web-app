@@ -6,6 +6,7 @@ import HomeLayout from "../components/HomeLayout";
 import KText from "../components/KText";
 import StakingForm from "../components/Staking/StakingForm.tsx";
 import StakingStats from "../components/Staking/StakingStats.tsx";
+import SystemStakingStats from "../components/Staking/SystemStakingStats.tsx";
 import { transactions, utils } from "near-api-js";
 import {currency} from "../utils/Number.ts";
 import { useHistoryUtil, useQuery } from "../services/router.ts";
@@ -109,6 +110,14 @@ export default function Staking(props) {
         >
           <StakingForm {...props} />
           <StakingStats {...props} />
+        </Container>
+        <Container
+          mt={20}
+          maxW={"7xl"}
+          columns={{ base: 1, md: 2 }}
+          spacing={{ base: 10, lg: 32 }}
+        >
+          <SystemStakingStats {...props} />
         </Container>
       </Box>
 

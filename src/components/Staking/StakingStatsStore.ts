@@ -8,7 +8,7 @@ export type IStakingStatsStore = {
   total_reward?: number
   total_stakers?: number
 
-  unlock_timestamp?: number  // unix timestamp in millisecs ??
+  unlock_timestamp?: number  // unix timestamp in nanosecs
   lock_balance?: number
   stake_balance?: number
   unstake_balance?: number
