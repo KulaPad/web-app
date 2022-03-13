@@ -1,10 +1,24 @@
-import { Box, Button, useToast } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Input,
+  InputGroup,
+  InputRightElement,
+  useToast,
+} from "@chakra-ui/react";
+import clipboard from "clipboardy";
+import copy from "copy-to-clipboard";
 import moment from "moment";
+import { transactions } from "near-api-js";
 import party, { Color } from "party-js";
-import React, { useState, useRef, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
-import { transactions, utils } from "near-api-js";
+import React, { useEffect, useRef, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
+
 import Typography from "../KText";
+import { DataLine } from "./LaunchpadDetail";
+import SocialImage from "./SocialImage";
 
 const FormWhitelist = ({ project }) => {
   const toast = useToast();
@@ -125,29 +139,67 @@ const FormWhitelist = ({ project }) => {
     }
   };
 
+  const onCopyClipboardRefLink = () => {
+    try {
+      navigator.clipboard.writeText(refUrl);
+      copy(refUrl);
+      clipboard.writeSync(refUrl);
+    } catch (e) {}
+
+    toast({
+      title: `Copy to clipboard success!`,
+      position: "top",
+      isClosable: true,
+      status: "success",
+      duration: 3000,
+    });
+  };
+
+  const refUrl = window.location.href + "?ref=" + uuidv4();
+
   return (
-    <Box as={"form"} mt={1}>
-      <Typography type="text">
-        Whitelist close:{" "}
-        {project.whitelist_start_date &&
+    <Box w="full" as={"form"}>
+      <Box mt={3} borderBottom="3px solid #6655c3cc" />
+
+      <DataLine
+        title={"Whitelist close"}
+        value={accountInfo?.whitelist_info?.tier || ""}
+      />
+
+      <DataLine
+        title={"Your tier"}
+        value={
+          project.whitelist_start_date &&
           moment(+project.whitelist_start_date / 1000000)
             .utc()
-            .format("hh:mma DD/MM/YYYY")}
-      </Typography>
-      <Typography mt={1} type="text">
-        Your tier: {accountInfo?.whitelist_info?.tier || ""}
-      </Typography>
-      <Typography mt={1} type="text">
-        Your tickets: {accountInfo?.whitelist_info?.no_of_staking_tickets}
-      </Typography>
-      <Typography mt={1} type="text">
-        Your allocations: {accountInfo?.whitelist_info?.no_of_allocations}
-      </Typography>
+            .format("hh:mma DD/MM/YYYY")
+        }
+      />
+
+      <DataLine
+        title={"Staking tickets"}
+        value={accountInfo?.whitelist_info?.tier || ""}
+      />
+
+      <DataLine
+        title={"Social tickets"}
+        value={accountInfo?.whitelist_info?.no_of_social_tickets}
+      />
+
+      <DataLine
+        title={"Referral tickets"}
+        value={accountInfo?.whitelist_info?.no_of_referral_tickets}
+      />
+
+      <DataLine
+        title={"Your allocations"}
+        value={accountInfo?.whitelist_info?.no_of_allocations}
+      />
 
       <Button
         fontFamily={"heading"}
-        mt={2}
-        size="sm"
+        mt={3}
+        // size="sm"
         isLoading={loading}
         // isDisabled={whitelisted}
         bgGradient="linear(to-r, red.400,pink.400)"
@@ -159,10 +211,76 @@ const FormWhitelist = ({ project }) => {
         onClick={(e) => onClickJoinWhiteList(e)}
         ref={buttonEl}
       >
-        {!whitelisted && "Join Whitelist (1 ticket)"}
-        {whitelisted &&
-          "Joined whitelist successfully. Please wait for the result!"}
+        {!whitelisted && "Register Whitelist"}
+        {whitelisted && "Update Tier Info"}
       </Button>
+      <Box mt={4} borderBottom="1px solid" borderColor="gray.200" />
+
+      <Flex mt={3} direction="row">
+        <Flex flex={1} direction="column" align="start">
+          <Typography
+            textAlign="center"
+            fontWeight="bold"
+            type="caption"
+            mb={1}
+          >
+            Refer your friend though your referral url to receive more tickets(1
+            ticket/1ref)
+          </Typography>
+          {refUrl && (
+            <Flex w="full" direction="column">
+              <Flex mb={2} direction="row" justify="center" align="center">
+                <InputGroup>
+                  <Input
+                    width="100%"
+                    bg="gray.200"
+                    border="1px solid"
+                    borderColor="gray.200"
+                    variant="filled"
+                    placeholder=""
+                    borderRadius={24}
+                    fontWeight="bold"
+                    readOnly
+                    _hover={{
+                      bg: "gray.200",
+                    }}
+                    _active={{
+                      bg: "gray.200",
+                    }}
+                    defaultValue={refUrl}
+                  />
+                  <InputRightElement width="100px" justifyContent="right">
+                    <Button
+                      w="full"
+                      borderRadius={24}
+                      colorScheme="blue"
+                      onClick={onCopyClipboardRefLink}
+                    >
+                      Copy
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
+                <Box w={2}></Box>
+                <Link
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  to={`https://twitter.com/intent/tweet?text=${refUrl}`}
+                >
+                  <SocialImage imageLink="/mstatic/icons/twitter_white.svg" />
+                </Link>
+                <Box w={2}></Box>
+                <Link
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  to={`https://telegram.me/share/url?url=${refUrl}&text=MoonRaise Airdrop`}
+                >
+                  <SocialImage imageLink="/mstatic/icons/telegram_white.svg" />
+                </Link>
+              </Flex>
+            </Flex>
+          )}
+        </Flex>
+      </Flex>
     </Box>
   );
 };

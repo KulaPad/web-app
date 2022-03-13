@@ -7,56 +7,131 @@ import {
   InputGroup,
   InputRightAddon,
   Progress,
+  useToast,
 } from "@chakra-ui/react";
 import moment from "moment";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { CountUp } from "use-count-up";
 import party, { Color } from "party-js";
+import { transactions, utils } from "near-api-js";
 
+import { DataLine } from "./LaunchpadDetail";
 import Typography from "../KText";
 
 const FormSales = ({ project }) => {
-  const [tokenBuy, setTokenBuy] = useState(0);
+  const toast = useToast();
 
-  const onClickBuyToken = async (e) => {
-    console.log("e.target::", e.target)
-    if (e.target)
-      party.sparkles(e.target, {
-        count: [20, 20],
-        size: [1, 1.5],
-        color: Color.fromHex("#f56565"),
-      });
+  const [tokenBuy, setTokenBuy] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [accountInfo, setAccountInfo] = useState();
+
+  const getAccountInfo = async () => {
+    if (!window?.accountId) return;
+    const res = await window?.contractIdo?.get_project_account_info({
+      project_id: +project?.id,
+      account_id: window.accountId,
+    });
+    console.log("setAccountInfo::", res);
+    setAccountInfo(res);
+    return res;
   };
 
+  useEffect(() => {
+    getAccountInfo();
+  }, [window.accountId]);
+
+  useEffect(() => {
+    setTokenBuy(project?.token_amount_per_sale_slot * project?.token_sale_rate);
+  }, []);
+
+  const onClickBuyToken = async (e) => {
+    setLoading(true);
+    try {
+      console.log(
+        "window.contractIdo.contractId::",
+        window.contractIdo.contractId
+      );
+
+      if (e.target)
+        party.sparkles(e.target, {
+          count: [20, 20],
+          size: [1, 1.5],
+          color: Color.fromHex("#f56565"),
+        });
+
+      await window.account.signAndSendTransaction({
+        receiverId: window.contractIdo.contractId,
+        actions: [
+          transactions.functionCall(
+            "buy_token",
+            { project_id: +project?.id },
+            10000000000000,
+            utils.format.parseNearAmount(`${tokenBuy}`)
+          ),
+        ],
+      });
+
+      console.log("signAndSendTransaction::", window.contractIdo.contractId);
+    } catch (e) {
+      setLoading(false);
+      toast({
+        title: e?.message || "Unknown error occurred. please try again later!",
+        position: "top",
+        isClosable: true,
+        status: "error",
+        duration: 1500,
+      });
+    }
+  };
+  console.log("project::", project);
+
   return (
-    <Box as={"form"} w="100%">
-      <Typography type="text" mt={1}>
-        Sales close:{" "}
-        {project.sale_end_date &&
+    <Box as={"form"} w="full">
+      <Box mt={3} borderBottom="3px solid #6655c3cc" />
+
+      <DataLine
+        title={"Sales close"}
+        value={
+          project.sale_end_date &&
           moment(+project.sale_end_date / 1000000)
             .utc()
-            .format("hh:mma DD/MM/YYYY")}
-      </Typography>
-      <Typography mt={2} type="text"></Typography>
+            .format("hh:mma DD/MM/YYYY")
+        }
+      />
+
+      <DataLine
+        title={"Total tickets"}
+        value={
+          accountInfo?.whitelist_info?.no_of_social_tickets +
+          accountInfo?.whitelist_info?.no_of_referral_tickets +
+          accountInfo?.whitelist_info?.no_of_allocations
+        }
+      />
+
+      <DataLine
+        title={"Allocation per ticket"}
+        value={project?.token_amount_per_sale_slot}
+      />
 
       <Progress
-        mt={1}
+        mt={3}
         w="100%"
         borderRadius="md"
         size="md"
         hasStripe
         value={64}
       />
-      <Typography type="caption">
+      <Typography mt={1} type="caption">
         Balance: 10,000/25,000 {project?.token_symbol}
       </Typography>
-      <Flex mt={2}>
+      <Flex mt={3}>
         <InputGroup flex={1}>
           <Input
             placeholder="100"
             bg={"gray.100"}
             border={0}
             type="number"
+            value={tokenBuy}
             onInput={(e) => setTokenBuy(+e.target.value)}
           />
           <InputRightAddon
@@ -81,6 +156,7 @@ const FormSales = ({ project }) => {
           ml={3}
           fontFamily={"heading"}
           // isDisabled={true}
+          isLoading={loading}
           bgGradient="linear(to-r, red.400,pink.400)"
           color={"white"}
           _hover={{

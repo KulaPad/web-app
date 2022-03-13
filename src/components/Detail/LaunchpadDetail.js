@@ -160,18 +160,6 @@ const LaunchpadDetail = ({ project }) => {
             {project.status === "Distribution" && (
               <FormDistribution project={project} />
             )}
-
-            {project?.type === 4 && (
-              <Button colorScheme="blue" mt={6}>
-                Buy token
-              </Button>
-            )}
-
-            {project?.type === 5 && (
-              <Button colorScheme="blue" mt={6}>
-                Claim token
-              </Button>
-            )}
           </Flex>
           <Box flex={1} py={10} px={6} pt={{ base: 0, md: 6 }}>
             <Typography mt={1} type="small-title">
@@ -347,6 +335,26 @@ const LaunchpadDetail = ({ project }) => {
               title={"Blockchain"}
               value={project?.token?.blockchain ?? "Near"}
             />
+            <DataLine
+              title={"Whitelist accounts"}
+              value={project?.whitelist_accounts ?? ""}
+            />
+            <DataLine
+              title={"Total allocation"}
+              value={project?.total_allocation ?? "0"}
+            />
+            <DataLine
+              title={"Total staking tickets"}
+              value={project?.total_staking_tickets ?? "0"}
+            />
+            <DataLine
+              title={"Total social tickets"}
+              value={project?.total_social_tickets ?? "0"}
+            />
+            <DataLine
+              title={"Total referral tickets"}
+              value={project?.total_referral_tickets ?? "0"}
+            />
           </Box>
         </SimpleGrid>
         <Box mt={12} px={{ base: 0, md: 4 }}>
@@ -500,9 +508,9 @@ const LaunchpadDetail = ({ project }) => {
 };
 
 // new table for the public sale
-const DataLine = ({ title, value }) => {
+export const DataLine = ({ title, value }) => {
   return (
-    <Flex mt={4}>
+    <Flex mt={3}>
       <Typography type="small-title" fontWeight="400">
         {title}
       </Typography>
