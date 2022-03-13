@@ -49,9 +49,7 @@ const FormSales = ({ project }) => {
           account_id: window.accountId,
         }
       );
-    console.log("calculate_must_attach_deposit_amount_by_account_id::", res);
-    if (res?.sale_info?.funding_amount)
-      setTokenBuy(+res?.sale_info?.funding_amount);
+    if (res) setTokenBuy(utils.format.formatNearAmount(res));
     return res;
   };
 
@@ -190,8 +188,8 @@ const FormSales = ({ project }) => {
           {" "}
           <CountUp
             isCounting={true}
-            key={(tokenBuy || 0) * project?.token_sale_rate}
-            end={(tokenBuy || 0) * project?.token_sale_rate}
+            key={(tokenBuy || 0) / project?.token_sale_rate}
+            end={(tokenBuy || 0) / project?.token_sale_rate}
             duration={0.8}
           />{" "}
           {project?.token_symbol}
