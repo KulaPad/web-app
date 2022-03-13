@@ -115,16 +115,37 @@ const FormSales = ({ project }) => {
       <DataLine
         title={"Total tickets"}
         value={
-          accountInfo?.whitelist_info?.no_of_social_tickets +
-          accountInfo?.whitelist_info?.no_of_referral_tickets +
-          accountInfo?.whitelist_info?.no_of_allocations
+          +accountInfo?.whitelist_info?.no_of_social_tickets +
+          +accountInfo?.whitelist_info?.no_of_referral_tickets +
+          +accountInfo?.whitelist_info?.no_of_staking_tickets
         }
+      />
+
+      <DataLine
+        title={"Total allocations"}
+        value={accountInfo?.whitelist_info?.no_of_allocations}
       />
 
       <DataLine
         title={"Allocation per ticket"}
         value={project?.token_amount_per_sale_slot}
       />
+
+      {accountInfo?.sale_info?.funding_amount &&
+        +accountInfo?.sale_info?.funding_amount > 0 && (
+          <DataLine
+            title={"Funding amount"}
+            value={
+              utils.format.formatNearAmount(
+                accountInfo?.sale_info?.funding_amount
+              ) +
+              " Near / " +
+              (tokenBuy || 0) / project?.token_sale_rate +
+              " " +
+              project?.token_symbol
+            }
+          />
+        )}
 
       <Progress
         mt={3}
@@ -137,64 +158,74 @@ const FormSales = ({ project }) => {
       <Typography mt={1} type="caption">
         Balance: 10,000/25,000 {project?.token_symbol}
       </Typography>
-      <Flex mt={3}>
-        <InputGroup flex={1}>
-          <Input
-            placeholder="100"
-            bg={"gray.100"}
-            border={0}
-            type="number"
-            value={tokenBuy}
-            onInput={(e) => setTokenBuy(+e.target.value)}
-          />
-          <InputRightAddon
-            children={
-              <Flex justify="center" align="center">
-                {project?.fund_symbol}
-                <Image
-                  ml={2}
-                  loading="lazy"
-                  borderRadius="20px"
-                  src={"/mstatic/icons/near.svg"}
-                  alt={`image`}
-                  h="22px"
-                  w="22px"
-                  objectFit={"cover"}
-                />
-              </Flex>
-            }
-          />
-        </InputGroup>
-        <Button
-          ml={3}
-          fontFamily={"heading"}
-          // isDisabled={true}
-          isLoading={loading}
-          bgGradient="linear(to-r, red.400,pink.400)"
-          color={"white"}
-          _hover={{
-            bgGradient: "linear(to-r, red.400,pink.400)",
-            boxShadow: "xl",
-          }}
-          minW="100px"
-          onClick={(e) => onClickBuyToken(e)}
-        >
-          Buy
-        </Button>
-      </Flex>
-      <Typography mt={2} type="text" color="gray.600">
-        *Estimate:
-        <Box fontWeight="bold" as="span" color="hotpink">
-          {" "}
-          <CountUp
-            isCounting={true}
-            key={(tokenBuy || 0) / project?.token_sale_rate}
-            end={(tokenBuy || 0) / project?.token_sale_rate}
-            duration={0.8}
-          />{" "}
-          {project?.token_symbol}
-        </Box>{" "}
-      </Typography>
+      {!(
+        accountInfo?.sale_info?.funding_amount &&
+        +accountInfo?.sale_info?.funding_amount > 0
+      ) && (
+        <Flex mt={3}>
+          <InputGroup flex={1}>
+            <Input
+              placeholder="100"
+              bg={"gray.100"}
+              border={0}
+              type="number"
+              value={tokenBuy}
+              onInput={(e) => setTokenBuy(+e.target.value)}
+            />
+            <InputRightAddon
+              children={
+                <Flex justify="center" align="center">
+                  {project?.fund_symbol}
+                  <Image
+                    ml={2}
+                    loading="lazy"
+                    borderRadius="20px"
+                    src={"/mstatic/icons/near.svg"}
+                    alt={`image`}
+                    h="22px"
+                    w="22px"
+                    objectFit={"cover"}
+                  />
+                </Flex>
+              }
+            />
+          </InputGroup>
+          <Button
+            ml={3}
+            fontFamily={"heading"}
+            // isDisabled={true}
+            isLoading={loading}
+            bgGradient="linear(to-r, red.400,pink.400)"
+            color={"white"}
+            _hover={{
+              bgGradient: "linear(to-r, red.400,pink.400)",
+              boxShadow: "xl",
+            }}
+            minW="100px"
+            onClick={(e) => onClickBuyToken(e)}
+          >
+            Buy
+          </Button>
+        </Flex>
+      )}
+      {!(
+        accountInfo?.sale_info?.funding_amount &&
+        +accountInfo?.sale_info?.funding_amount > 0
+      ) && (
+        <Typography mt={2} type="text" color="gray.600">
+          *Estimate:
+          <Box fontWeight="bold" as="span" color="hotpink">
+            {" "}
+            <CountUp
+              isCounting={true}
+              key={(tokenBuy || 0) / project?.token_sale_rate}
+              end={(tokenBuy || 0) / project?.token_sale_rate}
+              duration={0.8}
+            />{" "}
+            {project?.token_symbol}
+          </Box>{" "}
+        </Typography>
+      )}
     </Box>
   );
 };

@@ -97,11 +97,13 @@ const Header = (props) => {
               <Flex align="center" justify="center">
                 <Icon
                   as={FiZap}
+                  h="24px"
+                  w="24px"
                   color={location.pathname === "/claim" ? "#f56565" : "#72727a"}
                 />
                 <KText
                   ml={1}
-                  type="text"
+                  type="small-title"
                   fontWeight="500"
                   color={location.pathname === "/claim" ? "#f56565" : "#72727a"}
                 >

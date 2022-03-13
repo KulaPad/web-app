@@ -79,7 +79,7 @@ export default function Account(props) {
       {!!currentUser?.accountId && (
         <SimpleGrid mt={6}>
           <Box border="1px solid #A0AEC0" borderRadius="lg" px={6} py={4}>
-            <KText mt={2}>{currentUser?.accountId}</KText>
+            <KText mt={2} type="small-title">Account: {currentUser?.accountId}</KText>
             <KText mt={2} type="small-title">
               KULA balance: {parseTokenWithDecimals(balance, 8)} (KULA)
             </KText>
@@ -110,7 +110,7 @@ export default function Account(props) {
               onClick={() => handleClickClaim()}
               colorScheme="blue"
             >
-              Claim 200 KULA token
+              Get 200 KULA
             </Button>
           </Box>
         </SimpleGrid>
