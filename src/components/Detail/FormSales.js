@@ -21,7 +21,7 @@ import Typography from "../KText";
 const FormSales = ({ project }) => {
   const toast = useToast();
 
-  const [tokenBuy, setTokenBuy] = useState(0);
+  const [tokenBuy, setTokenBuy] = useState();
   const [loading, setLoading] = useState(false);
   const [accountInfo, setAccountInfo] = useState();
 
@@ -40,9 +40,24 @@ const FormSales = ({ project }) => {
     getAccountInfo();
   }, [window.accountId]);
 
+  const calculateDeposit = async () => {
+    if (!window?.accountId) return;
+    const res =
+      await window?.contractIdo?.calculate_must_attach_deposit_amount_by_account_id(
+        {
+          project_id: +project?.id,
+          account_id: window.accountId,
+        }
+      );
+    console.log("calculate_must_attach_deposit_amount_by_account_id::", res);
+    if (res?.sale_info?.funding_amount)
+      setTokenBuy(+res?.sale_info?.funding_amount);
+    return res;
+  };
+
   useEffect(() => {
-    setTokenBuy(project?.token_amount_per_sale_slot * project?.token_sale_rate);
-  }, []);
+    calculateDeposit();
+  }, [window.accountId]);
 
   const onClickBuyToken = async (e) => {
     setLoading(true);
@@ -175,8 +190,8 @@ const FormSales = ({ project }) => {
           {" "}
           <CountUp
             isCounting={true}
-            key={tokenBuy * project?.token_sale_rate}
-            end={tokenBuy * project?.token_sale_rate}
+            key={(tokenBuy || 0) * project?.token_sale_rate}
+            end={(tokenBuy || 0) * project?.token_sale_rate}
             duration={0.8}
           />{" "}
           {project?.token_symbol}
