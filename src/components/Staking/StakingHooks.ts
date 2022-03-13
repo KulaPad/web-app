@@ -151,7 +151,15 @@ export function useStakingForm_Stake(props: StakingFormProps, StakingStatsStore:
   // TODO: Validate the form input
 
 
-  const estimated_new_ticket_received = estimate_ticket_amount(stake_balance + parseFloat(frmStake_amount), parseFloat(frmStake_lock_for));
+  let frmStake_amount_float = parseFloat(frmStake_amount)
+  let frmStake_lock_for_float = parseFloat(frmStake_lock_for)
+  if (isNaN(frmStake_amount_float)) {
+    frmStake_amount_float = 0
+  }
+  if (isNaN(frmStake_lock_for_float)) {
+    frmStake_lock_for_float = 0
+  }
+  const estimated_new_ticket_received = estimate_ticket_amount(stake_balance + frmStake_amount_float, frmStake_lock_for_float);
 
   // Tell StakingStats to refetch the staking info in account info
   const loadStakeInfo = () => {

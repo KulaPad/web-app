@@ -38,7 +38,7 @@ export default observer(function SystemStakingStats(props: Props) {
           title="Total System Reward"
           image={"/favicon-96x96.png"}
           semiTitle={<Text bgGradient="linear(to-r, green.600,cyan.600)" bgClip="text" as={"span"}>
-            {currency(total_reward, 0)}
+            {currency(total_reward, 2)}
           </Text>}
           semiTitleContent={"KULA"}
         />

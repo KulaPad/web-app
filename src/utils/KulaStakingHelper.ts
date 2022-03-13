@@ -80,10 +80,13 @@ const StakingTicketConfig = {
  * @param lock_for_days amount of locking days
  */
 export function estimate_ticket_amount(stake_amount: number, lock_for_days: number): Record<Ticket, number> {
+  const DEBUG = true;
+  DEBUG && console.log('{estimate_ticket_amount} lock_for_days: ', lock_for_days)
+
   const tier = calcTier(stake_amount)
   let normal_ticket_cnt = 0,
         vip_ticket_cnt = 0;
-  // console.log('{estimate_ticket_amount} tier: ', tier);
+  DEBUG && console.log('{estimate_ticket_amount} tier: ', tier);
 
   if (tier === Tier.undefined) {
     return {
@@ -104,7 +107,7 @@ export function estimate_ticket_amount(stake_amount: number, lock_for_days: numb
       break;
     }
   }
-  // console.log('{estimate_ticket_amount} row: ', row);
+  DEBUG && console.log('{estimate_ticket_amount} row: ', row);
 
   // ticket col
   let base_lock_day_idx = -1;
@@ -116,7 +119,7 @@ export function estimate_ticket_amount(stake_amount: number, lock_for_days: numb
       break;
     }
   }
-  // console.log('{estimate_ticket_amount} base_lock_day_idx: ', base_lock_day_idx);
+  DEBUG && console.log('{estimate_ticket_amount} base_lock_day_idx: ', base_lock_day_idx);
 
   if (base_lock_day_idx > -1) {
     if (tier === Tier.Tier4) {
