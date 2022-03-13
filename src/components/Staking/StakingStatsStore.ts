@@ -46,6 +46,11 @@ export class StakingStatsStore implements IStakingStatsStore {
 
   constructor() {
     makeAutoObservable(this)
+
+    // recalculated computed data
+    autorun(() => {
+      this.refreshUserTicketStats()
+    })
   }
 
   setState(s: IStakingStatsStore) {
@@ -65,8 +70,10 @@ export class StakingStatsStore implements IStakingStatsStore {
       this.user_tier = this.tier
 
       // unlock_timestamp in nanosecs
-      const lock_for_days = (this.unlock_timestamp - Date.now() * 1e6)
+      const lock_for_days = (this.unlock_timestamp - Date.now() * 1e6) / 1e9 / 86400
+      console.log('{refreshUserTicketStats} start: ');
       const estimated_new_ticket_received = estimate_ticket_amount(this.stake_balance, lock_for_days);
+      console.log('{refreshUserTicketStats} end: ');
 
       this.user_ticket_staking = estimated_new_ticket_received.Staking
       this.user_ticket_allocation = estimated_new_ticket_received.Allocation
@@ -96,10 +103,7 @@ export class StakingStatsStore implements IStakingStatsStore {
 const s = new StakingStatsStore();
 export default s;
 
-// recalculated computed data
-autorun(() => {
-  s.refreshUserTicketStats()
-})
+
 
 if (isClientDevMode) {
   // @ts-ignore

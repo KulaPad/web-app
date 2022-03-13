@@ -177,7 +177,7 @@ export default observer(function StakingForm(props: Props) {
                       <b> {next_tier_name}</b>
                     </Text>
                     <Text color={"gray.500"} fontSize={{ base: "sm", sm: "md" }} mt={4}>
-                      Estimated ticket received: <b>{estimated_new_ticket_received.Allocation} Allocation</b> + <b>{estimated_new_ticket_received.Staking} Staking</b>
+                      Estimated ticket status: <b>{estimated_new_ticket_received.Allocation} Allocation</b> + <b>{estimated_new_ticket_received.Staking} Staking</b>
                     </Text>
                   </Box>
                 </Stack>
