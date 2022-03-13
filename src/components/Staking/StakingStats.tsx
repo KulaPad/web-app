@@ -76,10 +76,14 @@ export default observer(function StakingStats(props: Props) {
     stake_balance,
     unstake_balance,
     reward,
-    tier,
+    // tier,
+
+    user_tier,
+    user_ticket_allocation,
+    user_ticket_staking,
   } = StakingStatsStore;
 
-  const tierName = TierNames[tier]
+  const tierName = TierNames[user_tier]
 
   return (
     <Stack spacing={{ base: 10, md: 20 }}>
@@ -108,7 +112,7 @@ export default observer(function StakingStats(props: Props) {
           >{tierName}</Text>
         </Wrap>
         <Text color={"gray.500"} fontSize={{ base: "sm", sm: "md" }} mt={4}>
-          Your estimated ticket amount is <b>1000</b>
+          Your estimated tickets: <b>{user_ticket_allocation}</b> Allocation + <b>{user_ticket_staking}</b> Staking
         </Text>
 
         <HStack mt={10}>
@@ -163,6 +167,7 @@ export default observer(function StakingStats(props: Props) {
               <Button
                 size="sm" colorScheme="pink" borderRadius="8px" py="4" px="4" lineHeight="1"
                 onClick={claim}
+                disabled={!(reward > 0)}
               >
                 Claim reward
               </Button>

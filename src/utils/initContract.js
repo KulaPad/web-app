@@ -82,6 +82,7 @@ async function initContract() {
         "get_owner_id",
         "is_whitelist_by_account_id",
         "get_project_account_info",
+        "get_staking_tier_info",
       ],
       // Change methods can modify the state. But you don't receive the returned value when called.
       changeMethods: ["register_whitelist", "is_whitelist"],

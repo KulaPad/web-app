@@ -151,7 +151,6 @@ export function useStakingForm_Stake(props: StakingFormProps, StakingStatsStore:
   // TODO: Validate the form input
 
 
-  // unlock_timestamp in nanosecs
   const estimated_new_ticket_received = estimate_ticket_amount(stake_balance + parseFloat(frmStake_amount), parseFloat(frmStake_lock_for));
 
   // Tell StakingStats to refetch the staking info in account info
@@ -161,6 +160,17 @@ export function useStakingForm_Stake(props: StakingFormProps, StakingStatsStore:
 
 
   const stake = useCallback(async () => {
+    if (!currentUser) {
+      toast({
+        title: `You need to connect wallet first`,
+        position: 'top',
+        isClosable: true,
+        status: 'error',
+        duration: 1500,
+      })
+      return;
+    }
+
     if (!getStakedStatus()) {
       toast({
         title: `You need to "Unlock & activate Staking" feature first`,
@@ -306,6 +316,7 @@ export function useStakingForm_Stake(props: StakingFormProps, StakingStatsStore:
 export function useStakingForm_UnStake(props: StakingFormProps, StakingStatsStore: StakingStatsStoreClass) {
   const {
     contractStaking,
+    currentUser,
   } = props;
 
   const {
@@ -329,6 +340,17 @@ export function useStakingForm_UnStake(props: StakingFormProps, StakingStatsStor
   }
 
   const unstake = useCallback(async () => {
+    if (!currentUser) {
+      toast({
+        title: `You need to connect wallet first`,
+        position: 'top',
+        isClosable: true,
+        status: 'error',
+        duration: 1500,
+      })
+      return;
+    }
+
     setQuery('feature', 'unstake')
     setQuery('feature_data', JSON.stringify({
       amount: frmUnStake_amount,
@@ -386,6 +408,7 @@ export function useStakingForm_Withdraw(props: StakingFormProps, StakingStatsSto
   const {
     contractStaking,
     contractFT,
+    currentUser,
   } = props;
 
   const [frmWithdraw_amount, set_frmWithdraw_amount] = useState('');
@@ -400,6 +423,17 @@ export function useStakingForm_Withdraw(props: StakingFormProps, StakingStatsSto
 
 
   const withdraw = useCallback(async () => {
+    if (!currentUser) {
+      toast({
+        title: `You need to connect wallet first`,
+        position: 'top',
+        isClosable: true,
+        status: 'error',
+        duration: 1500,
+      })
+      return;
+    }
+
     const amount = unstake_balance;
 
     if (amount <= 0) {
@@ -465,6 +499,7 @@ export function useStakingForm_Claim(props: StakingFormProps, StakingStatsStore:
   const {
     contractStaking,
     contractFT,
+    currentUser,
   } = props;
 
   const query = useQuery()
@@ -478,6 +513,17 @@ export function useStakingForm_Claim(props: StakingFormProps, StakingStatsStore:
 
 
   const claim = useCallback(async () => {
+    if (!currentUser) {
+      toast({
+        title: `You need to connect wallet first`,
+        position: 'top',
+        isClosable: true,
+        status: 'error',
+        duration: 1500,
+      })
+      return;
+    }
+
     setQuery('feature', 'claim')
     setQuery('feature_data', JSON.stringify({
       // amount: frmClaim_amount,

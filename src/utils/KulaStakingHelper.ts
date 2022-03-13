@@ -48,8 +48,10 @@ export function getNextTier(tier: Tier) {
 }
 
 export enum Ticket {
-  Normal = 'Normal',
-  Vip = 'Vip',
+  Staking = 'Staking', // ticket received by staking
+  Allocation = 'Allocation',
+  Social = 'Social',
+  Referral = 'Referral',
 }
 
 /**
@@ -66,13 +68,18 @@ const StakingTicketConfig = {
     [1, 1, 2, 2, 3, 3],
   ],
   ticketOf: {
-    [Tier.Tier1]: Ticket.Normal,
-    [Tier.Tier2]: Ticket.Normal,
-    [Tier.Tier3]: Ticket.Normal,
-    [Tier.Tier4]: Ticket.Vip,
+    [Tier.Tier1]: Ticket.Staking,
+    [Tier.Tier2]: Ticket.Staking,
+    [Tier.Tier3]: Ticket.Staking,
+    [Tier.Tier4]: Ticket.Allocation,
   },
 }
-export function estimate_ticket_amount(stake_amount: number, lock_for: number): Record<Ticket, number> {
+
+/**
+ * @param stake_amount
+ * @param lock_for_days amount of locking days
+ */
+export function estimate_ticket_amount(stake_amount: number, lock_for_days: number): Record<Ticket, number> {
   const tier = calcTier(stake_amount)
   let normal_ticket_cnt = 0,
         vip_ticket_cnt = 0;
@@ -80,8 +87,10 @@ export function estimate_ticket_amount(stake_amount: number, lock_for: number): 
 
   if (tier === Tier.undefined) {
     return {
-      [Ticket.Normal]: normal_ticket_cnt,
-      [Ticket.Vip]: vip_ticket_cnt,
+      [Ticket.Staking]: normal_ticket_cnt,
+      [Ticket.Allocation]: vip_ticket_cnt,
+      [Ticket.Social]: 0,
+      [Ticket.Referral]: 0,
     }
   }
 
@@ -101,7 +110,7 @@ export function estimate_ticket_amount(stake_amount: number, lock_for: number): 
   let base_lock_day_idx = -1;
   for (let i = 0, c = StakingTicketConfig.columns.length; i < c; i++) {
     const lock_days = StakingTicketConfig.columns[i];
-    if (lock_days <= lock_for) {
+    if (lock_days <= lock_for_days) {
       base_lock_day_idx = i;
     } else {
       break;
@@ -118,7 +127,9 @@ export function estimate_ticket_amount(stake_amount: number, lock_for: number): 
   }
 
   return {
-    [Ticket.Normal]: normal_ticket_cnt,
-    [Ticket.Vip]: vip_ticket_cnt,
+    [Ticket.Staking]: normal_ticket_cnt,
+    [Ticket.Allocation]: vip_ticket_cnt,
+    [Ticket.Social]: 0,
+    [Ticket.Referral]: 0,
   }
 }

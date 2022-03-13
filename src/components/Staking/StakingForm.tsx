@@ -69,6 +69,9 @@ export default observer(function StakingForm(props: Props) {
 
   const {balance: kula_balance} = KulaFtStore;
 
+  const {currentUser} = props;
+  const loggedIn = !!currentUser;
+
 
   useEffect(() => {
     switch (tabIndex) {
@@ -173,7 +176,7 @@ export default observer(function StakingForm(props: Props) {
                       <b> {next_tier_name}</b>
                     </Text>
                     <Text color={"gray.500"} fontSize={{ base: "sm", sm: "md" }} mt={4}>
-                      Estimated ticket received: <b>{estimated_new_ticket_received.Vip} Allocation</b> + <b>{estimated_new_ticket_received.Normal} Staking</b>
+                      Estimated ticket received: <b>{estimated_new_ticket_received.Allocation} Allocation</b> + <b>{estimated_new_ticket_received.Staking} Staking</b>
                     </Text>
                   </Box>
                 </Stack>
@@ -221,7 +224,10 @@ export default observer(function StakingForm(props: Props) {
                     </Text>
                     <Text color={"gray.500"} fontSize={{ base: "sm", sm: "md" }}>
                       <span>
-                        Next unstake schedule: <b style={{color: stake_lock_released ? 'green' : 'red'}}>{moment(unlock_timestamp / 1e6).format('MMM D, YYYY HH:mm:ss')}</b>
+                        Next unstake schedule:
+                        {loggedIn &&
+                          <b style={{color: stake_lock_released ? 'green' : 'red'}}>{moment(unlock_timestamp / 1e6).format('MMM D, YYYY HH:mm:ss')}</b>
+                        }
                       </span>
                     </Text>
                   </Box>

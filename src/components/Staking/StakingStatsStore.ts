@@ -1,6 +1,6 @@
 import {makeAutoObservable} from "mobx"
-import {Tier} from "../../utils/KulaContract";
-import {calcRemainingLockDays, calcTier} from "../../utils/KulaStakingHelper.ts";
+import {Tier} from "../../utils/KulaContract.ts";
+import {calcTier, estimate_ticket_amount} from "../../utils/KulaStakingHelper.ts";
 import {isClientDevMode} from "../../utils/Env.ts";
 
 export type IStakingStatsStore = {
@@ -13,6 +13,10 @@ export type IStakingStatsStore = {
   stake_balance?: number
   unstake_balance?: number
   reward?: number
+
+  user_tier?: Tier
+  user_ticket_staking?: number
+  user_ticket_allocation?: number
 }
 
 export class StakingStatsStore implements IStakingStatsStore {
@@ -26,6 +30,11 @@ export class StakingStatsStore implements IStakingStatsStore {
   total_stake_balance = 0
   total_reward = 0
   total_stakers = 0
+
+  // ticket
+  user_tier = Tier.undefined
+  user_ticket_staking = 0
+  user_ticket_allocation = 0
 
   get tier() : Tier {
     return calcTier(this.stake_balance)
@@ -50,6 +59,38 @@ export class StakingStatsStore implements IStakingStatsStore {
     s.total_reward && (this.total_reward = s.total_reward)
     s.total_stakers && (this.total_stakers = s.total_stakers)
   }
+
+  refreshUserTicketStats() {
+    if (this.tier !== Tier.undefined) {
+      this.user_tier = this.tier
+
+      // unlock_timestamp in nanosecs
+      const lock_for_days = (this.unlock_timestamp - Date.now() * 1e6)
+      const estimated_new_ticket_received = estimate_ticket_amount(this.stake_balance, lock_for_days);
+
+      this.user_ticket_staking = estimated_new_ticket_received.Staking
+      this.user_ticket_allocation = estimated_new_ticket_received.Allocation
+    }
+  }
+
+  // async fetchUserTicketStats(account_id: string) {
+  //   // @ts-ignore
+  //   if (!window.account) {
+  //     return;
+  //   }
+  //
+  //   // near view v4-ido-kulapad.testnet get_staking_tier_info '{"locked_amount": "100000000000", "locked_timestamp": 1649796512000000000}'
+  //   // @ts-ignore
+  //   const res = await window.contractIdo?.get_staking_tier_info({
+  //     "locked_amount": "100000000000",
+  //     "locked_timestamp": 1649796512000000000
+  //   });
+  //   console.log("{fetchUserTicketStats} Result:: ", res);
+  //
+  //   this.user_tier = 0;
+  //   this.user_ticket_staking = 0;
+  //   this.user_ticket_allocation = 0;
+  // }
 }
 
 const s = new StakingStatsStore();
