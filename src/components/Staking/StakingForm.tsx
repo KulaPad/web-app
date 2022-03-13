@@ -68,6 +68,7 @@ export default observer(function StakingForm(props: Props) {
   } = useStakingForm_Withdraw(props, StakingStatsStore)
 
   const {balance: kula_balance} = KulaFtStore;
+  console.log('{StakingForm} balance: ', kula_balance);
 
   const {currentUser} = props;
   const loggedIn = !!currentUser;

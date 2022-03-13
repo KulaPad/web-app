@@ -46,14 +46,12 @@ export function formatU128(balance: U128, decimal = 0): string {
   return currency(parseKulaAmount(balance), decimal)
 }
 
-export function parseKulaAmount(balance: U128, decimal = 0): number {
-  if (balance.length > KulaDecimal) {
-    // big number
-    return parseFloat(balance.substring(0, balance.length - KulaDecimal)) / Math.pow(10, decimal)
-  } else {
-    // small number
-    return parseFloat(balance) / Math.pow(10, KulaDecimal)
-  }
+export function parseKulaAmount(balance: U128): number {
+  return parseFtAmount(balance, KulaDecimal)
+}
+
+export function parseFtAmount(balance: U128, FtDecimal = 8): number {
+  return parseFloat(balance) / Math.pow(10, FtDecimal)
 }
 
 export function formatKulaAmount(balanceInHuman: number): string {
