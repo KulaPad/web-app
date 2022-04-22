@@ -13,16 +13,20 @@ import {
   InputGroup,
   InputRightAddon,
   InputLeftAddon,
-} from "@chakra-ui/react";
-import { Contract } from "near-api-js/lib/contract";
-import {useEffect, useState} from "react";
-import {observer} from "mobx-react-lite";
-import * as moment from "moment";
+} from '@chakra-ui/react'
+import { Contract } from 'near-api-js/lib/contract'
+import { useEffect, useState } from 'react'
+import { observer } from 'mobx-react-lite'
+import moment from 'moment'
 
-import StakingStatsStore from "./StakingStatsStore.ts";
-import KulaFtStore from "../Auth/KulaFtStore.ts";
-import {currency} from "../../utils/Number.ts";
-import {useStakingForm_Stake, useStakingForm_UnStake, useStakingForm_Withdraw} from "./StakingHooks.ts";
+import StakingStatsStore from './StakingStatsStore'
+import KulaFtStore from '../Auth/KulaFtStore'
+import { currency } from '../../utils/Number'
+import {
+  useStakingForm_Stake,
+  useStakingForm_UnStake,
+  useStakingForm_Withdraw,
+} from './StakingHooks'
 
 
 type Props = {
@@ -146,7 +150,7 @@ export default observer(function StakingForm(props: Props) {
                         color: "gray.400",
                       }}
                       value={frmStake_amount}
-                      onInput={(e) => set_frmStake_amount(e.target.value)}
+                      onInput={(e) => set_frmStake_amount((e as any).target.value)}
                     />
                     <InputRightAddon children='KULA' />
                   </InputGroup>
@@ -161,7 +165,7 @@ export default observer(function StakingForm(props: Props) {
                         color: "gray.500",
                       }}
                       value={frmStake_lock_for}
-                      onInput={(e) => set_frmStake_lock_for(e.target.value)}
+                      onInput={(e) => set_frmStake_lock_for((e as any).target.value)}
                     />
                     <InputRightAddon children='days' />
                   </InputGroup>
@@ -215,7 +219,7 @@ export default observer(function StakingForm(props: Props) {
                         color: "gray.500",
                       }}
                       value={frmUnStake_amount}
-                      onInput={(e) => set_frmUnStake_amount(e.target.value)}
+                      onInput={(e) => set_frmUnStake_amount((e as any).target.value)}
                     />
                     <InputRightAddon children='KULA' />
                   </InputGroup>

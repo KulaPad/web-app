@@ -1,5 +1,4 @@
-import {Tier} from "./KulaContract.ts";
-
+import { Tier } from './KulaContract'
 
 export const TierMinBalance = {
   'undefined': 0,
@@ -99,7 +98,7 @@ export function estimate_ticket_amount(stake_amount: number, lock_for_days: numb
 
 
   // tier row
-  let row = [];
+  let row = [] as any[];
   for (let i = 0, c = StakingTicketConfig.rows.length; i < c; i++) {
     const row_tier = StakingTicketConfig.rows[i];
     if (row_tier == tier) {

@@ -1,13 +1,22 @@
-import React from "react";
-import {observer} from "mobx-react-lite";
-import {Box, Flex, HStack, Image, SimpleGrid, Stat, StatLabel, StatNumber, Text} from "@chakra-ui/react";
-import StakingStatsStore from "./StakingStatsStore.ts";
-import {currency} from "../../utils/Number.ts";
-import Typography from "../KText";
-import {LaunchInfo} from "../Detail/LaunchpadDetail.js";
+import React from 'react'
+import { observer } from 'mobx-react-lite'
+import {
+  Box,
+  Flex,
+  HStack,
+  Image,
+  SimpleGrid,
+  Stat,
+  StatLabel,
+  StatNumber,
+  Text,
+} from '@chakra-ui/react'
+import StakingStatsStore from './StakingStatsStore'
+import { currency } from '../../utils/Number'
+import Typography from '../KText'
+import { LaunchInfo } from '../Detail/LaunchpadDetail'
 
-type Props = {}
-export default observer(function SystemStakingStats(props: Props) {
+export default observer(function SystemStakingStats(props: any) {
   const {
     total_stake_balance,
     total_reward,

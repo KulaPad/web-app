@@ -1,5 +1,5 @@
-import {AccountId, EpochHeight, Timestamp, U128} from "./Near";
-import {currency} from "./Number.ts";
+import { AccountId, EpochHeight, Timestamp, U128 } from './Near'
+import { currency } from './Number'
 
 export const KulaDecimal = 8;
 

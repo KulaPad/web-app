@@ -1,6 +1,6 @@
-import {useEffect} from "react";
-import {useHistoryUtil, useQuery} from "../services/router.ts";
-import {useSearchParams} from "react-router-dom";
+import { useEffect } from 'react'
+import { useHistoryUtil, useQuery } from '../services/router'
+import { useSearchParams } from 'react-router-dom'
 
 export type AccountId = string
 export type U128 = string
@@ -29,7 +29,7 @@ export function useNEARWalletResponse(
     // data
     let feature_data = {};
     try {
-      feature_data = JSON.parse(query.get("feature_data"))
+      feature_data = JSON.parse(query.get("feature_data") as unknown as string);
     } catch (e) {
       console.error('{read feature_data} e: ', e);
     }

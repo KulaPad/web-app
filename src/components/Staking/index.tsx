@@ -1,9 +1,8 @@
-import {Contract} from "near-api-js/lib/contract";
-import {Box, Container, SimpleGrid} from "@chakra-ui/react";
-import StakingForm from "./StakingForm.tsx";
-import StakingStats from "./StakingStats.tsx";
-import SystemStakingStats from "./SystemStakingStats.tsx";
-
+import { Contract } from 'near-api-js/lib/contract'
+import { Box, Container, SimpleGrid } from '@chakra-ui/react'
+import StakingForm from './StakingForm'
+import StakingStats from './StakingStats'
+import SystemStakingStats from './SystemStakingStats'
 
 type Props = {
   contract: Contract    // dev account
@@ -29,8 +28,8 @@ export default function StakingBox(props: Props) {
       <Container
         mt={20}
         maxW={"7xl"}
-        columns={{ base: 1, md: 2 }}
-        spacing={{ base: 10, lg: 32 }}
+        // columns={{ base: 1, md: 2 } as any}
+        // spacing={{ base: 10, lg: 32 }}
       >
         <SystemStakingStats {...props} />
       </Container>

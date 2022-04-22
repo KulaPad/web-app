@@ -1,7 +1,7 @@
-import {autorun, makeAutoObservable} from "mobx"
-import {Tier} from "../../utils/KulaContract.ts";
-import {calcTier, estimate_ticket_amount} from "../../utils/KulaStakingHelper.ts";
-import {isClientDevMode} from "../../utils/Env.ts";
+import { autorun, makeAutoObservable } from 'mobx'
+import { Tier } from '../../utils/KulaContract'
+import { calcTier, estimate_ticket_amount } from '../../utils/KulaStakingHelper'
+import { isClientDevMode } from '../../utils/Env'
 
 export type IStakingStatsStore = {
   total_stake_balance?: number
