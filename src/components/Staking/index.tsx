@@ -28,8 +28,6 @@ export default function StakingBox(props: Props) {
       <Container
         mt={20}
         maxW={"7xl"}
-        // columns={{ base: 1, md: 2 } as any}
-        // spacing={{ base: 10, lg: 32 }}
       >
         <SystemStakingStats {...props} />
       </Container>
