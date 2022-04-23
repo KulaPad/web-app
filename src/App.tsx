@@ -9,7 +9,7 @@ import Claim from './routes/Claim'
 import Projects from './routes/Projects'
 import ProjectDetail from './routes/ProjectDetail'
 import Staking from './routes/Staking'
-// import LeaderBoard from './routes/Leaderboard'
+import LeaderBoard from './routes/Leaderboard'
 
 const ScrollToTop = (props: any) => {
   const location = useLocation()
@@ -38,7 +38,7 @@ function App(props: any) {
             <Route path="/projects" element={<Projects {...props} />} />
             <Route path="/projects/:id" element={<ProjectDetail {...props} />} />
             <Route path="/staking" element={<Staking {...props} />} />
-            {/* <Route path="/leaderboard" element={<LeaderBoard {...props} />} /> */}
+            <Route path="/leaderboard" element={<LeaderBoard {...props} />} />
           </Routes>
         </ScrollToTop>
       </BrowserRouter>
