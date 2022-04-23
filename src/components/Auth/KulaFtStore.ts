@@ -1,8 +1,8 @@
-import {makeAutoObservable} from "mobx"
-import {transactions} from "near-api-js";
-import {Contract} from "near-api-js/lib/contract";
-import {isClientDevMode} from "../../utils/Env.ts";
-import {parseKulaAmount} from "../../utils/KulaContract.ts";
+import { makeAutoObservable } from 'mobx'
+import { transactions } from 'near-api-js'
+import { Contract } from 'near-api-js/lib/contract'
+import { isClientDevMode } from '../../utils/Env'
+import { parseKulaAmount } from '../../utils/KulaContract'
 
 export type IKulaFtStore = {
   balance?: number

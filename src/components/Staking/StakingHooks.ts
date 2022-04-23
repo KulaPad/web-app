@@ -1,15 +1,22 @@
-import {useCallback, useEffect, useState} from "react";
-import {Contract} from "near-api-js/lib/contract";
-import {transactions, utils} from "near-api-js";
-import {useToast} from "@chakra-ui/react";
+import { useCallback, useEffect, useState } from 'react'
+import { Contract } from 'near-api-js/lib/contract'
+import { transactions, utils } from 'near-api-js'
+import { useToast } from '@chakra-ui/react'
 
-import StakingStatsStore, {StakingStatsStore as StakingStatsStoreClass} from "./StakingStatsStore";
-import {AccountJson, formatKulaAmount, KulaDecimal, parseKulaAmount, PoolInfo, TierNames} from "../../utils/KulaContract.ts";
-import {estimate_ticket_amount, getNextTier, TierMinBalance} from "../../utils/KulaStakingHelper.ts";
-import {AppEmitter} from "../../services/AppEmitter.ts";
-import {currency} from "../../utils/Number.ts";
-import { useHistoryUtil, useQuery } from "../../services/router.ts";
-import {useNEARWalletResponse} from "../../utils/Near.ts";
+import StakingStatsStore, { StakingStatsStore as StakingStatsStoreClass } from './StakingStatsStore'
+import {
+  AccountJson,
+  formatKulaAmount,
+  KulaDecimal,
+  parseKulaAmount,
+  PoolInfo,
+  TierNames,
+} from '../../utils/KulaContract'
+import { estimate_ticket_amount, getNextTier, TierMinBalance } from '../../utils/KulaStakingHelper'
+import { AppEmitter } from '../../services/AppEmitter'
+import { currency } from '../../utils/Number'
+import { useHistoryUtil, useQuery } from '../../services/router'
+import { useNEARWalletResponse } from '../../utils/Near'
 
 
 export function setStakedActivated(activated) {
@@ -17,7 +24,7 @@ export function setStakedActivated(activated) {
 }
 
 export function getStakedStatus() {
-  return !!parseInt(localStorage.getItem('StakedActivated'))
+  return !!parseInt(localStorage.getItem('StakedActivated') as unknown as string)
 }
 
 export function useStakingStats(
@@ -84,7 +91,7 @@ export function useStakingStats(
         StakingStatsStore.setState({
           total_stake_balance: parseKulaAmount(poolInfo.total_stake_balance),
           total_reward: parseKulaAmount(poolInfo.total_reward),
-          total_stakers: poolInfo.total_stakers,
+          total_stakers: poolInfo.total_stakers as any,
         })
       });
   };
@@ -294,7 +301,7 @@ export function useStakingForm_Stake(props: StakingFormProps, StakingStatsStore:
 
     const transactionHashes = query.get("transactionHashes")
     if (transactionHashes) {
-      const amount = query.get("amount")
+      const amount = query.get("amount") as unknown as number
       const lock = query.get("lock")
       toast({
         title: `Stake ${currency(amount)} KULA for ${lock} days successfully`,

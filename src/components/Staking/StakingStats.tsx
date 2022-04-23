@@ -1,7 +1,9 @@
 import {
   Avatar,
   AvatarGroup,
-  Box, Button, Flex,
+  Box,
+  Button,
+  Flex,
   Heading,
   HStack,
   Stack,
@@ -12,17 +14,18 @@ import {
   Text,
   useBreakpointValue,
   Wrap,
-  WrapItem
-} from "@chakra-ui/react";
-import React, { useEffect } from "react";
-import { observer } from "mobx-react-lite"
-import {Contract} from "near-api-js/lib/contract";
-import * as moment from "moment";
+  WrapItem,
+} from '@chakra-ui/react'
+import React, { useEffect } from 'react'
+import { observer } from 'mobx-react-lite'
+import { Contract } from 'near-api-js/lib/contract'
+import moment from 'moment'
 
-import StakingStatsStore from "./StakingStatsStore.ts";
-import {AccountJson, PoolInfo, TierNames} from "../../utils/KulaContract.ts";
-import {currency} from "../../utils/Number.ts";
-import {useStakingForm_Claim, useStakingStats} from "./StakingHooks.ts";
+import StakingStatsStore from './StakingStatsStore'
+import { AccountJson, PoolInfo, TierNames } from '../../utils/KulaContract'
+import { currency } from '../../utils/Number'
+import { useStakingForm_Claim, useStakingStats } from './StakingHooks'
+
 
 
 const avatars = [
@@ -122,7 +125,7 @@ export default observer(function StakingStats(props: Props) {
               bgGradient="linear(to-r, red.400,pink.400)"
               bgClip="text"
             >{currency(lock_balance)} KULA</StatNumber>
-            <StatHelpText>Until {moment(unlock_timestamp / 1e6).format('MMM D')}</StatHelpText>
+            <StatHelpText>Until {moment((unlock_timestamp / 1e6) as any).format('MMM D')}</StatHelpText>
           </Stat>
           <Stat>
             <StatLabel>Staked</StatLabel>
