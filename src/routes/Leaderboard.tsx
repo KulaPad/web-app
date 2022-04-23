@@ -64,7 +64,7 @@ export default function LeaderBoard(props: LeaderBoardProps) {
           </div>
         </div>
       </div>
-      <div className="mt-10">
+      <div className="mt-10 px-2 md:px-0">
         <TopKulaTable stackingUsers={dumpyStakingUsers} />
       </div>
     </SimpleLayout>
