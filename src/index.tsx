@@ -4,6 +4,7 @@ import React, { StrictMode } from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import initContract from "./utils/initContract";
+import "./styles/main.css"
 
 // Buffer is not defined:: https://github.com/near/near-api-js/issues/757#issuecomment-1002754955
 import { Buffer } from "buffer";
