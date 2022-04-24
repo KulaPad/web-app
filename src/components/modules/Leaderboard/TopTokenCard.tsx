@@ -2,11 +2,13 @@ import { IStackingUser } from '../../../types/interfaces'
 import { toShortAddress } from '../../../utils/account'
 import { currency } from '../../../utils/Number'
 
-interface TopKulaCardProps {
+const TOKEN_NAME = 'KULA'
+
+interface TopTokenCardProps {
   data: IStackingUser
   title: string
 }
-export default function TopKulaCard(props: TopKulaCardProps) {
+export default function TopTokenCard(props: TopTokenCardProps) {
   const { data, title } = props
 
   return (
@@ -19,10 +21,12 @@ export default function TopKulaCard(props: TopKulaCardProps) {
         </div>
         <div className="flex justify-between text-neutral-500 text-xs">
           <span>Locked</span>
-          <span>265 days</span>
+          <span>{data.daysLock} days</span>
         </div>
         <div className="flex justify-center text-base mt-1">
-          <span className="font-bold text-neutral-700">{currency(data.amount)} KULA</span>
+          <span className="font-bold text-neutral-700">
+            {currency(data.amount)} {TOKEN_NAME}
+          </span>
         </div>
         <div className="flex justify-center text-sm">
           <span className="text-neutral-500">-$1000</span>

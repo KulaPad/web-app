@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import SimpleLayout from '../components/Layout/SimpleLayout'
-import TopKulaTable from '../components/modules/Leaderboard/TopKulaTable'
-import TopKulaCard from '../components/modules/Leaderboard/TopKulaCard'
+import TopTokenTable from '../components/modules/Leaderboard/TopTokenTable'
+import TopTokenCard from '../components/modules/Leaderboard/TopTokenCard'
 
 const dumpyStakingUsers = [
   {
@@ -36,7 +36,6 @@ const dumpyStakingUsers = [
   },
 ]
 
-// Staking
 interface LeaderBoardProps {}
 export default function LeaderBoard(props: LeaderBoardProps) {
   const stackingUsers = dumpyStakingUsers
@@ -53,19 +52,19 @@ export default function LeaderBoard(props: LeaderBoardProps) {
         <div className="md:absolute md:-bottom-4 md:left-1/2 md:-translate-x-1/2">
           <div className="flex flex-col md:flex-row items-center md:align-baseline">
             <div className="flex md:items-end">
-              {!!top2 && <TopKulaCard title="2nd" data={top2} />}
+              {!!top2 && <TopTokenCard title="2nd" data={top2} />}
             </div>
             <div className="ml-8 py-2 md:mx-0  md:pb-8 md:px-2">
-              {!!top1 && <TopKulaCard title="1st" data={top1} />}
+              {!!top1 && <TopTokenCard title="1st" data={top1} />}
             </div>
             <div className="flex md:items-end">
-              {!!top3 && <TopKulaCard title="3st" data={top3} />}
+              {!!top3 && <TopTokenCard title="3st" data={top3} />}
             </div>
           </div>
         </div>
       </div>
       <div className="mt-10 px-2 md:px-0">
-        <TopKulaTable stackingUsers={dumpyStakingUsers} />
+        <TopTokenTable stackingUsers={dumpyStakingUsers} />
       </div>
     </SimpleLayout>
   )

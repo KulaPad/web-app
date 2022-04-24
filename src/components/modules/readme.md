@@ -7,8 +7,8 @@
 ├── components                      # common component
 │   ├── modules
 │   │   ├── Leaderboard             # components reuse in Leaderboard page only
-│   │   │   ├── TopKulaTable.tsx
-│   │   │   ├── TopKulaCard.tsx
+│   │   │   ├── TopTokenTable.tsx
+│   │   │   ├── TopTokenCard.tsx
 │   │   │   └── ...       
 │   │   └── ...   
 │   ├── commonA.tsx                 # common components

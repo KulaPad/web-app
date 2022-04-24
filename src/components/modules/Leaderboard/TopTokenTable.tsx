@@ -5,10 +5,10 @@ import { currency } from '../../../utils/Number'
 
 const TABLE_HEADERS = ['#', 'Display name', 'Days lock', 'xKula']
 
-interface TopKulaTableProps {
+interface TopTokenTableProps {
   stackingUsers: IStackingUser[]
 }
-export default function TopKulaTable(props: TopKulaTableProps) {
+export default function TopTokenTable(props: TopTokenTableProps) {
   const { stackingUsers = [] } = props
 
   return (
