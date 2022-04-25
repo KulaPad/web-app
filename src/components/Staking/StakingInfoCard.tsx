@@ -1,7 +1,7 @@
 import { Button, Image } from '@chakra-ui/react'
 import moment from 'moment'
 import { useMemo } from 'react'
-import { percentformatter, usdFormatter } from '../utils/formatter'
+import { percentformatter, usdFormatter } from '../../utils/formatter'
 
 const TOKEN_NAME = 'KULA'
 
