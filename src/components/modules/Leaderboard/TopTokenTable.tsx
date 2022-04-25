@@ -1,15 +1,15 @@
 import React from 'react'
-import { IStackingUser } from '../../../types/interfaces'
+import { IStakingUser } from '../../../types/interfaces'
 import { toShortAddress } from '../../../utils/account'
 import { currency } from '../../../utils/Number'
 
 const TABLE_HEADERS = ['#', 'Display name', 'Days lock', 'xKula']
 
 interface TopTokenTableProps {
-  stackingUsers: IStackingUser[]
+  stakingUsers: IStakingUser[]
 }
 export default function TopTokenTable(props: TopTokenTableProps) {
-  const { stackingUsers = [] } = props
+  const { stakingUsers = [] } = props
 
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -24,7 +24,7 @@ export default function TopTokenTable(props: TopTokenTableProps) {
           </tr>
         </thead>
         <tbody>
-          {stackingUsers.map((user, idx) => {
+          {stakingUsers.map((user, idx) => {
             return (
               <tr key={idx} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                 <td className="px-6 py-4">{idx + 1}</td>

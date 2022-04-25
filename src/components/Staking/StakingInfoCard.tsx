@@ -62,7 +62,7 @@ export default function StakingInfoCard(props: StakingInfoCardProps) {
 
   return (
     <div className="inline-flex justify-center flex-col border-2 border-slate-400 min-w-[15rem] p-2 py-4 bg-slate-50 rounded-md">
-      <h3 className="text-center font-bold text-base">Stacked</h3>
+      <h3 className="text-center font-bold text-base">Staked</h3>
       <div className="flex items-center flex-col mt-3">
         <Image
           loading="lazy"

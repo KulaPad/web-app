@@ -38,11 +38,11 @@ const dumpyStakingUsers = [
 
 interface LeaderBoardProps {}
 export default function LeaderBoard(props: LeaderBoardProps) {
-  const stackingUsers = dumpyStakingUsers
+  const stakingUsers = dumpyStakingUsers
 
   const topStaking = useMemo(() => {
-    return stackingUsers.sort((user) => user.amount).slice(0, 3)
-  }, [stackingUsers])
+    return stakingUsers.sort((user) => user.amount).slice(0, 3)
+  }, [stakingUsers])
 
   const [top1, top2, top3] = topStaking
   return (
@@ -64,7 +64,7 @@ export default function LeaderBoard(props: LeaderBoardProps) {
         </div>
       </div>
       <div className="mt-10 px-2 md:px-0">
-        <TopTokenTable stackingUsers={dumpyStakingUsers} />
+        <TopTokenTable stakingUsers={dumpyStakingUsers} />
       </div>
     </SimpleLayout>
   )
