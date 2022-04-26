@@ -1,11 +1,11 @@
-import { IStackingUser } from '../../../types/interfaces'
+import { IStakingUser } from '../../../types/interfaces'
 import { toShortAddress } from '../../../utils/account'
 import { currency } from '../../../utils/Number'
 
 const TOKEN_NAME = 'KULA'
 
 interface TopTokenCardProps {
-  data: IStackingUser
+  data: IStakingUser
   title: string
 }
 export default function TopTokenCard(props: TopTokenCardProps) {
