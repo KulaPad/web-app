@@ -24,6 +24,10 @@ const theme = extendTheme({
   components: {
     Steps,
   },
+  fonts: {
+    heading: 'var(--font-family-lato), sans-serif',
+    body: 'var(--font-family-lato), sans-serif',
+  },
 })
 
 function App(props: any) {

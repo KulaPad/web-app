@@ -6,15 +6,15 @@ import { Contract } from 'near-api-js/lib/contract'
 import { useStakingForm_Stake } from './StakingHooks'
 import StakingStatsStore from './StakingStatsStore'
 
-const darkPurple200 = '#2D225E'
-const darkPurple600 = '#DFD0FA'
-const darkPurple500 = '#9B8BD8'
-const darkPurple300 = '#402D82'
-const candy100 = '#D85988'
-const candy300 = '#FF61C0'
-const darkPurple0 = '#211A4A';
-const natural0 = '#EEEDF6'
-const natural200 = '#AFACC6'
+const darkModeBg = 'var(--dark-mode-bg)';
+const candy3 = 'var(--candy-3)'
+const candyLinearGradient = 'var(--candy-linear-gradient)';
+const neutralDark2 = 'var(--neutral-dark-2)'
+const neutralDark3 = 'var(--neutral-dark-3)'
+const neutralDark5 = 'var(--neutral-dark-5)'
+const neutralDark6 = 'var(--neutral-dark-6)'
+const neutralLight0 = 'var(--neutral-light-0)'
+const neutralLight2 = 'var(--neutral-light-2)'
 
 type Props = {
   contract: Contract    // dev account
@@ -36,7 +36,7 @@ export default observer(function StakingForm(props: Props) {
   return (
     <Box>
       <Stack
-        bg={darkPurple200}
+        bg={neutralDark2}
         rounded={"xl"}
         p={{ base: 8 }}
         maxW={{ lg: "lg" }}
@@ -46,12 +46,12 @@ export default observer(function StakingForm(props: Props) {
           pb={12}
         >
           <Heading
-            color={natural0}
+            color={neutralLight0}
             fontSize={{ base: "2xl" }}
           >
             Staking Token
           </Heading>
-          <Text color={natural200} fontSize={{ base: "md" }}>
+          <Text color={neutralLight2} fontSize={{ base: "md" }}>
             Calculate your xKULA depending on the amount of stake tokens and your lock time.
           </Text>
         </Stack>
@@ -63,11 +63,11 @@ export default observer(function StakingForm(props: Props) {
             justify="center"
             align="center"
           >
-            <Text color={natural200} fontWeight="bold" fontSize={{ base: "md" }}>
+            <Text color={neutralLight2} fontWeight="bold" fontSize={{ base: "md" }}>
               Staking amount
             </Text>
             <Spacer />
-            <Text color={natural200} fontSize={{ base: "sm" }}>
+            <Text color={neutralLight2} fontSize={{ base: "sm" }}>
               Balance: 20.432 Kula ~ $100
             </Text>
           </Stack>
@@ -81,16 +81,16 @@ export default observer(function StakingForm(props: Props) {
                 h={'52px'}
                 borderRadius={'xl'}
                 placeholder="400"
-                bg={frmStake_amount ? darkPurple0 : darkPurple300}
+                bg={frmStake_amount ? darkModeBg : neutralDark3}
                 borderWidth={'2px'}
-                borderColor={frmStake_amount ? darkPurple0 : darkPurple300}
-                color={darkPurple600}
+                borderColor={frmStake_amount ? darkModeBg : neutralDark3}
+                color={neutralDark6}
                 _placeholder={{
-                  color: darkPurple500,
+                  color: neutralDark5,
                 }}
                 fontWeight="bold"
-                _hover={{ bg: darkPurple0, borderColor: candy100 }}
-                _focus={{ bg: darkPurple0, borderColor: candy100 }}
+                _hover={{ bg: darkModeBg, borderColor: candy3 }}
+                _focus={{ bg: darkModeBg, borderColor: candy3 }}
                 value={frmStake_amount}
                 onInput={(e) => set_frmStake_amount((e as any).target.value)}
               />
@@ -101,13 +101,13 @@ export default observer(function StakingForm(props: Props) {
               display="flex"
               justifyContent="center"
               alignContent="center"
-              bg={darkPurple300}
+              bg={neutralDark3}
               borderRadius={'xl'}
               cursor="pointer"
               _hover={{}}
               _focus={{}}
               _active={{}}
-              color={natural200}
+              color={neutralLight2}
             >
               <Text px="4px" fontWeight="bold" fontSize={{ base: "md" }}>
                 Max
@@ -126,7 +126,7 @@ export default observer(function StakingForm(props: Props) {
             <Switch
               sx={{
                 "span": {
-                  bg: darkPurple300
+                  bg: neutralDark3
                 },
                 "span span": {
                   bg: "#211A4A"
@@ -140,7 +140,7 @@ export default observer(function StakingForm(props: Props) {
               }}
               colorScheme="pink" id='get-x-kula' />
 
-            <Text color={natural0} fontWeight="bold" fontSize={{ base: "md" }}>
+            <Text color={neutralLight0} fontWeight="bold" fontSize={{ base: "md" }}>
               Get xKULA
             </Text>
             <Image
@@ -161,7 +161,7 @@ export default observer(function StakingForm(props: Props) {
         <Box pb={10}>
           <Text
             mb={2}
-            color={natural200} fontWeight="bold" fontSize={{ base: "md" }}>
+            color={neutralLight2} fontWeight="bold" fontSize={{ base: "md" }}>
             Lock
           </Text>
           <Stack
@@ -176,16 +176,16 @@ export default observer(function StakingForm(props: Props) {
                 h={'52px'}
                 borderRadius={'xl'}
                 placeholder="365"
-                bg={frmStake_lock_for ? darkPurple0 : darkPurple300}
+                bg={frmStake_lock_for ? darkModeBg : neutralDark3}
                 borderWidth={'2px'}
-                borderColor={frmStake_lock_for ? darkPurple0 : darkPurple300}
-                color={darkPurple600}
+                borderColor={frmStake_lock_for ? darkModeBg : neutralDark3}
+                color={neutralDark6}
                 _placeholder={{
-                  color: darkPurple500,
+                  color: neutralDark5,
                 }}
                 fontWeight="bold"
-                _hover={{ bg: darkPurple0, borderWidth: '2px', borderColor: candy100 }}
-                _focus={{ bg: darkPurple0, borderWidth: '2px', borderColor: candy100 }}
+                _hover={{ bg: darkModeBg, borderWidth: '2px', borderColor: candy3 }}
+                _focus={{ bg: darkModeBg, borderWidth: '2px', borderColor: candy3 }}
                 value={frmStake_lock_for}
                 onInput={(e) => set_frmStake_lock_for((e as any).target.value)}
               />
@@ -196,13 +196,13 @@ export default observer(function StakingForm(props: Props) {
               display="flex"
               justifyContent="center"
               alignContent="center"
-              bg={darkPurple300}
+              bg={neutralDark3}
               borderRadius={'xl'}
               cursor="pointer"
               _hover={{}}
               _focus={{}}
               _active={{}}
-              color={natural200}
+              color={neutralLight2}
             >
               <Text px="4px" fontWeight="bold" fontSize={{ base: "md" }}>
                 Days
@@ -216,13 +216,13 @@ export default observer(function StakingForm(props: Props) {
           display="flex"
           justifyContent="center"
           alignContent="center"
-          bg={`linear-gradient(91.13deg, ${candy100} -4.51%, ${candy300} 102.47%)`}
+          bg={candyLinearGradient}
           borderRadius={'xl'}
           cursor="pointer"
-          _hover={{ bg: `linear-gradient(91.13deg, ${candy100} -4.51%, ${candy300} 102.47%)` }}
-          _focus={{ bg: `linear-gradient(91.13deg, ${candy100} -4.51%, ${candy300} 102.47%)` }}
-          _active={{ bg: `linear-gradient(91.13deg, ${candy100} -4.51%, ${candy300} 102.47%)` }}
-          color={natural0}
+          _hover={{ bg: candyLinearGradient }}
+          _focus={{ bg: candyLinearGradient }}
+          _active={{ bg: candyLinearGradient }}
+          color={neutralLight0}
         >
           <Text px="4px" fontWeight="bold" fontSize={{ base: "md" }}>
             Stake
@@ -234,13 +234,13 @@ export default observer(function StakingForm(props: Props) {
           display="flex"
           justifyContent="center"
           alignContent="center"
-          bg={darkPurple300}
+          bg={neutralDark3}
           borderRadius={'xl'}
           cursor="pointer"
-          _hover={{ bg: darkPurple300 }}
-          _focus={{ bg: darkPurple300 }}
-          _active={{ bg: darkPurple300 }}
-          color={natural0}
+          _hover={{ bg: neutralDark3 }}
+          _focus={{ bg: neutralDark3 }}
+          _active={{ bg: neutralDark3 }}
+          color={neutralLight0}
         >
           <Text px="4px" fontWeight="bold" fontSize={{ base: "md" }}>
             Connect wallet
