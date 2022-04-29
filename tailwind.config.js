@@ -349,6 +349,7 @@ module.exports = {
     },
     fontFamily: {
       sans: [
+        'Lato',
         'ui-sans-serif',
         'system-ui',
         '-apple-system',
@@ -364,7 +365,7 @@ module.exports = {
         '"Segoe UI Symbol"',
         '"Noto Color Emoji"',
       ],
-      serif: ['ui-serif', 'Georgia', 'Cambria', '"Times New Roman"', 'Times', 'serif'],
+      serif: ['Lato', 'ui-serif', 'Georgia', 'Cambria', '"Times New Roman"', 'Times', 'serif'],
       mono: [
         'ui-monospace',
         'SFMono-Regular',

@@ -1,5 +1,6 @@
 import { Contract } from 'near-api-js/lib/contract'
 import { Box, Container, SimpleGrid } from '@chakra-ui/react'
+import IdoStakingForm from './IdoStakingForm'
 import StakingForm from './StakingForm'
 import StakingStats from './StakingStats'
 import SystemStakingStats from './SystemStakingStats'
@@ -22,6 +23,7 @@ export default function StakingBox(props: Props) {
         columns={{ base: 1, md: 2 }}
         spacing={{ base: 10, lg: 32 }}
       >
+        <IdoStakingForm {...props} />
         <StakingForm {...props} />
         <StakingStats {...props} />
       </Container>
