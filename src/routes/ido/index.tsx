@@ -143,10 +143,10 @@ export default function IDO() {
             </Box>
           </TabPanel>
           <TabPanel>
-            <p>two!</p>
+            <p>Participated</p>
           </TabPanel>
           <TabPanel>
-            <p>three!</p>
+            <p>Saved</p>
           </TabPanel>
         </TabPanels>
       </Tabs>
