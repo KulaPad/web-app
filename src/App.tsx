@@ -52,24 +52,22 @@ function App(props: any) {
               <Route path="/leaderboard" element={<LeaderBoard {...props} />} />
             </Route>
             <Route element={<LandingDashboard />}>
-              <Route path="/ido">
-                <Route
-                  path=":id"
-                  element={
-                    <Suspense fallback={<Backdrop />}>
-                      <LazyIDODetail {...props} />
-                    </Suspense>
-                  }
-                />
-                <Route
-                  index
-                  element={
-                    <Suspense fallback={<Backdrop />}>
-                      <LazyIDO {...props} />
-                    </Suspense>
-                  }
-                />
-              </Route>
+              <Route
+                path="/ido"
+                element={
+                  <Suspense fallback={<Backdrop />}>
+                    <LazyIDO {...props} />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/ido/:id"
+                element={
+                  <Suspense fallback={<Backdrop />}>
+                    <LazyIDODetail {...props} />
+                  </Suspense>
+                }
+              />
             </Route>
           </Routes>
         </ScrollToTop>
