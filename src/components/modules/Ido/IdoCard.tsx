@@ -14,8 +14,8 @@ export default function IdoCard(props: IdoCardProps) {
   }, [data])
 
   const hashtags = useMemo(() => {
-    return ['#CCZ']
-  }, [])
+    return (data?.metadata?.hashtags || []).map((tag) => `#${tag}`)
+  }, [data])
 
   const label = useMemo(() => {
     return data?.status
@@ -31,7 +31,7 @@ export default function IdoCard(props: IdoCardProps) {
 
   return (
     <Box
-      className="rounded-[24px] flex overflow-hidden flex-col pb-8 relative"
+      className="rounded-[24px] flex overflow-hidden flex-col pb-8 relative h-full"
       bg="var(--neutral-dark-2)"
     >
       {!!label && (
@@ -60,67 +60,71 @@ export default function IdoCard(props: IdoCardProps) {
           <Image src={avatar} className="w-[72px]" />
         </Box>
       </div>
-      <Box className="px-8">
-        <div className="py-2 flex">
-          <div className="w-[88px]"></div>
-          <div
-            className="flex flex-wrap gap-2 pl-2 min-h-[20px]"
-            style={{ width: 'calc(100% - 88px)' }}
-          >
-            {tags.map((tag, idx) => (
-              <Badge
-                key={idx}
-                colorScheme={schemas[idx % schemas.length]}
-                className="!rounded-[8px] py-[2px] !px-[12px]"
+      {!isHaventRelease && (
+        <Box className="px-8 flex flex-col justify-between">
+          <>
+            <div className="py-2 flex">
+              <div className="w-[88px]"></div>
+              <div
+                className="flex flex-wrap gap-2 pl-2 min-h-[20px]"
+                style={{ width: 'calc(100% - 88px)' }}
               >
-                {tag}
-              </Badge>
-            ))}
-          </div>
-        </div>
-        <div className="mt-4">
-          <Text className="text-2xl" color="var(--neutral-light-0)">
-            CryptoCitizen
-          </Text>
-        </div>
-        <div>
-          <Text className="text-base" color="var(--blue-3)">
-            {hashtags.join(' ')}
-          </Text>
-        </div>
-        <div className="flex justify-between mt-3">
-          <Text as="span" color="var(--neutral-light-2)" className="text-lg font-bold">
-            Total raise
-          </Text>
-          <Text as="span" color="var(--neutral-light-0)" className="text-lg font-bold">
-            {totalRaise}
-          </Text>
-        </div>
-        <div className="flex justify-between">
-          <Text as="span" color="var(--neutral-light-2)" className="text-lg font-bold">
-            Personal Allocation
-          </Text>
-          <Text as="span" color="var(--neutral-light-0)" className="text-lg font-bold">
-            {personalAllocation}
-          </Text>
-        </div>
-        <div className="flex justify-between">
-          <Text as="span" color="var(--neutral-light-2)" className="text-lg font-bold">
-            Contribution open
-          </Text>
-          <Text as="span" color="var(--neutral-light-0)" className="text-lg font-bold">
-            {contributionOpen}
-          </Text>
-        </div>
-        <div className="mt-3">
-          <SocialToolbar />
-        </div>
-        <div className="mt-4">
-          <Button colorScheme="purple" bg="var(--neutral-dark-3)" className="!w-full">
-            Token Sale
-          </Button>
-        </div>
-      </Box>
+                {tags.map((tag, idx) => (
+                  <Badge
+                    key={idx}
+                    colorScheme={schemas[idx % schemas.length]}
+                    className="!rounded-[8px] py-[2px] !px-[12px]"
+                  >
+                    {tag}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+            <div className="mt-4">
+              <Text className="text-2xl" color="var(--neutral-light-0)">
+                CryptoCitizen
+              </Text>
+            </div>
+            <div>
+              <Text className="text-base" color="var(--blue-3)">
+                {hashtags.join(' ')}
+              </Text>
+            </div>
+            <div className="flex justify-between mt-3">
+              <Text as="span" color="var(--neutral-light-2)" className="text-lg font-bold">
+                Total raise
+              </Text>
+              <Text as="span" color="var(--neutral-light-0)" className="text-lg font-bold">
+                {totalRaise}
+              </Text>
+            </div>
+            <div className="flex justify-between">
+              <Text as="span" color="var(--neutral-light-2)" className="text-lg font-bold">
+                Personal Allocation
+              </Text>
+              <Text as="span" color="var(--neutral-light-0)" className="text-lg font-bold">
+                {personalAllocation}
+              </Text>
+            </div>
+            <div className="flex justify-between">
+              <Text as="span" color="var(--neutral-light-2)" className="text-lg font-bold">
+                Contribution open
+              </Text>
+              <Text as="span" color="var(--neutral-light-0)" className="text-lg font-bold">
+                {contributionOpen}
+              </Text>
+            </div>
+            <div className="mt-3">
+              <SocialToolbar />
+            </div>
+            <div className="mt-4">
+              <Button colorScheme="purple" bg="var(--neutral-dark-3)" className="!w-full">
+                Token Sale
+              </Button>
+            </div>
+          </>
+        </Box>
+      )}
     </Box>
   )
 }

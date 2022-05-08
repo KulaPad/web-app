@@ -29,6 +29,7 @@ const dumpyData = [
       tags: ['Defi', 'GameFi', 'Metaverse'],
       avatar: '/static-v2/avatar-1.png',
       bg: '/static-v2/token-1.png',
+      hashtags: ['CCZ'],
     },
   },
   {
@@ -44,6 +45,7 @@ const dumpyData = [
       tags: ['Defi', 'GameFi', 'Metaverse'],
       avatar: '/static-v2/avatar-1.png',
       bg: '/static-v2/token-1.png',
+      hashtags: ['CCZ'],
     },
   },
   {
@@ -58,6 +60,7 @@ const dumpyData = [
       tags: ['Defi', 'GameFi', 'Metaverse'],
       bg: '/static-v2/token-1.png',
       avatar: '/static-v2/avatar-1.png',
+      hashtags: ['CCZ'],
     },
   },
   {
@@ -73,6 +76,7 @@ const dumpyData = [
       tags: ['ullamco', 'cupidatat', 'et', 'est', 'quis', 'officia', 'laborum'],
       bg: '/static-v2/token-1.png',
       avatar: '/static-v2/avatar-1.png',
+      hashtags: ['CCZ'],
     },
   },
   null,
@@ -90,14 +94,34 @@ export default function IDO() {
     isActive: false,
     totalRaise: '$648,738',
     personalAllocation: '$1999 MAX',
-    avatar: '/static-v2/avatar-1.png',
     status: 'Allowlist open',
     open: '7h 24m 53s',
     metadata: {
       name: 'Mindy Britt',
       tags: ['Defi', 'GameFi', 'Metaverse'],
+      avatar: '/static-v2/avatar-1.png',
+      bg: '/static-v2/token-1.png',
+      hashtags: ['CCZ'],
     },
   }
+
+  const comingSoon = useMemo(() => {
+    return {
+      id: '62774d16448eae43646220f7',
+      isActive: false,
+      totalRaise: '???',
+      personalAllocation: '$??? MAX',
+      status: 'Coming soon',
+      open: '7h 24m 53s',
+      metadata: {
+        name: 'Mindy Britt',
+        tags: ['???', '???', '???'],
+        avatar: '/static-v2/avatar-1.png',
+        bg: '/static-v2/coming-soon.svg',
+        hashtags: ['???'],
+      },
+    }
+  }, [])
 
   const idoCards = useMemo(() => [...dumpyData], [])
 
@@ -119,13 +143,13 @@ export default function IDO() {
               </Text>
               <div className="flex flex-wrap mt-8">
                 <Box className="w-full sm:w-1/2 lg:w-1/3 px-2 mb-4">
-                  <IdoCard overlay data={{ status: 'Coming soon' }} />
+                  <IdoCard overlay data={comingSoon} />
                 </Box>
                 <Box className="w-full sm:w-1/2 lg:w-1/3 px-2 mb-4">
                   <IdoCard data={upCommingCard} />
                 </Box>
                 <Box className="w-full sm:w-1/2 lg:w-1/3 px-2 mb-4">
-                  <IdoCard overlay data={{ status: 'Coming soon' }} />
+                  <IdoCard overlay data={comingSoon} />
                 </Box>
               </div>
             </Box>
