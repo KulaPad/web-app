@@ -26,6 +26,7 @@ export default function IdoCard(props: IdoCardProps) {
   const contributionOpen = data?.open || ''
   const avatar = data?.metadata?.avatar || ''
   const bg = data?.metadata?.bg || ''
+  const name = data?.metadata?.name || ''
 
   const isHaventRelease = !data
 
@@ -82,7 +83,7 @@ export default function IdoCard(props: IdoCardProps) {
             </div>
             <div className="mt-4">
               <Text className="text-2xl" color="var(--neutral-light-0)">
-                CryptoCitizen
+                {name}
               </Text>
             </div>
             <div>

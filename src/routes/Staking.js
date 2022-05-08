@@ -67,7 +67,7 @@ export default function Staking(props) {
 
 
   return (
-    <HomeLayout>
+    <>
       {!stake_activated && <Alert
         mt={10}
         status='warning'
@@ -116,6 +116,6 @@ export default function Staking(props) {
         Staking Leader Board
       </KText>
       <Image margin="auto"  mb={20} src={`/mstatic/leader_board.png`} />
-    </HomeLayout>
+    </>
   );
 }

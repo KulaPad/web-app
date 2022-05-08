@@ -74,7 +74,7 @@ export default function Account(props) {
   };
 
   return (
-    <HomeLayout>
+    <>
       {!currentUser?.accountId && "Please sign in to claim"}
       {!!currentUser?.accountId && (
         <SimpleGrid mt={6}>
@@ -115,6 +115,6 @@ export default function Account(props) {
           </Box>
         </SimpleGrid>
       )}
-    </HomeLayout>
+    </>
   );
 }

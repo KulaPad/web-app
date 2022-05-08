@@ -32,10 +32,10 @@ export default function ProjectDetail(props) {
   };
 
   return (
-    <HomeLayout>
+    <>
       {isError && <Error />}
       {isLoading && !isError && <Loading />}
       {!isLoading && <LaunchpadDetail project={project} />}
-    </HomeLayout>
+    </>
   );
 }

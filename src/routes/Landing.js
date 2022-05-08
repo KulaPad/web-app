@@ -46,7 +46,7 @@ export default function Landing(props) {
   });
 
   return (
-    <HomeLayout>
+    <>
       <Blur
         position={"absolute"}
         top={40}
@@ -143,7 +143,7 @@ export default function Landing(props) {
       <StakingBox {...props} />
 
       <Box mb={40} />
-    </HomeLayout>
+    </>
   );
 }
 
