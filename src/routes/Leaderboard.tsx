@@ -46,7 +46,7 @@ export default function LeaderBoard(props: LeaderBoardProps) {
 
   const [top1, top2, top3] = topStaking
   return (
-    <LandingDashboard>
+    <>
       <div className="flex justify-center bg-slate-300 w-full relative min-h-[20rem] py-2">
         {/* <div><img src="https://picsum.photos/1300/500" /></div> */}
         <div className="md:absolute md:-bottom-4 md:left-1/2 md:-translate-x-1/2">
@@ -66,6 +66,6 @@ export default function LeaderBoard(props: LeaderBoardProps) {
       <div className="mt-10 px-2 md:px-0">
         <TopTokenTable stakingUsers={dumpyStakingUsers} />
       </div>
-    </LandingDashboard>
+    </>
   )
 }
