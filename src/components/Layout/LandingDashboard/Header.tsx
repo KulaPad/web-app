@@ -58,11 +58,11 @@ const Header = (props) => {
           </A>
         </Flex>
         <Flex>
-          {NAVIGATION.map((nav) => {
+          {NAVIGATION.map((nav, idx) => {
             const isActive = isPathActive(nav.url)
 
             return (
-              <A url={nav.url}>
+              <A key={idx} url={nav.url}>
                 <Flex align="center" justify="center" ml={3} color="var(--neutralneutral--1)">
                   <Text
                     className="mx-2 text-base capitalize font-bold"

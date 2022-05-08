@@ -5,7 +5,7 @@ import { useState } from 'react'
 interface IdoWarningProps {
   onClose: () => void
 }
-export function IdoWarning(props: IdoWarningProps) {
+export default function IdoWarning(props: IdoWarningProps) {
   return (
     <Flex
       bg="linear-gradient(90deg, #3E3CC9 -1.42%, rgba(251, 62, 255, 0) 101.86%);"
