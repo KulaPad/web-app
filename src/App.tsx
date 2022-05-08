@@ -11,8 +11,11 @@ import ProjectDetail from './routes/ProjectDetail'
 import Staking from './routes/Staking'
 import LeaderBoard from './routes/Leaderboard'
 import Backdrop from './components/Backdrop'
+import LandingDashboard from './components/Layout/LandingDashboard'
+import HomeLayout from './components/HomeLayout'
 
 const LazyIDO = lazy(() => import('./routes/ido/index'))
+const LazyIDODetail = lazy(() => import('./routes/ido/detail'))
 
 const ScrollToTop = (props: any) => {
   const location = useLocation()
@@ -38,8 +41,8 @@ function App(props: any) {
     <ChakraProvider theme={theme}>
       <BrowserRouter>
         <ScrollToTop>
-          <Suspense fallback={<Backdrop />}>
-            <Routes>
+          <Routes>
+            <Route element={<HomeLayout />}>
               <Route path="/" element={<Landing {...props} />} />
               <Route path="/account" element={<Account {...props} />} />
               <Route path="/claim" element={<Claim {...props} />} />
@@ -47,9 +50,26 @@ function App(props: any) {
               <Route path="/projects/:id" element={<ProjectDetail {...props} />} />
               <Route path="/staking" element={<Staking {...props} />} />
               <Route path="/leaderboard" element={<LeaderBoard {...props} />} />
-              <Route path="/ido" element={<LazyIDO {...props} />} />
-            </Routes>
-          </Suspense>
+            </Route>
+            <Route element={<LandingDashboard />}>
+              <Route
+                path="/ido"
+                element={
+                  <Suspense fallback={<Backdrop />}>
+                    <LazyIDO {...props} />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/ido/:id"
+                element={
+                  <Suspense fallback={<Backdrop />}>
+                    <LazyIDODetail {...props} />
+                  </Suspense>
+                }
+              />
+            </Route>
+          </Routes>
         </ScrollToTop>
       </BrowserRouter>
     </ChakraProvider>

@@ -53,7 +53,7 @@ export default function Projects(props) {
   );
 
   return (
-    <HomeLayout>
+    <>
       {isLoading && <Loading />}
       {!isLoading && (
         <Box>
@@ -85,7 +85,7 @@ export default function Projects(props) {
           <Box h={10} />
         </Box>
       )}
-    </HomeLayout>
+    </>
   );
 }
 

@@ -1,4 +1,5 @@
 import { Box, Flex } from '@chakra-ui/react'
+import { Outlet } from 'react-router-dom'
 import Footer from './Footer'
 import Header from './Header'
 
@@ -15,7 +16,9 @@ export default function LandingDashboard(props) {
     >
       <Header />
       <Box as="main" className="flex-1 w-full" bg="var(--dark-mode-bg)">
-        <div className="container mx-auto">{props.children}</div>
+        <div className="container mx-auto">
+          <Outlet />
+        </div>
       </Box>
       <Footer />
     </Flex>

@@ -126,7 +126,7 @@ export default function IDO() {
   const idoCards = useMemo(() => [...dumpyData], [])
 
   return (
-    <LandingDashboard>
+    <>
       <div className="px-5 mt-4">{!!isVisible && <IdoWarning onClose={handleClose} />}</div>
       <Tabs align="center" borderColor="var(--candy-3)">
         <TabList>
@@ -174,7 +174,7 @@ export default function IDO() {
           </TabPanel>
         </TabPanels>
       </Tabs>
-    </LandingDashboard>
+    </>
   )
 }
 

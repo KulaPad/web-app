@@ -1,4 +1,5 @@
 import { Flex, Box, SlideFade } from "@chakra-ui/react";
+import { Outlet } from "react-router-dom";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 
@@ -18,7 +19,8 @@ export default function HomeLayout(props) {
           transition={{ enter: { duration: 0, delay: 0 } }}
           // transition={{ duration: 0.4, delay: 0.2 }}
         >
-          {props.children}
+          {/* {props.children} */}
+          <Outlet />
         </SlideFade>
       </Box>
       <Footer />
