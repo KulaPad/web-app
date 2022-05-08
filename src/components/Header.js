@@ -84,6 +84,25 @@ const Header = (props) => {
               </KText>
             </Flex>
           </Link>
+          <Box mx={3} borderLeft="1px solid #e5e5e6" height="16px"></Box>
+          <Link to="/ido">
+            <Flex align="center" justify="center">
+              <Icon
+                as={BiWallet}
+                h="24px"
+                w="24px"
+                color={location.pathname.startsWith('/ido') ? '#f56565' : '#72727a'}
+              />
+              <KText
+                ml={1}
+                type="small-title"
+                fontWeight="500"
+                color={location.pathname.startsWith('/ido') ? '#f56565' : '#72727a'}
+              >
+                IDO
+              </KText>
+            </Flex>
+          </Link>
         </Flex>
 
         <Box flexBasis={{ base: "100%", md: "auto" }}>
