@@ -23,7 +23,7 @@ import HomeLayout from "../components/HomeLayout";
 import KText from "../components/KText";
 import Loading from "../components/Loading";
 import { Project } from "./Projects";
-import Stake from "../components/Staking/index.tsx";
+import Stake from "../components/modules/Staking/Stake/index";
 
 export default function Landing(props) {
   const [projects, setProjects] = useState([]);
