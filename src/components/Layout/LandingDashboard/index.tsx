@@ -15,7 +15,7 @@ export default function LandingDashboard(props) {
       align="center"
     >
       <Header />
-      <Box as="main" className="flex-1 w-full" bg="var(--dark-mode-bg)">
+      <Box as="main" className="flex-1 w-full pt-8 pb-11" bg="var(--dark-mode-bg)">
         <div className="container mx-auto">
           <Outlet />
         </div>

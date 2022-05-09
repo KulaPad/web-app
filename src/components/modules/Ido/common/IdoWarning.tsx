@@ -4,6 +4,7 @@ import { useState } from 'react'
 
 interface IdoWarningProps {
   onClose: () => void
+  children: React.ReactNode
 }
 export default function IdoWarning(props: IdoWarningProps) {
   return (
@@ -13,7 +14,7 @@ export default function IdoWarning(props: IdoWarningProps) {
     >
       <div className="inline-flex items-center">
         <WarningIcon />
-        <span className="ml-2">Please visit our documentation before purchasing Kula</span>
+        <span className="ml-2">{props.children}</span>
       </div>
       <button onClick={props.onClose}>
         <Image h="24px" src={`/static-v2/vuesax-bulk-close-square@2x.svg`} />

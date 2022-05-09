@@ -1,5 +1,8 @@
 import { Badge, Box, Image, Text, Button } from '@chakra-ui/react'
 import { useMemo } from 'react'
+import { generatePath } from 'react-router-dom'
+import { ROUTES } from '../../../utils/constant'
+import { A } from '../../A'
 import SocialToolbar from '../../SocialToolbar'
 
 const schemas = ['red', 'purple', 'green']
@@ -28,7 +31,12 @@ export default function IdoCard(props: IdoCardProps) {
   const bg = data?.metadata?.bg || ''
   const name = data?.metadata?.name || ''
 
-  const isHaventRelease = !data
+  const path = useMemo(() => {
+    if (!data) return '#'
+    return generatePath(ROUTES.idoDetail, { id: data.id })
+  }, [data])
+
+  const isEmpty = !data
 
   return (
     <Box
@@ -45,7 +53,7 @@ export default function IdoCard(props: IdoCardProps) {
       {!!overlay && (
         <div className="absolute z-[1] bg-black opacity-75 w-full h-full top-0 left-0"></div>
       )}
-      {!!isHaventRelease && (
+      {!!isEmpty && (
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-9xl text-white font-bold z-[1]">
           ?
         </div>
@@ -61,7 +69,7 @@ export default function IdoCard(props: IdoCardProps) {
           <Image src={avatar} className="w-[72px]" />
         </Box>
       </div>
-      {!isHaventRelease && (
+      {!isEmpty && (
         <Box className="px-8 flex flex-col justify-between">
           <>
             <div className="py-2 flex">
@@ -119,9 +127,11 @@ export default function IdoCard(props: IdoCardProps) {
               <SocialToolbar />
             </div>
             <div className="mt-4">
-              <Button colorScheme="purple" bg="var(--neutral-dark-3)" className="!w-full">
-                Token Sale
-              </Button>
+              <A url={path}>
+                <Button colorScheme="purple" bg="var(--neutral-dark-3)" className="!w-full">
+                  Token Sale
+                </Button>
+              </A>
             </div>
           </>
         </Box>

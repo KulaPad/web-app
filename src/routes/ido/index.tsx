@@ -14,7 +14,8 @@ import {
 import { ComponentProps, useMemo, useState } from 'react'
 import LandingDashboard from '../../components/Layout/LandingDashboard'
 import IdoCard from '../../components/modules/Ido/IdoCard'
-import IdoWarning from '../../components/modules/Ido/IdoWarning'
+import IdoWarning from '../../components/modules/Ido/common/IdoWarning'
+import { IDO_WARNING } from '../../utils/constant'
 
 const dumpyData = [
   {
@@ -85,7 +86,7 @@ const dumpyData = [
 export default function IDO() {
   const [isVisible, setIsVisible] = useState(true)
 
-  const handleClose = () => {
+  const turnOffWarning = () => {
     setIsVisible(false)
   }
 
@@ -127,8 +128,8 @@ export default function IDO() {
 
   return (
     <>
-      <div className="px-5 mt-4">{!!isVisible && <IdoWarning onClose={handleClose} />}</div>
-      <Tabs align="center" borderColor="var(--candy-3)">
+      <Box>{!!isVisible && <IdoWarning onClose={turnOffWarning}>{IDO_WARNING}</IdoWarning>}</Box>
+      <Tabs align="center" borderColor="var(--candy-3)" className='mt-2'>
         <TabList>
           <TabStyled>All</TabStyled>
           <TabStyled>Participated</TabStyled>
@@ -141,7 +142,7 @@ export default function IDO() {
               <Text as="h3" className="text-[38px] text-center" color="var(--white)">
                 Upcoming Projects
               </Text>
-              <div className="flex flex-wrap mt-8">
+              <Box className="flex flex-wrap mt-8">
                 <Box className="w-full sm:w-1/2 lg:w-1/3 px-2 mb-4">
                   <IdoCard overlay data={comingSoon} />
                 </Box>
@@ -151,7 +152,7 @@ export default function IDO() {
                 <Box className="w-full sm:w-1/2 lg:w-1/3 px-2 mb-4">
                   <IdoCard overlay data={comingSoon} />
                 </Box>
-              </div>
+              </Box>
             </Box>
             <Box className="mt-16">
               <Text as="h3" className="text-[38px] text-center" color="var(--white)">
