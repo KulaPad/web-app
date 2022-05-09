@@ -1,15 +1,24 @@
-import { Box, Heading, Image, Stack, Text } from '@chakra-ui/react'
-import { observer } from 'mobx-react-lite'
-import React from 'react'
-import KButton from '../../KButton'
+import React from 'react';
+
+import { observer } from 'mobx-react-lite';
+
+import {
+  Box,
+  Heading,
+  Image,
+  Stack,
+  Text,
+} from '@chakra-ui/react';
+
+import KButton from '../../../KButton';
 
 const neutralLight0 = 'var(--neutral-light-0)'
 const neutralDark2 = 'var(--neutral-dark-2)'
 const teal = 'var(--teal)'
 
-type Props = {
-}
-export default observer(function XKULAPoint(props: Props) {
+type Props = {}
+
+export default observer(function XToken(props: Props) {
   return (
     <Stack
       p={{ base: 8 }}

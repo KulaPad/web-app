@@ -3,8 +3,8 @@ import {
 } from '@chakra-ui/react'
 import { observer } from 'mobx-react-lite'
 import { Contract } from 'near-api-js/lib/contract'
-import { useStakingForm_Stake } from './StakingHooks'
-import StakingStatsStore from './StakingStatsStore'
+import { useStakingForm_Stake } from '../../../Staking/StakingHooks'
+import StakingStatsStore from '../../../Staking/StakingStatsStore'
 
 const darkModeBg = 'var(--dark-mode-bg)';
 const candy3 = 'var(--candy-3)'

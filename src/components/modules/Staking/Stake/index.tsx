@@ -12,7 +12,7 @@ type Props = {
   nearConfig: any
   walletConnection: any
 }
-export default function StakingBox(props: Props) {
+export default function Stake(props: Props) {
   return (
     <Box position={"relative"} mt={4}>
       <SimpleGrid

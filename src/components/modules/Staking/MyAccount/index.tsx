@@ -1,6 +1,6 @@
 import { Box, Stack } from '@chakra-ui/react'
 import Staked from './Staked'
-import XKULAPoint from './XKULAPoint'
+import XToken from './XToken'
 
 type Props = {
 }
@@ -18,7 +18,7 @@ export default function MyAccount(props: Props) {
                     <Staked />
                 </Box>
                 <Box flex={1}>
-                    <XKULAPoint />
+                    <XToken />
                 </Box>
             </Stack>
         </Box>

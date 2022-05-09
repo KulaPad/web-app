@@ -1,10 +1,10 @@
 import { Icon } from '@chakra-ui/icons'
 import { Flex, Image } from '@chakra-ui/react'
 
-interface IdoWarningProps {
+interface WarningBannerProps {
   onClose: () => void
 }
-export default function IdoWarning(props: IdoWarningProps) {
+export default function WarningBanner(props: WarningBannerProps) {
   return (
     <Flex
       bg="linear-gradient(90deg, #3E3CC9 -1.42%, rgba(251, 62, 255, 0) 101.86%);"

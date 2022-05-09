@@ -1,7 +1,7 @@
 import { Box, Heading, Image, Stack, Text } from '@chakra-ui/react'
 import { observer } from 'mobx-react-lite'
 import React from 'react'
-import KButton from '../../KButton'
+import KButton from '../../../KButton'
 
 const neutralLight0 = 'var(--neutral-light-0)'
 const neutralDark2 = 'var(--neutral-dark-2)'

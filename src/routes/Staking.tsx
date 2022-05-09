@@ -1,11 +1,37 @@
-import { Container, Image, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, useToast } from "@chakra-ui/react";
-import { transactions, utils } from "near-api-js";
-import { ComponentProps, useCallback, useState } from "react";
-import IdoWarning from "../components/modules/Ido/IdoWarning";
-import StakingBox from "../components/Staking/index";
-import MyAccount from "../components/Staking/MyAccount/index";
-import { getStakedStatus, setStakedActivated } from "../components/Staking/StakingHooks";
-import { useHistoryUtil, useQuery } from "../services/router";
+import {
+  ComponentProps,
+  useCallback,
+  useState,
+} from 'react';
+
+import {
+  transactions,
+  utils,
+} from 'near-api-js';
+
+import {
+  Container,
+  Image,
+  Stack,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  useToast,
+} from '@chakra-ui/react';
+
+import WarningBanner from '../components/WarningBanner';
+import MyAccount from '../components/modules/Staking/MyAccount/index';
+import Stake from '../components/modules/Staking/Stake/index';
+import {
+  getStakedStatus,
+  setStakedActivated,
+} from '../components/Staking/StakingHooks';
+import {
+  useHistoryUtil,
+  useQuery,
+} from '../services/router';
 
 export default function Staking(props) {
   const {
@@ -68,7 +94,7 @@ export default function Staking(props) {
     <Stack pb={'40px'} direction='row' justify='center'>
       <Image d={{ base: "none", xl: "block" }} alignSelf="end" src={'/static-v2/mascot-1.png'} className="w-[220px]" />
       <Container minH={'800px'} maxW={"872px"}>
-        <div className="mt-4 mb-4">{!!isVisible && <IdoWarning onClose={handleClose} />}</div>
+        <div className="mt-4 mb-4">{!!isVisible && <WarningBanner onClose={handleClose} />}</div>
         <Tabs align="center" borderColor="var(--candy-3)">
           <TabList>
             <TabStyled>Stake</TabStyled>
@@ -78,7 +104,7 @@ export default function Staking(props) {
             <TabPanel
               p={0}
             >
-              <StakingBox {...props} />
+              <Stake {...props} />
             </TabPanel>
             <TabPanel p={0}>
               <MyAccount {...props} />
