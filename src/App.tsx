@@ -16,6 +16,7 @@ import HomeLayout from './components/HomeLayout'
 
 const LazyIDO = lazy(() => import('./routes/ido/index'))
 const LazyIDODetail = lazy(() => import('./routes/ido/detail'))
+const LazyStaking = lazy(() => import('./routes/Staking'))
 
 const ScrollToTop = (props: any) => {
   const location = useLocation()
@@ -48,7 +49,6 @@ function App(props: any) {
               <Route path="/claim" element={<Claim {...props} />} />
               <Route path="/projects" element={<Projects {...props} />} />
               <Route path="/projects/:id" element={<ProjectDetail {...props} />} />
-              <Route path="/staking" element={<Staking {...props} />} />
               <Route path="/leaderboard" element={<LeaderBoard {...props} />} />
             </Route>
             <Route element={<LandingDashboard />}>
@@ -65,6 +65,14 @@ function App(props: any) {
                 element={
                   <Suspense fallback={<Backdrop />}>
                     <LazyIDODetail {...props} />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/staking"
+                element={
+                  <Suspense fallback={<Backdrop />}>
+                    <LazyStaking {...props} />
                   </Suspense>
                 }
               />

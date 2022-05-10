@@ -3,8 +3,8 @@ import {
 } from '@chakra-ui/react'
 import { observer } from 'mobx-react-lite'
 import { Contract } from 'near-api-js/lib/contract'
-import { useStakingForm_Stake } from './StakingHooks'
-import StakingStatsStore from './StakingStatsStore'
+import { useStakingForm_Stake } from '../../../Staking/StakingHooks'
+import StakingStatsStore from '../../../Staking/StakingStatsStore'
 
 const darkModeBg = 'var(--dark-mode-bg)';
 const candy3 = 'var(--candy-3)'
@@ -47,7 +47,7 @@ export default observer(function StakingForm(props: Props) {
         >
           <Heading
             color={neutralLight0}
-            fontSize={{ base: "2xl" }}
+            fontSize={{ base: "xl" }}
           >
             Staking Token
           </Heading>
@@ -158,7 +158,7 @@ export default observer(function StakingForm(props: Props) {
           </Stack>
         </Box>
 
-        <Box pb={10}>
+        <Box pb={6}>
           <Text
             mb={2}
             color={neutralLight2} fontWeight="bold" fontSize={{ base: "md" }}>
@@ -217,7 +217,7 @@ export default observer(function StakingForm(props: Props) {
           justifyContent="center"
           alignContent="center"
           bg={candyLinearGradient}
-          borderRadius={'xl'}
+          borderRadius={'md'}
           cursor="pointer"
           _hover={{ bg: candyLinearGradient }}
           _focus={{ bg: candyLinearGradient }}
@@ -228,14 +228,14 @@ export default observer(function StakingForm(props: Props) {
             Stake
           </Text>
         </Button>
-        <Box pb={1} />
+        <Box mb={1} />
         <Button
           h={'52px'}
           display="flex"
           justifyContent="center"
           alignContent="center"
           bg={neutralDark3}
-          borderRadius={'xl'}
+          borderRadius={'md'}
           cursor="pointer"
           _hover={{ bg: neutralDark3 }}
           _focus={{ bg: neutralDark3 }}
