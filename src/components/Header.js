@@ -85,21 +85,21 @@ const Header = (props) => {
             </Flex>
           </Link>
           <Box mx={3} borderLeft="1px solid #e5e5e6" height="16px"></Box>
-          <Link to="/ido">
+          <Link to="/pool">
             <Flex align="center" justify="center">
               <Icon
                 as={BiWallet}
                 h="24px"
                 w="24px"
-                color={location.pathname.startsWith('/ido') ? '#f56565' : '#72727a'}
+                color={location.pathname.startsWith('/pool') ? '#f56565' : '#72727a'}
               />
               <KText
                 ml={1}
                 type="small-title"
                 fontWeight="500"
-                color={location.pathname.startsWith('/ido') ? '#f56565' : '#72727a'}
+                color={location.pathname.startsWith('/pool') ? '#f56565' : '#72727a'}
               >
-                IDO
+                Pool
               </KText>
             </Flex>
           </Link>

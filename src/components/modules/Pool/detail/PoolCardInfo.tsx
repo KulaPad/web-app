@@ -1,7 +1,7 @@
 import { Box, Button, Image, Progress, Text } from '@chakra-ui/react'
 
-interface IdoCardInfoProps {}
-export default function IdoCardInfo(props: IdoCardInfoProps) {
+interface PoolCardInfoProps {}
+export default function PoolCardInfo(props: PoolCardInfoProps) {
   const process = 62
   return (
     <Box bg="var(--neutral-dark-0)" className="flex flex-col w-full rounded-[32px] p-8">

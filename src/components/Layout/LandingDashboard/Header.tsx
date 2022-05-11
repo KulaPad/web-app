@@ -21,8 +21,8 @@ const NAVIGATION = [
     icon: BiWallet,
   },
   {
-    title: 'IDO',
-    url: '/ido',
+    title: 'Pool',
+    url: '/pool',
     icon: BiWallet,
   },
 ]

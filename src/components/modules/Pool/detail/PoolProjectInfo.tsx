@@ -1,6 +1,7 @@
 import { Box, Image } from '@chakra-ui/react'
 
-export default function IdoProjectInfo() {
+interface PoolProjectInfoProps {}
+export default function PoolProjectInfo(props: PoolProjectInfoProps) {
   return (
     <Box className="flex w-full">
       <Box className="items-end pr-4 w-2/12 hidden lg:flex">

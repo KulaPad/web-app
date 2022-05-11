@@ -3,11 +3,11 @@ import { useMemo } from 'react'
 import SocialToolbar from '../../../SocialToolbar'
 
 const schemas = ['red', 'purple', 'green']
-interface IdoCardDetailProps {
+interface PoolCardDetailProps {
   overlay?: boolean
   data?: any
 }
-export default function IdoCardDetail(props: IdoCardDetailProps) {
+export default function PoolCardDetail(props: PoolCardDetailProps) {
   const { data, overlay = false } = props
   const tags = useMemo(() => {
     return data?.metadata?.tags || []

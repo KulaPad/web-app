@@ -14,8 +14,8 @@ import Backdrop from './components/Backdrop'
 import LandingDashboard from './components/Layout/LandingDashboard'
 import HomeLayout from './components/HomeLayout'
 
-const LazyIDO = lazy(() => import('./routes/ido/index'))
-const LazyIDODetail = lazy(() => import('./routes/ido/detail'))
+const LazyPool = lazy(() => import('./routes/Pool/index'))
+const LazyPoolDetail = lazy(() => import('./routes/Pool/Detail'))
 const LazyStaking = lazy(() => import('./routes/Staking'))
 
 const ScrollToTop = (props: any) => {
@@ -53,18 +53,18 @@ function App(props: any) {
             </Route>
             <Route element={<LandingDashboard />}>
               <Route
-                path="/ido"
+                path="/pool"
                 element={
                   <Suspense fallback={<Backdrop />}>
-                    <LazyIDO {...props} />
+                    <LazyPool {...props} />
                   </Suspense>
                 }
               />
               <Route
-                path="/ido/:id"
+                path="/pool/:id"
                 element={
                   <Suspense fallback={<Backdrop />}>
-                    <LazyIDODetail {...props} />
+                    <LazyPoolDetail {...props} />
                   </Suspense>
                 }
               />

@@ -1,6 +1,7 @@
 import { Box, Text, Image } from '@chakra-ui/react'
 
-export default function IdoContent() {
+interface PoolContentProps {}
+export default function PoolContent(props: PoolContentProps) {
   return (
     <Box className="flex flex-col md:flex-row">
       <Box className="w-full md:w-3/12 md:pr-7">

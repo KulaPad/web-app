@@ -6,11 +6,11 @@ import { A } from '../../A'
 import SocialToolbar from '../../SocialToolbar'
 
 const schemas = ['red', 'purple', 'green']
-interface IdoCardProps {
+interface PoolCardProps {
   overlay?: boolean
   data?: any
 }
-export default function IdoCard(props: IdoCardProps) {
+export default function PoolCard(props: PoolCardProps) {
   const { data, overlay = false } = props
   const tags = useMemo(() => {
     return data?.metadata?.tags || []
@@ -33,7 +33,7 @@ export default function IdoCard(props: IdoCardProps) {
 
   const path = useMemo(() => {
     if (!data) return '#'
-    return generatePath(ROUTES.idoDetail, { id: data.id })
+    return generatePath(ROUTES.poolDetail, { id: data.id })
   }, [data])
 
   const isEmpty = !data

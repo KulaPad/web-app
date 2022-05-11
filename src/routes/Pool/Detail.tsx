@@ -1,11 +1,11 @@
 import { Badge, Box } from '@chakra-ui/react'
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
-import IdoContent from '../../components/modules/Ido/detail/IdoContent'
-import IdoCardDetail from '../../components/modules/Ido/detail/IdoCardDetail'
-import IdoCardInfo from '../../components/modules/Ido/detail/IdoCardInfo'
-import IdoProjectInfo from '../../components/modules/Ido/detail/IdoProjectInfo'
-import RoadMap from '../../components/modules/Ido/detail/RoadMap'
+import PoolContent from '../../components/modules/Pool/detail/PoolContent'
+import PoolCardDetail from '../../components/modules/Pool/detail/PoolCardDetail'
+import PoolCardInfo from '../../components/modules/Pool/detail/PoolCardInfo'
+import PoolProjectInfo from '../../components/modules/Pool/detail/PoolProjectInfo'
+import RoadMap from '../../components/modules/Pool/detail/RoadMap'
 import WarningBanner from '../../components/WarningBanner'
 import { IDO_WARNING } from '../../utils/constant'
 
@@ -27,7 +27,7 @@ const dumpyData = {
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
   },
 }
-export default function IdoDetail(props) {
+export default function PoolDetail(props) {
   const params = useParams()
   const [isVisible, setIsVisible] = useState(true)
 
@@ -44,7 +44,7 @@ export default function IdoDetail(props) {
       <Box>{!!isVisible && <WarningBanner title={IDO_WARNING} onClose={turnOffWarning} />}</Box>
       <Box className="flex flex-wrap mt-8">
         <Box className="w-full md:w-6/12 lg:w-7/12">
-          <IdoCardDetail data={data} />
+          <PoolCardDetail data={data} />
         </Box>
         <Box className="w-full mt-2 md:mt-0 md:w-6/12 lg:w-5/12 px-2">
           <RoadMap />
@@ -56,7 +56,7 @@ export default function IdoDetail(props) {
           <Block label="Distribution type" tag="Full" />
         </Box>
         <Box className="flex w-full mt-3">
-          <IdoCardInfo />
+          <PoolCardInfo />
         </Box>
         <Box
           className="pt-16 pb-10 w-full flex justify-center text-[38px]"
@@ -65,10 +65,10 @@ export default function IdoDetail(props) {
           Project Information
         </Box>
         <Box className="flex w-full mt-3">
-          <IdoProjectInfo />
+          <PoolProjectInfo />
         </Box>
         <Box className="flex w-full mt-28">
-          <IdoContent />
+          <PoolContent />
         </Box>
       </Box>
     </>

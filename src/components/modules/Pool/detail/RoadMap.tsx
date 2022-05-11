@@ -7,8 +7,8 @@ const steps = [
   { label: 'Preparation', description: 'This project is in preparation phase. Stay tuned.' },
   { label: 'Preparation', description: 'This project is in preparation phase. Stay tuned.' },
 ]
-
-export default function RoadMap() {
+interface RoadMapProps {}
+export default function RoadMap(props: RoadMapProps) {
   const { nextStep, prevStep, reset, activeStep } = useSteps({
     initialStep: 0,
   })
