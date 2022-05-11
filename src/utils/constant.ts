@@ -4,3 +4,5 @@ export const ROUTES = {
   pool: '/pool',
   poolDetail: '/pool/:id',
 }
+
+export const ACCESS_TOKEN_KEY = '__kupa_access_token'

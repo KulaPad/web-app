@@ -1,0 +1,21 @@
+query project($where: ProjectWhereInput!) {
+  project(where: $where) {
+    id
+    name
+    website
+    whitepaper
+    facebook
+    twitter
+    telegram
+    about
+    feature
+    roadmap
+    tokenomic
+    team
+    partner
+    investor
+    status
+    created_at
+    updated_at
+  }
+}

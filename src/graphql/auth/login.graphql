@@ -1,0 +1,12 @@
+mutation login($address: String!, $sign: String!) {
+  login(address: $address, sign: $sign) {
+    token
+    user {
+      id
+      address
+      email
+      name
+      role
+    }
+  }
+}

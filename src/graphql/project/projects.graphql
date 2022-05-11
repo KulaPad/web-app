@@ -1,0 +1,33 @@
+query projects(
+  $skip: Float
+  $take: Float
+  $cursor: ProjectWhereUniqueInput
+  $where: ProjectWhereInput
+  $orderBy: ProjectOrderByWithRelationInput
+) {
+  projects(
+    skip: $skip
+    take: $take
+    cursor: $cursor
+    where: $where
+    orderBy: $orderBy
+  ) {
+    id
+    name
+    website
+    whitepaper
+    facebook
+    twitter
+    telegram
+    about
+    feature
+    roadmap
+    tokenomic
+    team
+    partner
+    investor
+    status
+    created_at
+    updated_at
+  }
+}
