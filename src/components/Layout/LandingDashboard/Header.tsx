@@ -4,7 +4,7 @@ import { FiZap } from 'react-icons/fi'
 import { RiCopperCoinLine } from 'react-icons/ri'
 import { Link, useLocation } from 'react-router-dom'
 import { A } from '../../A'
-import SignInBtn from '../../Auth/SignInBtn'
+import ConnectWallet from '../../ConnectWallet'
 import KText from '../../KText'
 
 const ACTIVE = 'var(--candy-3)'
@@ -26,6 +26,14 @@ const NAVIGATION = [
     icon: BiWallet,
   },
 ]
+
+const NAVIGATION2 = [
+  {
+    title: 'Airdrop',
+    url: '/claim',
+    icon: FiZap,
+  },
+]
 const Header = (props) => {
   const location = useLocation()
 
@@ -39,13 +47,7 @@ const Header = (props) => {
     <Box w="100%" bg="var(--dark-purpledark-purple-1)" zIndex={10}>
       <Flex
         as="nav"
-        align="center"
-        justify="space-between"
-        wrap="wrap"
-        w="100%"
-        h="80px"
-        className="container mx-auto"
-        {...props}
+        className="container flex-wrap justify-between items-center mx-auto w-full min-h-[80px] py-4"
       >
         <Flex align="center">
           <A url="/">
@@ -76,33 +78,32 @@ const Header = (props) => {
           })}
         </Flex>
 
-        <Box flexBasis={{ base: '100%', md: 'auto' }}>
+        <Box className="flex justify-end w-full lg:w-auto">
           <Flex
             align={['center', 'center', 'center', 'center']}
             justify={['center', 'space-between', 'flex-end', 'flex-end']}
             direction={['column', 'row', 'row', 'row']}
             pt={[4, 4, 0, 0]}
           >
-            <Link to="/claim">
-              <Flex align="center" justify="center">
-                <Icon
-                  as={FiZap}
-                  h="24px"
-                  w="24px"
-                  color={location.pathname === '/claim' ? '#f56565' : '#72727a'}
-                />
-                <KText
-                  ml={1}
-                  type="small-title"
-                  fontWeight="500"
-                  color={location.pathname === '/claim' ? '#f56565' : '#72727a'}
-                >
-                  Airdrop
-                </KText>
-              </Flex>
-            </Link>
+            {NAVIGATION2.map((nav, idx) => {
+              const isActive = isPathActive(nav.url)
+
+              return (
+                <A key={idx} url={nav.url}>
+                  <Flex align="center" justify="center" ml={3} color="var(--neutralneutral--1)">
+                    <Icon as={nav.icon} h="24px" w="24px" color={isActive ? ACTIVE : 'inherit'} />
+                    <Text
+                      className="mx-2 text-base capitalize font-bold"
+                      color={isActive ? ACTIVE : 'inherit'}
+                    >
+                      {nav.title}
+                    </Text>
+                  </Flex>
+                </A>
+              )
+            })}
             <Box mx={2} borderLeft="1.5px solid #e5e5e6" height="16px"></Box>
-            <SignInBtn size="sm" rounded="md" />
+            <ConnectWallet />
           </Flex>
         </Box>
       </Flex>
