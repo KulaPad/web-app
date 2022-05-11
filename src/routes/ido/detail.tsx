@@ -1,12 +1,12 @@
 import { Badge, Box } from '@chakra-ui/react'
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
-import IdoWarning from '../../components/modules/Ido/common/IdoWarning'
 import IdoContent from '../../components/modules/Ido/detail/IdoContent'
 import IdoCardDetail from '../../components/modules/Ido/detail/IdoCardDetail'
 import IdoCardInfo from '../../components/modules/Ido/detail/IdoCardInfo'
 import IdoProjectInfo from '../../components/modules/Ido/detail/IdoProjectInfo'
 import RoadMap from '../../components/modules/Ido/detail/RoadMap'
+import WarningBanner from '../../components/WarningBanner'
 import { IDO_WARNING } from '../../utils/constant'
 
 const dumpyData = {
@@ -41,7 +41,7 @@ export default function IdoDetail(props) {
 
   return (
     <>
-      <Box>{!!isVisible && <IdoWarning onClose={turnOffWarning}>{IDO_WARNING}</IdoWarning>}</Box>
+      <Box>{!!isVisible && <WarningBanner title={IDO_WARNING} onClose={turnOffWarning} />}</Box>
       <Box className="flex flex-wrap mt-8">
         <Box className="w-full md:w-6/12 lg:w-7/12">
           <IdoCardDetail data={data} />

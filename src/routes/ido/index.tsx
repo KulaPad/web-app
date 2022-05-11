@@ -14,7 +14,7 @@ import {
 import { ComponentProps, useMemo, useState } from 'react'
 import LandingDashboard from '../../components/Layout/LandingDashboard'
 import IdoCard from '../../components/modules/Ido/IdoCard'
-import IdoWarning from '../../components/modules/Ido/common/IdoWarning'
+import WarningBanner from '../../components/WarningBanner'
 import { IDO_WARNING } from '../../utils/constant'
 
 const dumpyData = [
@@ -128,8 +128,8 @@ export default function IDO() {
 
   return (
     <>
-      <Box>{!!isVisible && <IdoWarning onClose={turnOffWarning}>{IDO_WARNING}</IdoWarning>}</Box>
-      <Tabs align="center" borderColor="var(--candy-3)" className='mt-2'>
+      <div className="px-5 mt-4">{!!isVisible && <WarningBanner title={IDO_WARNING} onClose={turnOffWarning} />}</div>
+      <Tabs align="center" borderColor="var(--candy-3)">
         <TabList>
           <TabStyled>All</TabStyled>
           <TabStyled>Participated</TabStyled>

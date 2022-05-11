@@ -8,6 +8,7 @@
   --dark-mode-bg: #211a4a;
   --light-mode-bg: #ffffff;
   --candy-linear-gradient: linear-gradient(91.13deg, #d85980 -4.51%, #ff61c0 102.47%);
+  --teal: #5ac8fb;
 
   /* candy */
   --candy-0: #2b121b;
@@ -78,4 +79,9 @@
 
 .container {
   @apply xl:!max-w-7xl px-4;
+}
+
+html,
+body {
+  background: var(--neutral-light-6);
 }
