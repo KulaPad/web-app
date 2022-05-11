@@ -14,14 +14,14 @@ const middlewareLink = new ApolloLink((operation, forward) => {
   return forward(operation)
 })
 const httpLink = new HttpLink({
-  uri: process.env.REACT_APP_GRAPHQL_ENDPOINT || 'localhost',
+  uri: process.env.REACT_APP_GRAPHQL_ENDPOINT || 'https://dev-api.kulapad.com',
   // credentials: 'include',
 })
 
 const wsLink = new WebSocketLink({
   uri:
     (process.env.NODE_ENV === 'production' ? 'wss:' : 'ws:') +
-      process.env.REACT_APP_GRAPHQL_ENDPOINT || 'localhost',
+      process.env.REACT_APP_GRAPHQL_ENDPOINT || 'https://dev-api.kulapad.com',
   options: {
     reconnect: true,
   },
