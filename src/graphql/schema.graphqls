@@ -1,0 +1,280 @@
+type Comment {
+  id: ID!
+  post: Post!
+  postId: String!
+  comment: String!
+}
+
+type PostCount {
+  comments: Int!
+}
+
+type Post {
+  id: ID!
+  slug: String!
+  title: String!
+  body: String!
+  comments: [Comment!]
+  author: User!
+  authorId: String!
+  _count: PostCount!
+}
+
+type UserCount {
+  posts: Int!
+}
+
+type User {
+  id: ID!
+  address: String!
+  email: String
+  name: String
+  role: UserRole!
+  posts: [Post!]
+  _count: UserCount!
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+type UserGraphql {
+  id: ID!
+  address: String!
+  email: String
+  name: String
+  role: UserRole!
+  posts: [Post!]
+  _count: UserCount!
+}
+
+type AuthGraphql {
+  token: String!
+  user: UserGraphql
+}
+
+type Project {
+  id: ID!
+  name: String!
+  website: String
+  whitepaper: String
+  facebook: String
+  twitter: String
+  telegram: String
+  about: String
+  feature: String
+  roadmap: String
+  tokenomic: String
+  team: String
+  partner: String
+  investor: String
+  status: Status!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+enum Status {
+  PENDING
+  ACTIVE
+  DELETED
+}
+
+# A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+scalar DateTime
+
+type Query {
+  me: UserGraphql
+  projects(
+    skip: Float
+    take: Float
+    cursor: ProjectWhereUniqueInput
+    where: ProjectWhereInput
+    orderBy: ProjectOrderByWithRelationInput
+  ): [Project!]!
+  project(where: ProjectWhereInput!): Project
+}
+
+input ProjectWhereUniqueInput {
+  id: String
+}
+
+input ProjectWhereInput {
+  AND: [ProjectWhereInput!]
+  OR: [ProjectWhereInput!]
+  NOT: [ProjectWhereInput!]
+  id: StringFilter
+  name: StringFilter
+  website: StringNullableFilter
+  whitepaper: StringNullableFilter
+  facebook: StringNullableFilter
+  twitter: StringNullableFilter
+  telegram: StringNullableFilter
+  about: StringNullableFilter
+  feature: StringNullableFilter
+  roadmap: StringNullableFilter
+  tokenomic: StringNullableFilter
+  team: StringNullableFilter
+  partner: StringNullableFilter
+  investor: StringNullableFilter
+  status: EnumStatusFilter
+  created_at: DateTimeFilter
+  updated_at: DateTimeFilter
+}
+
+input StringFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  mode: QueryMode
+  not: NestedStringFilter
+}
+
+enum QueryMode {
+  default
+  insensitive
+}
+
+input NestedStringFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: NestedStringFilter
+}
+
+input StringNullableFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  mode: QueryMode
+  not: NestedStringNullableFilter
+  isSet: Boolean
+}
+
+input NestedStringNullableFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: NestedStringNullableFilter
+  isSet: Boolean
+}
+
+input EnumStatusFilter {
+  equals: Status
+  in: [Status!]
+  notIn: [Status!]
+  not: NestedEnumStatusFilter
+}
+
+input NestedEnumStatusFilter {
+  equals: Status
+  in: [Status!]
+  notIn: [Status!]
+  not: NestedEnumStatusFilter
+}
+
+input DateTimeFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: NestedDateTimeFilter
+}
+
+input NestedDateTimeFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: NestedDateTimeFilter
+}
+
+input ProjectOrderByWithRelationInput {
+  id: SortOrder
+  name: SortOrder
+  website: SortOrder
+  whitepaper: SortOrder
+  facebook: SortOrder
+  twitter: SortOrder
+  telegram: SortOrder
+  about: SortOrder
+  feature: SortOrder
+  roadmap: SortOrder
+  tokenomic: SortOrder
+  team: SortOrder
+  partner: SortOrder
+  investor: SortOrder
+  status: SortOrder
+  created_at: SortOrder
+  updated_at: SortOrder
+}
+
+enum SortOrder {
+  asc
+  desc
+}
+
+type Mutation {
+  # Login as admin to create project
+  createProject(data: ProjectCreateInput!): Project!
+
+  # Generate nonce for user login
+  generateNonce(address: String!): String!
+
+  # User login
+  login(address: String!, sign: String!): AuthGraphql!
+}
+
+input ProjectCreateInput {
+  id: String
+  name: String!
+  website: String
+  whitepaper: String
+  facebook: String
+  twitter: String
+  telegram: String
+  about: String
+  feature: String
+  roadmap: String
+  tokenomic: String
+  team: String
+  partner: String
+  investor: String
+  status: Status
+  created_at: DateTime
+  updated_at: DateTime
+}

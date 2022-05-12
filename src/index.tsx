@@ -1,11 +1,13 @@
 import { ColorModeScript } from "@chakra-ui/react";
 import React, { StrictMode } from "react";
-
+import { ApolloProvider } from "@apollo/client";
+import { apolloClient } from "./graphql/apollo-client";
 import ReactDOM from "react-dom";
 import App from "./App";
 import initContract from "./utils/initContract";
 import "@fontsource/lato";
 import "./styles/main.css"
+
 
 // Buffer is not defined:: https://github.com/near/near-api-js/issues/757#issuecomment-1002754955
 import { Buffer } from "buffer";
@@ -14,12 +16,14 @@ global.Buffer = Buffer;
 window.nearInitPromise = initContract().then((props) => {
   ReactDOM.render(
     <StrictMode>
-      <ColorModeScript />
-      <App {...props} />
+      <ApolloProvider client={apolloClient}>
+        <ColorModeScript />
+        <App {...props} />
+      </ApolloProvider>
     </StrictMode>,
-    document.getElementById("root")
-  );
-});
+    document.getElementById('root')
+  )
+})
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

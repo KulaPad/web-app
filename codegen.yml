@@ -1,0 +1,10 @@
+overwrite: true
+# schema: "src/graphql/schema.graphqls"
+schema: "https://dev-api.kulapad.com/graphql"
+documents: "src/graphql/**/*.graphql"
+generates:
+  src/graphql/generated.tsx:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
