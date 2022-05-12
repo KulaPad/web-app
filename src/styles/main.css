@@ -78,7 +78,7 @@
 }
 
 .container {
-  @apply xl:!max-w-7xl;
+  @apply xl:!max-w-7xl px-4;
 }
 
 html,

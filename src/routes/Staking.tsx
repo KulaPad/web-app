@@ -32,6 +32,7 @@ import {
   useHistoryUtil,
   useQuery,
 } from '../services/router';
+import { IDO_WARNING } from '../utils/constant'
 
 export default function Staking(props) {
   const {
@@ -94,7 +95,7 @@ export default function Staking(props) {
     <Stack pb={'40px'} direction='row' justify='center'>
       <Image d={{ base: "none", xl: "block" }} alignSelf="end" src={'/static-v2/mascot-1.png'} className="w-[220px]" />
       <Container minH={'800px'} maxW={"872px"}>
-        <div className="mt-4 mb-4">{!!isVisible && <WarningBanner onClose={handleClose} />}</div>
+        <div className="mt-4 mb-4">{!!isVisible && <WarningBanner title={IDO_WARNING} onClose={handleClose} />}</div>
         <Tabs align="center" borderColor="var(--candy-3)">
           <TabList>
             <TabStyled>Stake</TabStyled>

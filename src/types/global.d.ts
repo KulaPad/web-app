@@ -1,6 +1,8 @@
-export {};
+export {}
 declare global {
   interface Window {
-    nearInitPromise: any;
+    nearInitPromise: any
+    walletConnection: any
+    accountId: any
   }
 }

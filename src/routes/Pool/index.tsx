@@ -13,8 +13,9 @@ import {
 } from '@chakra-ui/react'
 import { ComponentProps, useMemo, useState } from 'react'
 import LandingDashboard from '../../components/Layout/LandingDashboard'
-import IdoCard from '../../components/modules/Ido/IdoCard'
+import PoolCard from '../../components/modules/Pool/PoolCard'
 import WarningBanner from '../../components/WarningBanner'
+import { IDO_WARNING } from '../../utils/constant'
 
 const dumpyData = [
   {
@@ -82,10 +83,10 @@ const dumpyData = [
   null,
   null,
 ]
-export default function IDO() {
+export default function Pool() {
   const [isVisible, setIsVisible] = useState(true)
 
-  const handleClose = () => {
+  const turnOffWarning = () => {
     setIsVisible(false)
   }
 
@@ -127,7 +128,7 @@ export default function IDO() {
 
   return (
     <>
-      <div className="px-5 mt-4">{!!isVisible && <WarningBanner onClose={handleClose} />}</div>
+      <div className="px-5 mt-4">{!!isVisible && <WarningBanner title={IDO_WARNING} onClose={turnOffWarning} />}</div>
       <Tabs align="center" borderColor="var(--candy-3)">
         <TabList>
           <TabStyled>All</TabStyled>
@@ -141,17 +142,17 @@ export default function IDO() {
               <Text as="h3" className="text-[38px] text-center" color="var(--white)">
                 Upcoming Projects
               </Text>
-              <div className="flex flex-wrap mt-8">
+              <Box className="flex flex-wrap mt-8">
                 <Box className="w-full sm:w-1/2 lg:w-1/3 px-2 mb-4">
-                  <IdoCard overlay data={comingSoon} />
+                  <PoolCard overlay data={comingSoon} />
                 </Box>
                 <Box className="w-full sm:w-1/2 lg:w-1/3 px-2 mb-4">
-                  <IdoCard data={upCommingCard} />
+                  <PoolCard data={upCommingCard} />
                 </Box>
                 <Box className="w-full sm:w-1/2 lg:w-1/3 px-2 mb-4">
-                  <IdoCard overlay data={comingSoon} />
+                  <PoolCard overlay data={comingSoon} />
                 </Box>
-              </div>
+              </Box>
             </Box>
             <Box className="mt-16">
               <Text as="h3" className="text-[38px] text-center" color="var(--white)">
@@ -160,7 +161,7 @@ export default function IDO() {
               <div className="flex flex-wrap mt-8">
                 {idoCards.map((item, idx) => (
                   <Box key={idx} className="w-full sm:w-1/2 lg:w-1/3 px-2 mb-4">
-                    <IdoCard overlay={!item} data={item} />
+                    <PoolCard overlay={!item} data={item} />
                   </Box>
                 ))}
               </div>
