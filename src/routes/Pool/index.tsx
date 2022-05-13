@@ -80,8 +80,38 @@ const dumpyData = [
       hashtags: ['CCZ'],
     },
   },
-  null,
-  null,
+  {
+    id: '62774d169762790fd625dffe',
+    isActive: false,
+    totalRaise: '$352,203',
+    personalAllocation: '$1741 MAX',
+    avatar: '/static-v2/avatar-1.png',
+    status: 'Allowlist open',
+    open: '7h 24m 53s',
+    metadata: {
+      name: 'Corina Francis',
+      tags: ['ullamco', 'cupidatat', 'et', 'est', 'quis', 'officia', 'laborum'],
+      bg: '/static-v2/token-1.png',
+      avatar: '/static-v2/avatar-1.png',
+      hashtags: ['CCZ'],
+    },
+  },
+  {
+    id: '62774d969762790fd6d5dffe',
+    isActive: false,
+    totalRaise: '$352,203',
+    personalAllocation: '$1741 MAX',
+    avatar: '/static-v2/avatar-1.png',
+    status: 'Allowlist open',
+    open: '7h 24m 53s',
+    metadata: {
+      name: 'Corina Francis',
+      tags: ['ullamco', 'cupidatat', 'et', 'est', 'quis', 'officia', 'laborum'],
+      bg: '/static-v2/token-1.png',
+      avatar: '/static-v2/avatar-1.png',
+      hashtags: ['CCZ'],
+    },
+  },
 ]
 export default function Pool() {
   const [isVisible, setIsVisible] = useState(true)
@@ -128,7 +158,9 @@ export default function Pool() {
 
   return (
     <>
-      <div className="px-5 mt-4">{!!isVisible && <WarningBanner title={IDO_WARNING} onClose={turnOffWarning} />}</div>
+      <div className="px-5 mt-4">
+        {!!isVisible && <WarningBanner title={IDO_WARNING} onClose={turnOffWarning} />}
+      </div>
       <Tabs align="center" borderColor="var(--candy-3)">
         <TabList>
           <TabStyled>All</TabStyled>

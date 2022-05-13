@@ -99,7 +99,7 @@ const Header = (props) => {
                 fontWeight="500"
                 color={location.pathname.startsWith('/pool') ? '#f56565' : '#72727a'}
               >
-                Pool
+                Pools
               </KText>
             </Flex>
           </Link>
