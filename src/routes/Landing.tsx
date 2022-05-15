@@ -29,7 +29,9 @@ export default function Landing() {
           backgroundPosition="top"
           mx="auto"
         >
-          <Stack h="100%" direction="row" justify="center" mr="0px">
+          <Stack h="100%" direction="row" justify="center" mr="0px"
+           pr={{ base: 0, xl: "40px" }}
+          >
             <Image
               pt="33px"
               d={{ base: 'none', xl: 'block' }}
@@ -39,7 +41,6 @@ export default function Landing() {
             />
             <Flex
               px={{ base: 3, xl: 1 }}
-              pr={{ base: 3, xl: 2 }}
               direction="column"
               align="center"
               justify="center"
