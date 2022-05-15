@@ -43,8 +43,8 @@ function App(props: any) {
       <BrowserRouter>
         <ScrollToTop>
           <Routes>
+            <Route path="/" element={<Landing {...props} />} />
             <Route element={<HomeLayout />}>
-              <Route path="/" element={<Landing {...props} />} />
               <Route path="/account" element={<Account {...props} />} />
               <Route path="/claim" element={<Claim {...props} />} />
               <Route path="/projects" element={<Projects {...props} />} />
