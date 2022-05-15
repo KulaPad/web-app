@@ -11,19 +11,24 @@ const ACTIVE = 'var(--candy-3)'
 
 const NAVIGATION = [
   {
-    title: 'Projects',
-    url: '/projects',
-    icon: RiCopperCoinLine,
+    title: 'Home',
+    url: '/',
   },
   {
-    title: 'Staking',
+    title: 'Staking page',
     url: '/staking',
-    icon: BiWallet,
   },
   {
     title: 'Pools',
     url: '/pool',
-    icon: BiWallet,
+  },
+  {
+    title: 'About us',
+    url: '#0',
+  },
+  {
+    title: 'Whitepaper',
+    url: '#0',
   },
 ]
 
@@ -44,10 +49,10 @@ const Header = (props) => {
   console.log('window.location.pathname::', location.pathname)
 
   return (
-    <Box w="100%" bg="var(--dark-purpledark-purple-1)" zIndex={10}>
+    <Box w="100%" bg="var(--neutral-dark-1)" zIndex={10}>
       <Flex
         as="nav"
-        className="container flex-wrap justify-between items-center mx-auto w-full min-h-[80px] py-4"
+        className="container flex-wrap justify-between items-center mx-auto w-full min-h-[80px] py-3"
       >
         <Flex align="center">
           <A url="/">
@@ -65,10 +70,13 @@ const Header = (props) => {
 
             return (
               <A key={idx} url={nav.url}>
-                <Flex align="center" justify="center" ml={3} color="var(--neutralneutral--1)">
+                <Flex
+                direction="column" align="center" justify="center" ml={3} color="var(--neutralneutral--1)">
                   <Text
                     className="mx-2 text-base capitalize font-bold"
+                    borderBottom={isActive ? "2px solid var(--candy-3)" : "none"}
                     color={isActive ? ACTIVE : 'inherit'}
+                    lineHeight={2}
                   >
                     {nav.title}
                   </Text>
@@ -85,24 +93,6 @@ const Header = (props) => {
             direction={['column', 'row', 'row', 'row']}
             pt={[4, 4, 0, 0]}
           >
-            {NAVIGATION2.map((nav, idx) => {
-              const isActive = isPathActive(nav.url)
-
-              return (
-                <A key={idx} url={nav.url}>
-                  <Flex align="center" justify="center" ml={3} color="var(--neutralneutral--1)">
-                    <Icon as={nav.icon} h="24px" w="24px" color={isActive ? ACTIVE : 'inherit'} />
-                    <Text
-                      className="mx-2 text-base capitalize font-bold"
-                      color={isActive ? ACTIVE : 'inherit'}
-                    >
-                      {nav.title}
-                    </Text>
-                  </Flex>
-                </A>
-              )
-            })}
-            <Box mx={2} borderLeft="1.5px solid #e5e5e6" height="16px"></Box>
             <ConnectWallet />
           </Flex>
         </Box>
