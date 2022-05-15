@@ -1,4 +1,5 @@
 import { Box, Flex, Image, Stack, Text } from '@chakra-ui/react'
+import { Link } from 'react-router-dom'
 import Footer from '../components/Layout/LandingDashboard/Footer'
 import Header from '../components/Layout/LandingDashboard/Header'
 import KButton from '../components/KButton'
@@ -58,6 +59,8 @@ export default function Landing() {
               </Text>
               <Flex mt="32px" direction={{ base: 'column', md: 'row' }} w="356px">
                 <KButton
+                  as={Link}
+                  to="/pool"
                   bg="var(--candy-3)"
                   color="var(--white)"
                   colorScheme="pink"
@@ -66,12 +69,16 @@ export default function Landing() {
                   height="40px"
                   size="sm"
                   isFullWidth={true}
+                  _hover={{ bg: 'var(--candy-3)' }}
+                  _focus={{ bg: 'var(--candy-3)' }}
                 >
                   Explore projects
                 </KButton>
                 <Box display={{ base: 'none', md: 'block' }} w="24px" />
                 <Box display={{ base: 'block', md: 'none' }} h="24px" />
                 <KButton
+                  as={Link}
+                  to="/staking"
                   fontWeight="700"
                   fontSize={{ base: '16px' }}
                   height="40px"
